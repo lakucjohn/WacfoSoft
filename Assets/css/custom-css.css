@@ -1,0 +1,47 @@
+.nowrap{
+    white-space: nowrap;
+}
+
+.space-sm-right{
+   margin-right: 1.0rem;
+}
+
+.clear-both-sides{
+    clear: both;
+}
+
+.float-content-left{
+    width: 20%;
+    float: left;
+}
+
+.float-content-right{
+    width: 80%;
+    float: right;
+    text-align: right;
+}
+
+.document-part-header{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.document-part-content{
+    margin-left:1rem;
+    margin-right: 1rem;
+}
+
+.first-document-content-text{
+    padding-left: 1%;
+
+}
+
+.last-document-content-text{
+    padding-right: 1%;
+
+}
+
+.narrative-title{
+    font-size: 16px;
+    font-weight: bold;
+}

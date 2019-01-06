@@ -1,0 +1,121 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: engineer
+ * Date: 1/4/19
+ * Time: 10:41 PM
+ */
+?>
+<h3>Livelihood Membership Registration Form</h3>
+<hr>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-10">
+            <div class="card w-100">
+                <div class="document-part-header">Personal Details</div>
+                <hr>
+                <div class="document-part-content">
+                    <p>
+                        <label for="member_name">Name of Member:</label>
+                        <input type="text" name="member_name" id="member_name" class="form-control" />
+                    </p>
+
+                    <p>
+                        <label for="member_sex">Gender: </label><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="member_sex" id="member_sex" />Male<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="member_sex" id="member_sex" />Female
+                    </p>
+
+                    <p>
+                        <label for="member_vulnerability">Vulnerability: </label>
+                        <select name="member_vulnerability" id="member_vulnerability" class="form-control">
+                            <option value="">Select the vulnerability</option>
+                        </select>
+                    </p>
+
+                    <p>
+                        <label for="member_date_of_birth">Date of Birth: </label>
+                        <input type="date" name="member_date_of_birth" id="member_date_of_birth" class="form-control" />
+                    </p>
+                </div>
+                <hr>
+                <div class="document-part-header">Group Information</div>
+                <hr>
+                <div class="document-part-content">
+                    <p>
+                        <label for="member_group_id">Group ID: </label>
+                        <select name="member_group_id" id="member_group_id" class="form-control">
+                            <option value="">Select the Group ID</option>
+                        </select><br>
+
+                        <select name="member_group_name" id="member_group_name" class="form-control" disabled>
+                            <option value="">Detail of selected group id will appear here</option>
+                        </select>
+                    </p>
+
+                    <p>
+                        <label for="member_role">Position: </label>
+                        <select name="member_role" id="member_role" class="form-control">
+                            <option value="">Select the position of member in the group</option>
+                        </select>
+                    </p>
+                </div>
+                <hr>
+                <div class="document-part-header">Residential Address</div>
+                <hr>
+                <div class="document-part-content">
+                    <p>
+                        <label for="member_parish">Parish</label>
+                        <select name="member_parish" id="member_parish" class="form-control">
+                            <option value="">Select the Parish</option>
+                        </select>
+
+                    </p>
+                    <p>
+                        <label for="member_village">Village</label>
+                        <select name="member_village" id="member_village" class="form-control">
+                            <option value="">Select the Village</option>
+                        </select>
+                    </p>
+                </div>
+
+                <hr>
+                <div class="document-part-header">Other Information</div>
+                <hr>
+
+                <div class="document-part-content">
+                    <p>
+                        <label for="member_date_of_joining">Date of joining: </label>
+                        <input type="date" name="member_date_of_joining" id="member_date_of_joining" class="form-control" />
+                    </p>
+
+                    <p>
+                    <div class="row">
+                        <label for="member_telephone">Telephone: </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="text-align: right;">
+                            +256
+                        </div>
+
+                        <div class="col-md-10">
+                            <input type="number" name="member_telephone" id="member_telephone" class="form-control" maxlength="9" />
+                        </div>
+
+                    </div>
+                    </p>
+                </div>
+
+                <hr>
+                <div class="col-md-12" style="text-align: center;">
+                    <button class="btn btn-primary btn-md">Register Member</button>
+                </div>
+                <br>
+
+            </div>
+        </div>
+    </div>
+</div>
