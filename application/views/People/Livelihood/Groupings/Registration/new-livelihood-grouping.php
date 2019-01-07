@@ -9,6 +9,15 @@
 <h3>Livelihood Group Registration Form</h3>
 <hr>
 
+<?php echo form_open('groupings/register-new-livelihood-group'); ?>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+        <div class="error-msg position-left"><?php echo validation_errors(); ?></div>
+    </div>
+</div>
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-2">
@@ -57,3 +66,4 @@
     </div>
     <hr>
 </div>
+</form>

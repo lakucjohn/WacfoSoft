@@ -12,6 +12,15 @@
 
 <hr>
 
+<?php echo form_open('monitoring/new-field-support-visit'); ?>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+        <div class="error-msg position-left"><?php echo validation_errors(); ?></div>
+    </div>
+</div>
 <div class="row">
     <table class="table table-bordered table-responsive">
         <tr>
@@ -376,3 +385,4 @@
     <button class="btn btn-primary btn-md">Save Information</button>
 </div>
 <hr>
+</form>

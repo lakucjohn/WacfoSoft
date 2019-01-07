@@ -13,6 +13,16 @@
 <h5 style="text-align: center;">Pilot Version</h5>
 </p>
 <hr>
+
+<?php echo form_open('miscellaneous%20pilot%20studies/new_record'); ?>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+        <div class="error-msg position-left"><?php echo validation_errors(); ?></div>
+    </div>
+</div>
 <div  class="card w-100">
     <div class="document-part-header"> Details of the Interview</div>
     <hr>
@@ -1237,3 +1247,4 @@
         </div>
     </div>
 </div>
+</form>

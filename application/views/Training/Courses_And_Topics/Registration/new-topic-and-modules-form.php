@@ -12,6 +12,15 @@
 
 <hr>
 
+<?php echo form_open('staff/register-new'); ?>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+        <div class="error-msg position-left"><?php echo validation_errors(); ?></div>
+    </div>
+</div>
 <div class="card w-100">
     <div class="document-part-header">
         Details of the Course
@@ -130,3 +139,4 @@
     </div>
     <hr>
 </div>
+</form>

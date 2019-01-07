@@ -45,3 +45,26 @@
     font-size: 16px;
     font-weight: bold;
 }
+
+.error-msg {
+    color: red;
+}
+
+.space-left {
+    margin-left: 20%;
+}
+
+.position-left {
+    text-align: left;
+}
+
+.card-login {
+    max-width: 85%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: #d7dbdd;
+    position: relative;
+}

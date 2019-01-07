@@ -10,7 +10,18 @@
 <h3 style="text-align: center;">PORTICUS BASELINE ASSESSMENT SURVEY QUESTIONNAIRE ON DISABILITY IN PABO SUB-COUNTY</h3>
 
 <hr>
+
+<?php echo form_open('miscellaneous%20baseline%20survey/new_assessment'); ?>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+        <div class="error-msg position-left"><?php echo validation_errors(); ?></div>
+    </div>
+</div>
 <p>
+
 <div class="row"">
     <div class="col-md-12" style="text-align: center;">
         <h5 style="padding-right: 0.75rem;">Instructions:</h5>
@@ -347,3 +358,5 @@
 
     <hr>
 </div>
+</div>
+</form>

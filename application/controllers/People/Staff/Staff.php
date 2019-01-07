@@ -46,7 +46,17 @@ class Staff extends AuthContentController {
             'title' => 'Register New Staff Member',
         );
 
-        $this->template->load('default','People/Staff/Registration/staff-registration-form', $data);
+
+        # Performing validation of input
+        $this->form_validation->set_rules('staff_name', 'Name of the Staff', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'People/Staff/Registration/staff-registration-form', $data);
+        } else {
+            echo 'OK';
+        }
+
+
     }
 
     public function edit(){

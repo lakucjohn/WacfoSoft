@@ -6,27 +6,6 @@
  * Time: 8:52 AM
  */
 ?>
-
-<style>
-    .space-left{
-        margin-left:20%;
-    }
-    .error-msg{
-        color: red;
-    }
-    .position-left{
-        text-align: left;
-    }
-    .card-login{
-        max-width: 85%;
-    }
-    body {
-        margin: 0;
-        font-family: 'Nunito', sans-serif;
-        background-color: #d7dbdd;
-        position: relative;
-    }
-</style>
 <div class="container">
     <div class="card card-login mx-auto mt-5">
         <div class="card-header">Login</div>

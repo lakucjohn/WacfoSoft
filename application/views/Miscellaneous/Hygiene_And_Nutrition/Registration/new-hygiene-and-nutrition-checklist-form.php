@@ -8,6 +8,16 @@
 ?>
 <h3 style="text-align: center;">HYGIENE AND NUTRITION CHECKLIST</h3>
 <hr>
+
+<?php echo form_open('miscellaneous%20hygiene%20and%20nutrition/new-recording'); ?>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+        <div class="error-msg position-left"><?php echo validation_errors(); ?></div>
+    </div>
+</div>
 <div class="card w-100">
 
     <div class="document-part-header">Details of the Group</div>
@@ -133,3 +143,4 @@
     </div>
     <br>
 </div>
+</form>
