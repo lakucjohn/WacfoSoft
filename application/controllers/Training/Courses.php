@@ -55,7 +55,15 @@ class Courses extends AuthContentController {
             'title' => 'New Course and Modules',
         );
 
-        $this->template->load('default','Training/Courses_And_Topics/Registration/new-topic-and-modules-form',$data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'Training/Courses_And_Topics/Registration/new-topic-and-modules-form', $data);
+        } else {
+            echo 'OK';
+        }
+
     }
 
     public function edit(){

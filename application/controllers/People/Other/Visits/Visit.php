@@ -38,7 +38,16 @@ class Visit extends AuthContentController {
             'title' => 'Register a new Child Visit',
         );
 
-        $this->template->load('default', 'People/Other/Visits/Registration/new-child-visit-record-form', $data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'People/Other/Visits/Registration/new-child-visit-record-form', $data);
+        } else {
+            echo 'OK';
+        }
+
+
     }
 
     public function edit(){

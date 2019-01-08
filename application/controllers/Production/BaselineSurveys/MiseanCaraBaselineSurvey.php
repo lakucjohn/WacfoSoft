@@ -41,7 +41,16 @@ class MiseanCaraBaselineSurvey extends AuthContentController
             'title' => 'New Misean Cara Baseline Survey Economic Security before project intervention',
         );
 
-        $this->template ->load('default', 'Production/Survey/Registration/misean-cara-baseline-survey-economic-security-form', $data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'Production/Survey/Registration/misean-cara-baseline-survey-economic-security-form', $data);
+        } else {
+            echo 'OK';
+        }
+
+
     }
 
     public function edit(){

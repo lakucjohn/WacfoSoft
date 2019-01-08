@@ -24,6 +24,7 @@ class Dashboard extends AuthContentController
             'title' => 'Dashboard | WACFO',
 
         );
+//        $this->load->view('templates/default-template');
 
         $this->template->load('default', 'Dashboard/dashboard', $data);
 

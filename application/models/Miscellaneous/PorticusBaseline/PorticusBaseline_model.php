@@ -49,6 +49,17 @@ class PorticusBaseline_model extends CI_Model{
         return $output;
     }
 
+    function insert_record($field_data)
+    {
+        $this->db->insert('PORTICUS_BASELINE_ASSESSMENTS', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 
 }

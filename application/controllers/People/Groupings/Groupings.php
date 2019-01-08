@@ -55,7 +55,16 @@ class Groupings extends AuthContentController {
             'title' => 'New Livelihood Group',
         );
 
-        $this->template->load('default','People/Livelihood/Groupings/Registration/new-livelihood-grouping',$data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'People/Livelihood/Groupings/Registration/new-livelihood-grouping', $data);
+        } else {
+            echo 'OK';
+        }
+
+
     }
 
     public function edit(){

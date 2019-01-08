@@ -41,7 +41,15 @@ class HygieneAndNutrition extends AuthContentController {
             'title' => 'New Hygiene and Nutrition Checklist',
         );
 
-        $this->template->load('default','Miscellaneous/Hygiene_And_Nutrition/Registration/new-hygiene-and-nutrition-checklist-form', $data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'Miscellaneous/Hygiene_And_Nutrition/Registration/new-hygiene-and-nutrition-checklist-form', $data);
+        } else {
+            echo 'OK';
+        }
+
     }
 
     public function edit(){

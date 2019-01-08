@@ -41,7 +41,16 @@ class Monitoring extends AuthContentController {
 
         );
 
-        $this->template->load('default', 'Monitoring/Registration/field-support-visits-form', $data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'Monitoring/Registration/field-support-visits-form', $data);
+        } else {
+            echo 'OK';
+        }
+
+
 
     }
 
@@ -52,7 +61,16 @@ class Monitoring extends AuthContentController {
 
         );
 
-        $this->template->load('default', 'Monitoring/Registration/savings-information-tracking-form', $data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'Monitoring/Registration/savings-information-tracking-form', $data);
+        } else {
+            echo 'OK';
+        }
+
+
 
 
     }

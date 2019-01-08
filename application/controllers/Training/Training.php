@@ -58,7 +58,14 @@ class Training extends AuthContentController {
             'title' => 'New Training',
         );
 
-        $this->template->load('default','Training/Trainings/Registration/new-training-registration-form',$data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'Training/Trainings/Registration/new-training-registration-form', $data);
+        } else {
+            echo 'OK';
+        }
     }
 
     public function generate_pdf_document(){

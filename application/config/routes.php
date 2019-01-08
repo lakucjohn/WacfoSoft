@@ -181,7 +181,7 @@ $route['miscellaneous%20hygiene%20and%20nutrition-details/edit/(:any)'] = 'Misce
 $route['miscellaneous%20hygiene%20and%20nutrition-info/generate-pdf/(:any)'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition/generate_pdf_document/';
 
 #Back up and restore urls
-$route['backup%20and%20restore/backup'] = 'BackupAndRestore/Backup/backup';
+$route['backup%20and%20restore/backup'] = 'BackupAndRestore/Backup/backItup';
 $route['backup%20and%20restore/restore'] = 'BackupAndRestore/Restore/restore';
 
 #Settings Urls

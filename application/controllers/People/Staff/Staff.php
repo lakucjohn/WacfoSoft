@@ -46,7 +46,6 @@ class Staff extends AuthContentController {
             'title' => 'Register New Staff Member',
         );
 
-
         # Performing validation of input
         $this->form_validation->set_rules('staff_name', 'Name of the Staff', 'required');
 

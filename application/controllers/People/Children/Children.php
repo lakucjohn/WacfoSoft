@@ -38,7 +38,16 @@ class Children extends AuthContentController {
             'title' => 'Register a new Child',
         );
 
-        $this->template->load('default', 'People/Children/Registration/child-registration-form', $data);
+        # Performing Validation Checks
+        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'People/Children/Registration/child-registration-form', $data);
+        } else {
+            echo 'OK';
+        }
+
+
     }
 
     public function edit(){

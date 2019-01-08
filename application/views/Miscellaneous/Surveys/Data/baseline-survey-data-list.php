@@ -12,6 +12,32 @@
 <!-- Example DataTables Card-->
 <hr>
 <p>
+<div class="row">
+    <div class="col-md-1">
+
+    </div>
+    <div class="col-md-10">
+        <?php
+        if ($this->session->set_flashdata('success_msg')) {
+
+            ?>
+            <div class="alert alert-success">
+                <?php echo $this->session->flashdata('success_msg') ?>
+            </div>
+            <?php
+        }
+
+        if ($this->session->flashdata('error_msg')) {
+
+            ?>
+            <div class="alert alert-danger">
+                <?php echo $this->session->set_flashdata('error_msg') ?>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+</div>
 <div class="row nowrap clear-both-sides">
     <div class="float-content-left">
 

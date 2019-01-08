@@ -46,12 +46,12 @@
 
         <div class="row">
             <div class="col-md-4">
-                <label for="Name_of_interviewer">Name of Respondent: </label>
-                <input type="text" class="form-control"  name="Name_of_interviewer" id="Name_of_interviewer" />
+                <label for="Name_of_respondent">Name of Respondent: </label>
+                <input type="text" class="form-control" name="Name_of_respondent" id="Name_of_respondent"/>
             </div>
             <div class="col-md-4">
                 <label for="Head_of_household">Head of Household: </label>
-                <select class="form-control"  name="Date_of_interview" id="Head_of_household">
+                <select class="form-control" name="Head_of_household" id="Head_of_household">
                     <option value="Father">Father Headed</option>
                     <option value="Mother">Mother Headed</option>
                     <option value="Child">Child Headed</option>
@@ -179,7 +179,9 @@
                                                 How many sources of income or livelihood does the household have now?
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="number" min="0" maxlength="12" class="form-control" id="sources_of_income_now" name="sources_of_income_now" placeholder="0" />
+                                                <input type="number" min="1" maxlength="12" class="form-control"
+                                                       id="sources_of_income_now" name="sources_of_income_now"
+                                                       placeholder="0"/>
                                             </div>
                                         </div>
 
@@ -198,7 +200,8 @@
                                                 Additional Notes:
                                             </div>
                                             <div class="col-md-7">
-                                                <textarea name="income_additional_notes" class="form-control" id="income_additional_notes"></textarea>
+                                                <textarea name="income_additional_notes_now" class="form-control"
+                                                          id="income_additional_notes_now"></textarea>
                                             </div>
                                         </div>
 
@@ -222,7 +225,9 @@
                                                 How many sources of income or livelihood did the household have one year ago?
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="number" min="0" maxlength="12" class="form-control" id="sources_of_income_now" name="sources_of_income_now" placeholder="0" />
+                                                <input type="number" min="0" maxlength="12" class="form-control"
+                                                       id="sources_of_income_one_year_ago"
+                                                       name="sources_of_income_one_year_ago" placeholder="0"/>
                                             </div>
                                         </div>
 
@@ -230,7 +235,8 @@
                                     <td width="21.5%">
                                         Which ones are they?
 
-                                        <input type="text" class="form-control" id="sources_of_income_now" name="sources_of_income_now" />
+                                        <input type="text" class="form-control" id="sources_of_income_one_year_ago"
+                                               name="sources_of_income_one_year_ago"/>
 
                                     </td>
                                 </tr>
@@ -241,7 +247,9 @@
                                                 Additional Notes:
                                             </div>
                                             <div class="col-md-7">
-                                                <textarea name="income_additional_notes" class="form-control" id="income_additional_notes"></textarea>
+                                                <textarea name="income_additional_notes_one_year_ago"
+                                                          class="form-control"
+                                                          id="income_additional_notes_one_year_ago"></textarea>
                                             </div>
                                         </div>
 
@@ -297,37 +305,45 @@
                                             <tr>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control"
+                                                               id="medical_percentage" name="medical_percentage"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control"
+                                                               name="education_percentage" id="education_percentage"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control"
+                                                               name="house_rent_percentage" id="house_rent_percentage"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control"
+                                                               name="clothes_percentage" id="clothes_percentage"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" id="food_percentage"
+                                                               name="food_percentage">
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control"
+                                                               name="household_assets_percentage"
+                                                               id="household_assets_percentage"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control"
+                                                               name="others_percentage" id="others_percentage"/>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -387,8 +403,10 @@
                                                 <td>
                                                     <div class="col-md-12">
 
-                                                        <input type="checkbox" name="increase_in_household_assets" id="increase_in_household_assets" />
-                                                        <div class="row">
+                                                        <input type="checkbox" name="increase_in_household_assets"
+                                                               id="increase_in_household_assets" value="land"
+                                                               onclick="show_land_size();"/>
+                                                        <div class="row" style="display: none;">
                                                             size: <input type="text" name="land_increase_size" id="land_increase_size" class="form-control" />
                                                         </div>
                                                     </div>
@@ -1248,3 +1266,17 @@
     </div>
 </div>
 </form>
+
+<script type="text/javascript">
+    $(function () {
+        $("#chkPassport").click(function () {
+            if ($(this).is(":checked")) {
+                $("#dvPassport").show();
+                $("#AddPassport").hide();
+            } else {
+                $("#dvPassport").hide();
+                $("#AddPassport").show();
+            }
+        });
+    });
+</script>

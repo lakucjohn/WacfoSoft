@@ -11,7 +11,7 @@
 <h3>Training Registration Form</h3>
 <hr>
 
-<?php echo form_open('staff/register-new'); ?>
+<?php echo form_open('trainings/new-training'); ?>
 <div class="row">
     <div class="col-md-2">
 

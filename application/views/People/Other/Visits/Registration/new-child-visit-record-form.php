@@ -9,7 +9,7 @@
 <h3>CHILD VISITATION REGISTER</h3>
 <hr>
 
-<?php echo form_open('staff/register-new'); ?>
+<?php echo form_open('visitations/record-a-new-visit'); ?>
 <div class="row">
     <div class="col-md-2">
 

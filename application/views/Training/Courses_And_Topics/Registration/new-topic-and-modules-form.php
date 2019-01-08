@@ -12,7 +12,7 @@
 
 <hr>
 
-<?php echo form_open('staff/register-new'); ?>
+<?php echo form_open('courses%20and%20topics/new-course'); ?>
 <div class="row">
     <div class="col-md-2">
 
