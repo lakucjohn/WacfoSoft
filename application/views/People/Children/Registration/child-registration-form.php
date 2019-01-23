@@ -32,14 +32,22 @@
 
             <p>
                 <label for="child_sex">Gender: </label><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="child_sex" id="child_sex" />Male<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="child_sex" id="child_sex" />Female
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="child_sex" id="child_sex"
+                                                                       value="Male"/>Male<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="child_sex" id="child_sex"
+                                                                       value="Female"/>Female
             </p>
 
             <p>
                 <label for="child_vulnerability">Vulnerability: </label>
                 <select name="child_vulnerability" id="child_vulnerability" class="form-control">
                     <option value="">Select the vulnerability</option>
+
+                    <?php
+                    foreach ($vulnerability_list->result() as $row) {
+                        echo '<option value="' . $row->DISABILITY_ID . '">' . $row->DISABILITY_NAME . '</option>';
+                    }
+                    ?>
                 </select>
             </p>
 
@@ -49,16 +57,25 @@
             </p>
             <p>
                 <label for="child_parish">Parish:</label>
-                <select name="child_parish" id="child_parish" class="form-control">
+                <select name="child_parish" id="child_parish" class="form-control"
+                        onchange="fetch_villages(this.value);">
                     <option value="">Select the Parish</option>
+                    <?php
+                    foreach ($parish_list->result() as $row) {
+                        echo '<option value="' . $row->ID . '">' . $row->PARISH . '</option>';
+                    }
+                    ?>
                 </select>
 
             </p>
             <p>
+            <div id="child_village_div">
                 <label for="child_village">Village:</label>
-                <select name="child_village" id="child_village" class="form-control">
+                <select name="" id="" class="form-control">
                     <option value="">Select the Village</option>
                 </select>
+            </div>
+
             </p>
             <p>
                 <label for="child_date_of_joining">Date of joining: </label>
@@ -86,3 +103,18 @@
     </div>
 </div>
 </form>
+
+<script type="text/javascript">
+    function fetch_villages(parish_id) {
+        if (parish_id !== '') {
+            $.ajax({
+                url: "<?php echo base_url('Settings/Welcome/settings/fetch_villages_for_parish');?>",
+                method: "POST",
+                data: {parish_id: parish_id},
+                success: function (data) {
+                    document.getElementById('child_village_div').innerHTML = data;
+                }
+            });
+        }
+    }
+</script>

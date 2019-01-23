@@ -37,7 +37,16 @@ class Marketing extends AuthContentController {
     }
 
     public function edit(){
-        echo 'OK';
+        $data = array(
+
+            'title' => 'Edit Marketing info',
+
+        );
+
+        $data['data_set'] = $this->marketing_model->fetch();
+
+        $this->template->load('default', 'Production/Marketing/marketing-edit', $data);
+
 
     }
 

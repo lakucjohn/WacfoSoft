@@ -29,6 +29,7 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: 12px;">
                 <thead>
                 <tr>
+                    <th>Child ID</th>
                     <th>Child Name</th>
                     <th>Sex</th>
                     <th>Health centre</th>
@@ -45,9 +46,20 @@
 
                 foreach($data_set->result() as $row) {
                     echo '
-                <tr title="'.$row -> CHILD_NAME.'">
-                    <td>'.$row -> CHILD_NAME.'</td>
-                    <td>'.$row -> SEX.'</td>
+                <tr title="' . $row->CHILD_ID . '">
+                    <td>' . $row->CHILD_ID . '</td>';
+                    ?>
+                    <td>
+                        <?php
+                        foreach ($children_list->result() as $child) {
+                            if ($child->CHILD_ID == $row->CHILD_ID) {
+                                echo $child->NAME;
+                            }
+                        }
+                        ?>
+                    </td>
+                    <?php echo
+                        '<td>' . $row->SEX . '</td>
                     <td>'.$row -> HEALTH_CENTRE.'</td>
                     <td>'.$row -> DISABILITY_TYPE.'</td>
                     <td>'.$row -> COUNTY.'</td>

@@ -68,3 +68,19 @@ body {
     background-color: #d7dbdd;
     /*position: relative;*/
 }
+
+.right-content {
+    float: right;
+    width: 40%;
+    text-align: right;
+}
+
+.left-content {
+    float: left;
+    width: 60%;
+}
+
+.main-content {
+    clear: both;
+    padding-bottom: 3rem;
+}

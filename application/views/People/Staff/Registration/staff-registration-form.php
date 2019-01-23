@@ -31,13 +31,18 @@
 
         <p>
             <label for="staff_position">Position: </label>
-            <input type="text" name="staff-position" id="staff_position" class="form-control" />
+            <input type="text" name="staff_position" id="staff_position" class="form-control"/>
         </p>
 
         <p>
             <label for="staff_department">Department: </label>
             <select name="staff_department" id="staff_department" class="form-control">
                 <option value="">Select the department</option>
+                <?php
+                foreach ($department_list->result() as $row) {
+                    echo '<option value="' . $row->ID . '">' . $row->NAME . '</option>';
+                }
+                ?>
             </select>
         </p>
 

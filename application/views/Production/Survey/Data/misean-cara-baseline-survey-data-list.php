@@ -56,10 +56,10 @@
                             <td>'.$row -> COUNTY.'</td>
                             <td>'.$row -> SUBCOUNTY.'</td>
                             <td>
-                                <a href="'.site_url("production/misean%20cara%20baseline%20survey-details/edit/$row->ID").'" class="btn btn-link" title="Edit Survey Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Crop Misean Cara Baseline Survey" data-toggle="modal" data-target="#deleteMiseanCaraBaselineSurveyModal"><i class="fa fa-remove fa-2x" style="color: red;"></i></button>
-                                <a href="'.site_url("production/misean%20cara%20baseline%20survey-details/$row->ID").'" class="btn btn-link" title="Read More about this Survey"><i class="fa fa-info-circle fa-2x"></i></a>
-                                <a href="'.site_url("production/misean%20cara%20baseline%20survey-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Crop Survey Information"><i class="fa fa-file-pdf-o fa-2x" style="color:red; "></i></a>
+                                <a href="' . site_url("production/misean%20cara%20baseline%20survey-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Survey Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                <button class="btn btn-link" title="Delete This Crop Misean Cara Baseline Survey" data-toggle="modal" data-target="#deleteMiseanCaraBaselineSurveyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                <a href="' . site_url("production/misean%20cara%20baseline%20survey-details/$row->ID") . '" class="btn btn-link" title="Read More about this Survey"><i class="fa fa-info-circle fa-1x"></i></a>
+                                <a href="' . site_url("production/misean%20cara%20baseline%20survey-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Crop Survey Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>
                         </tr>
                     ';

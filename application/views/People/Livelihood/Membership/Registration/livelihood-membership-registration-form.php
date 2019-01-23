@@ -36,14 +36,22 @@
 
                     <p>
                         <label for="member_sex">Gender: </label><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="member_sex" id="member_sex" />Male<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="member_sex" id="member_sex" />Female
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="member_sex"
+                                                                               id="member_sex" value="M"/>Male<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="member_sex"
+                                                                               id="member_sex" value="F"/>Female
                     </p>
 
                     <p>
                         <label for="member_vulnerability">Vulnerability: </label>
                         <select name="member_vulnerability" id="member_vulnerability" class="form-control">
                             <option value="">Select the vulnerability</option>
+
+                            <?php
+                            foreach ($vulnerability_list->result() as $row) {
+                                echo '<option value="' . $row->DISABILITY_ID . '">' . $row->DISABILITY_NAME . '</option>';
+                            }
+                            ?>
                         </select>
                     </p>
 
@@ -57,20 +65,31 @@
                 <hr>
                 <div class="document-part-content">
                     <p>
-                        <label for="member_group_id">Group ID: </label>
-                        <select name="member_group_id" id="member_group_id" class="form-control">
+                        <label for="member_group_name">Group Name: </label>
+                        <select name="member_group_name" id="member_group_name" class="form-control"
+                                onchange="show_group_name(this.value);">
                             <option value="">Select the Group ID</option>
+
+                            <?php
+                            foreach ($grouping_list->result() as $row) {
+                                echo '<option value="' . $row->GROUP_ID . '" title="' . $row->NAME . '">' . $row->NAME . '</option>';
+                            }
+                            ?>
                         </select><br>
 
-                        <select name="member_group_name" id="member_group_name" class="form-control" disabled>
-                            <option value="">Detail of selected group id will appear here</option>
-                        </select>
+                        <input type="text" name="member_group_id" id="member_group_id" class="form-control"
+                               value="The ID of the selected group will appear here" disabled/>
                     </p>
 
                     <p>
                         <label for="member_role">Position: </label>
                         <select name="member_role" id="member_role" class="form-control">
                             <option value="">Select the position of member in the group</option>
+                            <option value="Chairperson">Chairperson</option>
+                            <option value="Vice Chairperson">Vice Chairperson</option>
+                            <option value="Secretary">Secretary</option>
+                            <option value="Treasurer">Treasurer</option>
+                            <option value="Member">Member</option>
                         </select>
                     </p>
                 </div>
@@ -79,17 +98,26 @@
                 <hr>
                 <div class="document-part-content">
                     <p>
-                        <label for="member_parish">Parish</label>
-                        <select name="member_parish" id="member_parish" class="form-control">
+                        <label for="member_parish">Parish: </label>
+                        <select name="member_parish" id="member_parish" class="form-control"
+                                onchange="fetch_villages(this.value);">
                             <option value="">Select the Parish</option>
+                            <?php
+                            foreach ($parish_list->result() as $row) {
+                                echo '<option value="' . $row->ID . '">' . $row->PARISH . '</option>';
+                            }
+                            ?>
                         </select>
 
                     </p>
                     <p>
+                    <div id="member_village_div">
                         <label for="member_village">Village</label>
                         <select name="member_village" id="member_village" class="form-control">
                             <option value="">Select the Village</option>
                         </select>
+                    </div>
+
                     </p>
                 </div>
 
@@ -131,3 +159,26 @@
     </div>
 </div>
 </form>
+
+<script type="text/javascript">
+    function fetch_villages(parish_id) {
+        if (parish_id !== '') {
+            $.ajax({
+                url: "<?php echo base_url('Settings/Welcome/settings/fetch_villages_for_member_parish');?>",
+                method: "POST",
+                data: {parish_id: parish_id},
+                success: function (data) {
+                    document.getElementById('member_village_div').innerHTML = data;
+                }
+            });
+        }
+    }
+
+    function show_group_name(groupname) {
+        if (groupname !== '') {
+            document.getElementById('member_group_id').value = groupname;
+        } else {
+            document.getElementById('member_group_id').value = 'The ID of the selected group will appear here';
+        }
+    }
+</script>

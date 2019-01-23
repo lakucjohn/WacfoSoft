@@ -43,8 +43,8 @@
 
                 foreach($data_set->result() as $row){
                     echo '
-                        <tr title="'.$row -> NAME_OF_FARMER.'" style="white-space: nowrap;">
-                            <td>'.$row -> NAME_OF_FARMER.'</td>
+                        <tr title="' . $row->MEMBERSHIP_ID . '" style="white-space: nowrap;">
+                            <td>' . $row->MEMBERSHIP_ID . '</td>
                             <td>'.$row -> SEX.'</td>
                             <td>'.$row -> GROUP_NAME.'</td>
                             <td>

@@ -11,23 +11,24 @@
 
 
 <!-- Example DataTables Card-->
-<hr>
-<p>
-<div class="row nowrap clear-both-sides">
-    <div class="float-content-left">
-
-    </div>
-    <div class="float-content-right">
-        <a class="btn btn-primary btn-md space-sm-right" href="#">Button a a a a a a a </a>
-        <a class="btn btn-primary btn-md space-sm-right" href="#">Button b b b b b b b</a>
-        <a class="btn btn-primary btn-md space-sm-right" href="#">Button c c c c c c c</a>
-    </div>
-</div>
-</p>
-<hr>
+<!--<hr>-->
+<!--<p>-->
+<!--<div class="row nowrap clear-both-sides">-->
+<!--    <div class="float-content-left">-->
+<!---->
+<!--    </div>-->
+<!--    <div class="float-content-right">-->
+<!--        <a class="btn btn-primary btn-md space-sm-right" href="#">Button a a a a a a a </a>-->
+<!--        <a class="btn btn-primary btn-md space-sm-right" href="#">Button b b b b b b b</a>-->
+<!--        <a class="btn btn-primary btn-md space-sm-right" href="#">Button c c c c c c c</a>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</p>-->
+<!--<hr>-->
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-table"></i> Data Table Example</div>
+        <i class="fa fa-table"></i> Problems affecting vegetable and crop production and marketing
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

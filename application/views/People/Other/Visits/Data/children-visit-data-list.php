@@ -14,7 +14,9 @@
 
     </div>
     <div class="float-content-right">
-        <a class="btn btn-primary btn-md space-sm-right" href="<?php echo site_url('visitations/record-a-new-visit'); ?>"><i class="fa fa-plus-circle"></i> New Child</a>
+        <a class="btn btn-primary btn-md space-sm-right"
+           href="<?php echo site_url('visitations/record-a-new-visit'); ?>"><i class="fa fa-plus-circle"></i> New Child
+            Visit</a>
         <a class="btn btn-success btn-md space-sm-right" href="#"><i class="fa fa-filter"></i> Filter</a>
         <a class="btn btn-danger btn-md space-sm-right" href="#"><i class="fa fa-file-pdf-o"></i> Generate Pdf</a>
     </div>
@@ -31,8 +33,8 @@
                 <tr>
                     <th>Date of Visit</th>
                     <th>Child ID</th>
-                    <th>Child Name</th>
                     <th>Nature of Visit</th>
+                    <th>Activities Carried Out</th>
                     <th>Project</th>
                     <th>Options</th>
                 </tr>
@@ -42,11 +44,11 @@
 
                 foreach($data_set->result() as $row) {
                     echo '
-                <tr title="'.$row -> CHILD_NAME.'">
+                <tr title="' . $row->CHILD_ID_VISITED . '">
                     <td>'.$row -> DATE_OF_VISIT.'</td>
                     <td>'.$row -> CHILD_ID_VISITED.'</td>
-                    <td>'.$row -> CHILD_NAME.'</td>
                     <td>'.$row -> KIND_OF_VISIT.'</td>
+                    <td>' . $row->ACTIVITY_CARRIED_OUT . '</td>
                     <td>'.$row -> PROJECT.'</td>
                     <td>
                         <a href="' . site_url("visitation-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Visit Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>

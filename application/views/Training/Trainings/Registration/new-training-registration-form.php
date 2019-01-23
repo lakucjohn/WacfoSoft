@@ -27,16 +27,25 @@
         </div>
         <div class="col-md-8">
             <p>
-                <,<label for="training_course">Course:</label>
-                <select name="training_course" id="training_course" class="form-control">
+                <label for="training_course">Course:</label>
+                <select name="training_course" id="training_course" class="form-control"
+                        onchange="fetch_list_of_modules(this.value);">
                     <option value="">Select a course</option>
+                    <?php
+                    foreach ($courses_list->result() as $row) {
+                        echo '<option value="' . $row->CODE . '">' . $row->COURSE . '</option>';
+                    }
+                    ?>
                 </select>
             </p>
             <p>
+            <div id="modules_div">
                 <label for="training_module">Module:</label>
                 <select name="training_module" id="training_module" class="form-control">
-                    <option value="">Select a module</option>
+                    <option value="">Select the module</option>
                 </select>
+            </div>
+
             </p>
 
             <p>
@@ -72,3 +81,18 @@
 </div>
 <br>
 </form>
+
+<script type="text/javascript">
+    function fetch_list_of_modules(course_code) {
+        if (course_code !== '') {
+            $.ajax({
+                url: "<?php echo base_url('Training/courses/fetch_list_of_modules');?>",
+                method: "POST",
+                data: {course_code: course_code},
+                success: function (data) {
+                    document.getElementById('modules_div').innerHTML = data;
+                }
+            });
+        }
+    }
+</script>

@@ -60,6 +60,34 @@ class PorticusBaseline_model extends CI_Model{
         }
     }
 
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('PORTICUS_BASELINE_ASSESSMENTS');
+
+        return $data;
+
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('PORTICUS_BASELINE_ASSESSMENTS');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function generate_report_with_all_data()
+    {
+
+    }
+
 
 
 }

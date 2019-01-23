@@ -34,10 +34,11 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
+                    <th>Staff ID</th>
+                    <th>Staff Name</th>
+                    <th>Date of Visit</th>
+                    <th>Type of Visit</th>
                     <th>Track Id</th>
-                    <th>Person In Charge</th>
-                    <th>Location</th>
-                    <th>Starting Date</th>
                     <th>Options</th>
 
                 </tr>
@@ -48,11 +49,12 @@
 
                 foreach($data_set->result() as $row){
                     echo '
-                        <tr title="Child Id">
+                        <tr title="' . $row->TRACK_ID . '">
+                            <td>' . $row->STAFF_ID . '</td>
+                            <td>' . $row->STAFF_ID . '</td>
+                            <td>' . $row->DATE_OF_VISIT . '</td>
+                            <td>' . $row->VISIT_TYPE . '</td>
                             <td>'.$row -> TRACK_ID.'</td>
-                            <td>'.$row -> COMPLETED_BY.'</td>
-                            <td>'.$row -> LOCATION.'</td>
-                            <td>'.$row -> START.'</td>
                             <td>
                                 <a href="'.site_url("monitoring-details/edit/$row->ID").'" class="btn btn-link" title="Edit Monitoring Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>
                                 <button class="btn btn-link" title="Delete This Monitoring Activity" data-toggle="modal" data-target="#deleteMonitoringModal"><i class="fa fa-remove fa-2x" style="color: red;"></i></button>

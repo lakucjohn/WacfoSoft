@@ -6,6 +6,11 @@
  * Time: 8:52 AM
  */
 ?>
+<style>
+    .red-text {
+        color: red;
+    }
+</style>
 <div class="container">
     <div class="card card-login mx-auto mt-5">
         <div class="card-header">Login</div>
@@ -28,7 +33,10 @@
                     </div>
                 </div>-->
 
-                <div class="error-msg position-left"><?php echo validation_errors(); ?></div>
+            <div class="error-msg position-left red-text"><?php if (isset($error)) {
+                    echo $error;
+                } ?></div>
+            <br>
                 <button class="btn btn-primary space-left col-md-6 " type="submit" name="Login">Login</button>
             </form>
             <!--<div class="text-center">

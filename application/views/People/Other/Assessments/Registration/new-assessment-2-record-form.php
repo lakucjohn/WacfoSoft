@@ -27,8 +27,13 @@
     <div class="col-md-10">
         <p>
             <label for="child_id">Child ID: </label>
-            <select name="child_id" id="child_id" class="form-control">
+            <select name="child_id" id="child_id" class="form-control" onchange="show_child_details(this.value);">
                 <option value="">Select a child</option>
+                <?php
+                foreach ($children_list->result() as $row) {
+                    echo '<option value="' . $row->CHILD_ID . '">' . $row->CHILD_ID . '</option>';
+                }
+                ?>
             </select><br>
             <input type="text" name="child_name" id="child_name" value="The details of the selected child will appear here" class="form-control" disabled />
         </p>
@@ -105,3 +110,20 @@
     </div>
 </div>
 </form>
+
+<script type="text/javascript">
+
+    function show_child_details(child_id) {
+        if (child_id !== '') {
+            $.ajax({
+                url: "<?php echo base_url('People/Children/children/get_child_name');?>",
+                method: "POST",
+                data: {child_id: child_id},
+                success: function (data) {
+                    document.getElementById('child_name').value = data;
+                }
+            });
+        }
+    }
+
+</script>

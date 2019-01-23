@@ -18,6 +18,14 @@ class MiseanCaraBaselineSurvey extends AuthContentController
 
        // Load the models for this controller
         $this->load->model('Production/MiseanCaraBaselineSurveys/baseline_survey_model');
+        $this->load->model('People/Groupings/grouping_model');
+        $this->load->model('People/Membership/membership_model');
+        $this->load->model('Production/Challenges/challenges_model');
+        $this->load->model('Production/Categories/crop_model');
+        $this->load->model('Production/Categories/fishing_model');
+        $this->load->model('Production/Marketing/marketing_model');
+        $this->load->model('Production/Technology/technology_model');
+        $this->load->model('Production/ProductionIncrease/productionIncrease_model');
 
 
     }
@@ -41,20 +49,447 @@ class MiseanCaraBaselineSurvey extends AuthContentController
             'title' => 'New Misean Cara Baseline Survey Economic Security before project intervention',
         );
 
+        #retrieving all ids for groups
+        $data['groups_list'] = $this->grouping_model->fetch_all_active_ids();
+
+        # Now getting the values of the input
+        $name_of_the_grantee = $this->input->post('name_of_the_grantee');
+        $group_id = $this->input->post('group_id');
+        $district = $this->input->post('district');
+        $county = $this->input->post('county');
+        $parish = $this->input->post('parish');
+        $number_of_children_with_pwd = $this->input->post('number_of_children_with_pwd');
+        $number_of_children_with_chh = $this->input->post('number_of_children_with_chh');
+        $number_of_children_orphan = $this->input->post('number_of_children_orphan');
+        $number_of_children_with_hiv = $this->input->post('number_of_children_with_hiv');
+        $number_of_children_with_pwd_in_school = $this->input->post('number_of_children_with_pwd_in_school');
+        $number_of_children_with_chh_in_school = $this->input->post('number_of_children_with_chh_in_school');
+        $number_of_children_orphan_in_school = $this->input->post('number_of_children_orphan_in_school');
+        $number_of_children_with_hiv_in_school = $this->input->post('number_of_children_with_hiv_in_school');
+        $number_of_children_normal_in_school = $this->input->post('number_of_children_normal_in_school');
+        $number_of_meals_per_day = $this->input->post('number_of_meals_per_day');
+        $able_to_meet_medical_expenses_for_children = $this->input->post('able_to_meet_medical_expenses_for_children');
+        $problems_affecting_vegetable_production = $this->input->post('problems_affecting_vegetable_production');
+        $challenges_faced_in_marketing_vegetable_products = $this->input->post('challenges_faced_in_marketing_vegetable_products');
+        $problems_affecting_crop_production = $this->input->post('problems_affecting_crop_production');
+        $problems_hindering_marketing_crop_products = $this->input->post('problems_hindering_marketing_crop_products');
+        $percentage_increase_in_sale_of_vegetable = $this->input->post('percentage_increase_in_sale_of_vegetable');
+        $percentage_increase_in_productivity_of_vegetable = $this->input->post('percentage_increase_in_productivity_of_vegetable');
+        $percentage_increase_in_sale_of_crops = $this->input->post('percentage_increase_in_sale_of_crops');
+        $percentage_increase_in_productivity_of_crops = $this->input->post('percentage_increase_in_productivity_of_crops');
+        $used_improved_seeds = $this->input->post('used_improved_seeds');
+        $used_underground_water_during_dry_season = $this->input->post('used_underground_water_during_dry_season');
+        $used_pesticides = $this->input->post('used_pesticides');
+        $used_farm_implements = $this->input->post('used_farm_implements');
+        $used_post_harvest_handling_and_processing_techniques = $this->input->post('used_post_harvest_handling_and_processing_techniques');
+        $had_the_opportunity_to_plant_crops_in_rows = $this->input->post('had_the_opportunity_to_plant_crops_in_rows');
+        $other_techniques_used = $this->input->post('other_techniques_used');
+        $sells_all_vegetable_products = $this->input->post('sells_all_vegetable_products');
+        $vegetable_market_place_1 = $this->input->post('vegetable_market_place_1');
+        $vegetable_market_place_2 = $this->input->post('vegetable_market_place_2');
+        $vegetable_market_place_3 = $this->input->post('vegetable_market_place_3');
+        $sells_all_crop_products = $this->input->post('sells_all_crop_products');
+        $crop_market_place_1 = $this->input->post('crop_market_place_1');
+        $crop_market_place_2 = $this->input->post('crop_market_place_2');
+        $crop_market_place_3 = $this->input->post('crop_market_place_3');
+        $percentage_increase_in_fish_productivity = $this->input->post('percentage_increase_in_fish_productivity');
+        $percentage_increase_in_fish_sales = $this->input->post('percentage_increase_in_fish_sales');
+
+
         # Performing Validation Checks
-        $this->form_validation->set_rules('name_of_respondent', 'The Name of the Respondent', 'required');
+        $this->form_validation->set_rules('name_of_the_grantee', 'Name of the Grantee', 'required');
+        $this->form_validation->set_rules('group_id', 'Group ID', 'required');
+        $this->form_validation->set_rules('county', 'County', 'required');
+        $this->form_validation->set_rules('parish', 'Parish', 'required');
+        $this->form_validation->set_rules('number_of_meals_per_day', 'Number of Meals able to provide per day', 'required');
 
         if ($this->form_validation->run() == FALSE) {
             $this->template->load('default', 'Production/Survey/Registration/misean-cara-baseline-survey-economic-security-form', $data);
         } else {
-            echo 'OK';
+            $field_data_basic = array(
+                'GRANTEE' => $name_of_the_grantee,
+                'GROUP_NAME' => $group_id,
+                'DISTRICT' => $district,
+                'COUNTY' => $county,
+                'SUBCOUNTY' => $parish,
+                'PWD' => $number_of_children_with_pwd,
+                'CHH' => $number_of_children_with_chh,
+                'ORPHAN' => $number_of_children_orphan,
+                'HIV' => $number_of_children_with_hiv,
+                'PWD_IN_SCHOOL' => $number_of_children_with_pwd_in_school,
+                'CHH_IN_SCHOOL' => $number_of_children_with_chh_in_school,
+                'ORPHAN_IN_SCHOOL' => $number_of_children_orphan_in_school,
+                'CHILDREN_WITH_HIV_IN_SCHOOL' => $number_of_children_with_hiv_in_school,
+                'NORMAL_IN_SCHOOL' => $number_of_children_normal_in_school,
+                'MEALS_PER_DAY' => $number_of_meals_per_day,
+                'MEDICAL_TREATMENT' => $able_to_meet_medical_expenses_for_children,
+            );
+
+            $result = $this->baseline_survey_model->insert_record($field_data_basic);
+            if ($result) {
+                $this->session->set_flashdata('success_msg', 'Record Submitted Successfully');
+            } else {
+                $this->session->set_flashdata('error_msg', 'Failed to submit record');
+            }
+
+            # Inserting the production problems
+            $field_data_problems = array(
+                'GROUP_NAME' => $group_id,
+                'VEGETABLE_PRODUCTION_PROBLEMS' => $problems_affecting_vegetable_production,
+                'VEGETABLE_MARKETING_PROBLEMS' => $challenges_faced_in_marketing_vegetable_products,
+                'CROP_PRODUCTION_PROBLEMS' => $problems_affecting_crop_production,
+                'CROP_MARKETING_PROBLEMS' => $problems_hindering_marketing_crop_products,
+            );
+
+            $result = $this->challenges_model->insert_record($field_data_problems);
+            if ($result) {
+                $this->session->set_flashdata('success_msg', 'Record Submitted Successfully');
+            } else {
+                $this->session->set_flashdata('error_msg', 'Failed to submit record');
+            }
+
+            #Inserting misean cara technology beneficiaries
+            $field_data_techonology = array(
+                'INDIVIDUAL_ID' => $group_id,
+                'USED_IMPROVED_SEEDS' => $used_improved_seeds,
+                'USED_UNDERGROUND_WATER' => $used_underground_water_during_dry_season,
+                'USED_PESTICIDES' => $used_pesticides,
+                'USED_FARM_IMPLEMENTS' => $used_farm_implements,
+                'IMPROVED_POST_HARVEST_HANDLING' => $used_post_harvest_handling_and_processing_techniques,
+                'USED_ROW_PLANTING' => $had_the_opportunity_to_plant_crops_in_rows,
+                'OTHER_TECHNIQUES_USED' => $other_techniques_used,
+            );
+
+            $result = $this->technology_model->insert_record($field_data_techonology);
+            if ($result) {
+                $this->session->set_flashdata('success_msg', 'Record Submitted Successfully');
+            } else {
+                $this->session->set_flashdata('error_msg', 'Failed to submit record');
+            }
+
+
+            #Inserting marketing data
+            $field_data_marketing_knowledge = array(
+                'INDIVIDUAL_ID' => $group_id,
+                'SELLS_ALL_VEGETABLES' => $sells_all_vegetable_products,
+                'VEGETABLE_MARKET_PLACE_1' => $vegetable_market_place_1,
+                'VEGETABLE_MARKET_PLACE_2' => $vegetable_market_place_2,
+                'VEGETABLE_MARKET_PLACE_3' => $vegetable_market_place_3,
+                'SELLS_ALL_CROPS' => $sells_all_crop_products,
+                'CROP_MARKET_PLACE_1' => $crop_market_place_1,
+                'CROP_MARKET_PLACE_2' => $crop_market_place_2,
+                'CROP_MARKET_PLACE_3' => $crop_market_place_3,
+            );
+
+            $result = $this->marketing_model->insert_record($field_data_marketing_knowledge);
+            if ($result) {
+                $this->session->set_flashdata('success_msg', 'Record Submitted Successfully');
+            } else {
+                $this->session->set_flashdata('error_msg', 'Failed to submit record');
+            }
+
+
+            #Inserting productivity data
+            $field_data_increase_in_productivity = array(
+                'GROUP_ID' => $group_id,
+                'INCREASE_IN_VEGETABLE_PRODUCTION' => $percentage_increase_in_productivity_of_vegetable,
+                'INCREASE_IN_VEGETABLE_SALES' => $percentage_increase_in_sale_of_vegetable,
+                'INCREASE_IN_CROP_PRODUCTION' => $percentage_increase_in_productivity_of_crops,
+                'INCREASE_IN_CROP_SALES' => $percentage_increase_in_sale_of_crops,
+                'INCREASE_IN_FISH_PRODUCTIVITY' => $percentage_increase_in_fish_productivity,
+                'INCREASE_IN_FISH_SALES' => $percentage_increase_in_fish_sales,
+            );
+
+            $result = $this->productionIncrease_model->insert_record($field_data_increase_in_productivity);
+            if ($result) {
+                $this->session->set_flashdata('success_msg', 'Record Submitted Successfully');
+            } else {
+                $this->session->set_flashdata('error_msg', 'Failed to submit record');
+            }
+
+
+            # Now retrieving dynamic content
+
+            $group_Members_List = $this->membership_model->return_group_members_list($group_id);
+
+            foreach ($group_Members_List->result() as $row) {
+                $onions_acres = $this->input->post('onions_acres' . $row->ID);
+                $onions_yield = $this->input->post('onions_yield' . $row->ID);
+                $onions_sold = $this->input->post('onions_sold' . $row->ID);
+                $onions_amount_ugx = $this->input->post('onions_amount_ugx' . $row->ID);
+
+                # Inserting production data to the database
+                #Prepare the data for onions
+
+                $field_data_onion = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Onion',
+                    'CATEGORY' => 'Vegetable',
+                    'ACRES_PLANTED' => $onions_acres,
+                    'YIELD_OBTAINED' => $onions_yield,
+                    'QUANTITY_SOLD' => $onions_sold,
+                    'INCOME' => $onions_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_onion);
+
+
+                $tomatoes_acres = $this->input->post('tomatoes_acres' . $row->ID);
+                $tomatoes_yield = $this->input->post('tomatoes_yield' . $row->ID);
+                $tomatoes_sold = $this->input->post('tomatoes_sold' . $row->ID);
+                $tomatoes_amount_ugx = $this->input->post('tomatoes_amount_ugx' . $row->ID);
+
+                #Prepare the data for tomatoes
+
+                $field_data_tomatoes = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Tomatoes',
+                    'CATEGORY' => 'Vegetable',
+                    'ACRES_PLANTED' => $tomatoes_acres,
+                    'YIELD_OBTAINED' => $tomatoes_yield,
+                    'QUANTITY_SOLD' => $tomatoes_sold,
+                    'INCOME' => $tomatoes_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_tomatoes);
+
+                $egg_plants_acres = $this->input->post('egg_plants_acres' . $row->ID);
+                $egg_plants_yield = $this->input->post('egg_plants_yield' . $row->ID);
+                $egg_plants_sold = $this->input->post('egg_plants_sold' . $row->ID);
+                $egg_plants_amount_ugx = $this->input->post('egg_plants_amount_ugx' . $row->ID);
+
+                #Prepare the data for egg plants
+
+                $field_data_egg_plants = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Egg Plants',
+                    'CATEGORY' => 'Vegetable',
+                    'ACRES_PLANTED' => $egg_plants_acres,
+                    'YIELD_OBTAINED' => $egg_plants_yield,
+                    'QUANTITY_SOLD' => $egg_plants_sold,
+                    'INCOME' => $egg_plants_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_egg_plants);
+
+                $okra_acres = $this->input->post('okra_acres' . $row->ID);
+                $okra_yield = $this->input->post('okra_yield' . $row->ID);
+                $okra_sold = $this->input->post('okra_sold' . $row->ID);
+                $okra_amount_ugx = $this->input->post('okra_amount_ugx' . $row->ID);
+
+                #Prepare the data for okra
+
+                $field_data_okra = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Okra',
+                    'CATEGORY' => 'Vegetable',
+                    'ACRES_PLANTED' => $okra_acres,
+                    'YIELD_OBTAINED' => $okra_yield,
+                    'QUANTITY_SOLD' => $okra_sold,
+                    'INCOME' => $okra_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_okra);
+
+
+                $soya_beans_acres = $this->input->post('soya_beans_acres' . $row->ID);
+                $soya_beans_yield = $this->input->post('soya_beans_yield' . $row->ID);
+                $soya_beans_sold = $this->input->post('soya_beans_sold' . $row->ID);
+                $soya_beans_amount_ugx = $this->input->post('soya_beans_amount_ugx' . $row->ID);
+
+                #Prepare the data for soya beans
+
+                $field_data_soya_beans = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Soya Beans',
+                    'CATEGORY' => 'Crop',
+                    'ACRES_PLANTED' => $soya_beans_acres,
+                    'YIELD_OBTAINED' => $soya_beans_yield,
+                    'QUANTITY_SOLD' => $soya_beans_sold,
+                    'INCOME' => $soya_beans_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_soya_beans);
+
+
+                $ground_nuts_acres = $this->input->post('ground_nuts_acres' . $row->ID);
+                $ground_nuts_yield = $this->input->post('ground_nuts_yield' . $row->ID);
+                $ground_nuts_sold = $this->input->post('ground_nuts_sold' . $row->ID);
+                $ground_nuts_amount_ugx = $this->input->post('ground_nuts_amount_ugx' . $row->ID);
+
+                #Prepare the data for ground nuts
+
+                $field_data_ground_nuts = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Ground Nuts',
+                    'CATEGORY' => 'Crop',
+                    'ACRES_PLANTED' => $ground_nuts_acres,
+                    'YIELD_OBTAINED' => $ground_nuts_yield,
+                    'QUANTITY_SOLD' => $ground_nuts_sold,
+                    'INCOME' => $ground_nuts_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_ground_nuts);
+
+
+                $sesames_acres = $this->input->post('sesames_acres' . $row->ID);
+                $sesames_yield = $this->input->post('sesames_yield' . $row->ID);
+                $sesames_sold = $this->input->post('sesames_sold' . $row->ID);
+                $sesames_amount_ugx = $this->input->post('sesames_amount_ugx' . $row->ID);
+
+                #Prepare the data for sesames
+
+                $field_data_sesames = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Sesames',
+                    'CATEGORY' => 'Crop',
+                    'ACRES_PLANTED' => $sesames_acres,
+                    'YIELD_OBTAINED' => $sesames_yield,
+                    'QUANTITY_SOLD' => $sesames_sold,
+                    'INCOME' => $sesames_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_sesames);
+
+
+                $beans_acres = $this->input->post('beans_acres' . $row->ID);
+                $beans_yield = $this->input->post('beans_yield' . $row->ID);
+                $beans_sold = $this->input->post('beans_sold' . $row->ID);
+                $beans_amount_ugx = $this->input->post('beans_amount_ugx' . $row->ID);
+
+                #Prepare the data for beans
+
+                $field_data_beans = array(
+                    'INDIVIDUAL' => $row->MEMBERSHIP_ID,
+                    'FOOD_STUFF' => 'Beans',
+                    'CATEGORY' => 'Crop',
+                    'ACRES_PLANTED' => $beans_acres,
+                    'YIELD_OBTAINED' => $beans_yield,
+                    'QUANTITY_SOLD' => $beans_sold,
+                    'INCOME' => $beans_amount_ugx,
+                );
+
+                $this->crop_model->insert_record($field_data_beans);
+
+                $size_of_pond = $this->input->post('size_of_pond' . $row->ID);
+                $number_of_fish_harvested = $this->input->post('number_of_fish_harvested' . $row->ID);
+                $quantity_yield_in_kg = $this->input->post('quantity_yield_in_kg' . $row->ID);
+                $income_ugx = $this->input->post('income_ugx' . $row->ID);
+
+                # Prepare fishing data
+
+                $field_data_fish = array(
+                    'INDIVIDUAL_ID' => $row->MEMBERSHIP_ID,
+                    'SIZE_OF_POND' => $size_of_pond,
+                    'NUMBER_OF_FISH_HARVESTED' => $number_of_fish_harvested,
+                    'QUANTITY_IN_KG' => $quantity_yield_in_kg,
+                    'INCOME' => $income_ugx,
+                );
+
+                $this->fishing_model->insert_record($field_data_fish);
+
+            }
+//            print_r($field_data_fish);
+            redirect('production/misean%20cara%20baseline%20surveys');
         }
 
 
     }
 
+    function fetch_group_members_for_crop_production()
+    {
+
+        if ($this->input->post('group_id')) {
+            $group_id = $this->input->post('group_id');
+//            echo 'OK';
+
+            echo $this->membership_model->fetch_associated_group_members_for_crop_production($group_id);
+        }
+
+    }
+
+    function fetch_group_members_for_vegetable_production()
+    {
+
+        if ($this->input->post('group_id')) {
+            $group_id = $this->input->post('group_id');
+
+            echo $this->membership_model->fetch_associated_group_members_for_vegetable_production($group_id);
+        }
+
+    }
+
+    function fetch_group_members_for_fish_farming()
+    {
+
+        if ($this->input->post('group_id')) {
+            $group_id = $this->input->post('group_id');
+
+            echo $this->membership_model->fetch_associated_group_members_for_fish_farming($group_id);
+        }
+
+    }
+
     public function edit(){
-        echo 'OK';
+        $record_id = $this->uri->segment(4);
+        $data['row_id'] = $record_id;
+        $data['default_value_array'] = $this->baseline_survey_model->fetch_single_row_data_to_edit($record_id);
+
+        #retrieving all ids for groups
+        $data['groups_list'] = $this->grouping_model->fetch_all_active_ids();
+        $data['title'] = 'Edit Basic Details of Misean Cara Baseline Survey Economic Security';
+
+        # Now getting the values of the input
+        $name_of_the_grantee = $this->input->post('name_of_the_grantee');
+        $district = $this->input->post('district');
+        $county = $this->input->post('county');
+        $parish = $this->input->post('parish');
+        $number_of_children_with_pwd = $this->input->post('number_of_children_with_pwd');
+        $number_of_children_with_chh = $this->input->post('number_of_children_with_chh');
+        $number_of_children_orphan = $this->input->post('number_of_children_orphan');
+        $number_of_children_with_hiv = $this->input->post('number_of_children_with_hiv');
+        $number_of_children_with_pwd_in_school = $this->input->post('number_of_children_with_pwd_in_school');
+        $number_of_children_with_chh_in_school = $this->input->post('number_of_children_with_chh_in_school');
+        $number_of_children_orphan_in_school = $this->input->post('number_of_children_orphan_in_school');
+        $number_of_children_with_hiv_in_school = $this->input->post('number_of_children_with_hiv_in_school');
+        $number_of_children_normal_in_school = $this->input->post('number_of_children_normal_in_school');
+        $number_of_meals_per_day = $this->input->post('number_of_meals_per_day');
+        $able_to_meet_medical_expenses_for_children = $this->input->post('able_to_meet_medical_expenses_for_children');# Performing Validation Checks
+        $this->form_validation->set_rules('name_of_the_grantee', 'Name of the Grantee', 'required');
+        $this->form_validation->set_rules('county', 'County', 'required');
+        $this->form_validation->set_rules('parish', 'Parish', 'required');
+        $this->form_validation->set_rules('number_of_meals_per_day', 'Number of Meals able to provide per day', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'Production/Survey/Modification/misean-cara-baseline-survey-economic-security-edit', $data);
+        } else {
+            $field_data_basic = array(
+                'GRANTEE' => $name_of_the_grantee,
+                'DISTRICT' => $district,
+                'COUNTY' => $county,
+                'SUBCOUNTY' => $parish,
+                'PWD' => $number_of_children_with_pwd,
+                'CHH' => $number_of_children_with_chh,
+                'ORPHAN' => $number_of_children_orphan,
+                'HIV' => $number_of_children_with_hiv,
+                'PWD_IN_SCHOOL' => $number_of_children_with_pwd_in_school,
+                'CHH_IN_SCHOOL' => $number_of_children_with_chh_in_school,
+                'ORPHAN_IN_SCHOOL' => $number_of_children_orphan_in_school,
+                'CHILDREN_WITH_HIV_IN_SCHOOL' => $number_of_children_with_hiv_in_school,
+                'NORMAL_IN_SCHOOL' => $number_of_children_normal_in_school,
+                'MEALS_PER_DAY' => $number_of_meals_per_day,
+                'MEDICAL_TREATMENT' => $able_to_meet_medical_expenses_for_children,
+            );
+
+            $result = $this->baseline_survey_model->update_record($record_id, $field_data_basic);
+            if ($result) {
+                $this->session->set_flashdata('success_msg', 'Record Submitted Successfully');
+            } else {
+                $this->session->set_flashdata('error_msg', 'Failed to submit record');
+            }
+
+            redirect('production/misean%20cara%20baseline%20surveys');
+        }
 
     }
 

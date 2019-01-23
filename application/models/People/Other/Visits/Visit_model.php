@@ -14,6 +14,13 @@ class Visit_model extends CI_Model{
         return $this->db->get('VISIT_RECORDS');
     }
 
+    function fetch_total()
+    {
+        $this->db->order_by('ID', 'DESC');
+
+        return $this->db->get('VISIT_RECORDS')->num_rows();
+    }
+
     function fetch_single_record($row_id){
         $this->db->where('ID', $row_id);
 
@@ -96,6 +103,40 @@ class Visit_model extends CI_Model{
                     </div>';
 
         return $output;
+    }
+
+    function insert_record($field_data)
+    {
+        $this->db->insert('VISIT_RECORDS', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('VISIT_RECORDS');
+
+        return $data;
+
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('VISIT_RECORDS');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

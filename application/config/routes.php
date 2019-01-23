@@ -112,7 +112,8 @@ $route['trainings'] = 'Training/training';
 $route['trainings/new-training'] = 'Training/training/create';
 $route['training-details/(:any)'] = 'Training/training/details';
 $route['training-details/edit/(:any)'] = 'Training/training/edit';
-$route['training-info/generate-pdf(:any)'] = 'Training/training/generate_detailed_pdf';
+$route['training-info/generate-pdf/(:any)'] = 'Training/training/generate_detailed_pdf';
+$route['training-info/generate-attendance-sheet-pdf/(:any)'] = 'Training/training/generate_attendance_sheet_pdf';
 
 $route['courses%20and%20topics'] = 'Training/courses';
 $route['courses%20and%20topics/new-course'] = 'Training/courses/create';
@@ -127,10 +128,10 @@ $route['production/crop%20production-details/(:any)'] = 'Production/Crop/cropPro
 $route['production/crop%20production-details/edit/(:any)'] = 'Production/Crop/cropProduction/edit';
 $route['production/crop%20production-info/generate-pdf(:any)'] = 'Production/Crop/cropProduction/generate_detailed_pdf';
 
-$route['production/vegetable%20production'] = 'Production/Vegetable/vegetableProduction';
-$route['production/vegetable%20production-details/(:any)'] = 'Production/Vegetable/vegetableProduction/details';
-$route['production/vegetable%20production-details/edit/(:any)'] = 'Production/Vegetable/vegetableProduction/edit';
-$route['production/vegetable%20production-info/generate-pdf(:any)'] = 'Production/Vegetable/vegetableProduction/generate_detailed_pdf';
+$route['production/fish%20farming'] = 'Production/FishFarming/fishFarming';
+$route['production/fish%20farming-details/(:any)'] = 'Production/FishFarming/fishFarming/details';
+$route['production/fish%20farming-details/edit/(:any)'] = 'Production/FishFarming/fishFarming/edit';
+$route['production/fish%20farming-info/generate-pdf/(:any)'] = 'Production/FishFarming/fishFarming/generate_detailed_pdf';
 
 $route['production/misean%20cara%20baseline%20surveys'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey';
 $route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create';
@@ -141,17 +142,22 @@ $route['production/misean%20cara%20baseline%20survey-info/generate-pdf(:any)'] =
 $route['production/adoption%20to%20technology'] = 'Production/TechnologyAdoption/adoptionToTechnology';
 $route['production/adoption%20to%20technology-details/(:any)'] = 'Production/TechnologyAdoption/adoptionToTechnology/details';
 $route['production/adoption%20to%20technology-details/edit/(:any)'] = 'Production/TechnologyAdoption/adoptionToTechnology/edit';
-$route['production/adoption%20to%20technology-info/generate-pdf(:any)'] = 'Production/TechnologyAdoption/adoptionToTechnology/generate_detailed_pdf';
+$route['production/adoption%20to%20technology-info/generate-pdf/(:any)'] = 'Production/TechnologyAdoption/adoptionToTechnology/generate_detailed_pdf';
 
 $route['production/challenges'] = 'Production/Challenges/challenge';
 $route['production/challenge-details/(:any)'] = 'Production/Challenges/challenge/details';
 $route['production/challenge-details/edit/(:any)'] = 'Production/Challenges/challenge/edit';
-$route['production/challenge-info/generate-pdf(:any)'] = 'Production/Challenges/challenge/generate_detailed_pdf';
+$route['production/challenge-info/generate-pdf/(:any)'] = 'Production/Challenges/challenge/generate_detailed_pdf';
 
 $route['production/marketing'] = 'Production/Marketing/marketing';
 $route['production/marketing-details/(:any)'] = 'Production/Marketing/marketing/details';
 $route['production/marketing-details/edit/(:any)'] = 'Production/Marketing/marketing/edit';
 $route['production/marketing-info/generate-pdf(:any)'] = 'Production/Marketing/marketing/generate_detailed_pdf';
+
+$route['production/increase'] = 'Production/ProductionIncrease/productionIncrease';
+$route['production/increase/edit/(:any)'] = 'Production/ProductionIncrease/productionIncrease/edit';
+$route['production/increase-details/(:any)'] = 'Production/ProductionIncrease/productionIncrease/details';
+$route['production/increase-details/generate-pdf/(:any)'] = 'Production/ProductionIncrease/productionIncrease/generate_detailed_pdf';
 
 # Monitoring Urls
 $route['monitoring'] = 'Monitoring/monitoring';
@@ -164,8 +170,8 @@ $route['monitoring-info/generate-pdf(:any)'] = 'Monitoring/monitoring/generate_d
 #Miscellaneous Urls
 $route['miscellaneous%20baseline%20surveys'] = 'Miscellaneous/BaselineSurveys/baselineSurveys';
 $route['miscellaneous%20baseline%20survey-details/(:any)'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/details';
-$route['miscellaneous%20baseline%20survey-details/edit/(:any)'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/edit/';
-$route['miscellaneous%20baseline%20survey/new_assessment'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/create/';
+$route['miscellaneous%20baseline%20survey-details/edit/(:any)'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/edit';
+$route['miscellaneous%20baseline%20survey/new_assessment'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/create';
 $route['miscellaneous%20baseline%20survey-info/generate-pdf/(:any)'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/generate_pdf_document/';
 
 $route['miscellaneous%20pilot%20studies'] = 'Miscellaneous/PilotStudies/pilotStudies';
@@ -173,6 +179,7 @@ $route['miscellaneous%20pilot%20study-details/(:any)'] = 'Miscellaneous/PilotStu
 $route['miscellaneous%20pilot%20study-details/edit/(:any)'] = 'Miscellaneous/PilotStudies/pilotStudies/edit/';
 $route['miscellaneous%20pilot%20studies/new_record'] = 'Miscellaneous/PilotStudies/pilotStudies/create/';
 $route['miscellaneous%20pilot%20study-info/generate-pdf/(:any)'] = 'Miscellaneous/PilotStudies/pilotStudies/generate_pdf_document/';
+$route['miscellaneous%20pilot%20studies'] = 'Miscellaneous/PilotStudies/pilotStudies';
 
 $route['miscellaneous%20hygiene%20and%20nutrition'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition';
 $route['miscellaneous%20hygiene%20and%20nutrition/new-recording'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition/create';
@@ -186,3 +193,6 @@ $route['backup%20and%20restore/restore'] = 'BackupAndRestore/Restore/restore';
 
 #Settings Urls
 $route['settings'] = 'Settings/Welcome/settings';
+
+#Urls for querying data
+$route['search'] = 'Query/query';

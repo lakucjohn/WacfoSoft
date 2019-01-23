@@ -48,8 +48,44 @@ class PilotStudies_model extends CI_Model{
         return $output;
     }
 
+    function insert_record($field_data)
+    {
+        $this->db->insert('PILOT_STUDIES', $field_data);
 
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('PILOT_STUDIES');
+
+        return $data;
+
+    }
+
+    function generate_report_with_all_data()
+    {
+
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('PILOT_STUDIES');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>

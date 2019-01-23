@@ -43,8 +43,20 @@
                 foreach($data_set->result() as $row) {
                     echo '
                 <tr title="'.$row -> CHILD.'">
-                    <td>'.$row -> CHILD.'</td>
-                    <td>'.$row -> DATE_OF_FIRST_SCREENING.'</td>
+                    <td>' . $row->CHILD . '</td>';
+                    ?>
+
+                    <td>
+                        <?php
+                        foreach ($children_list->result() as $child) {
+                            if ($child->CHILD_ID == $row->CHILD) {
+                                echo $child->NAME;
+                            }
+                        }
+                        ?>
+                    </td>
+                    <?php echo
+                        '<td>' . $row->DATE_OF_FIRST_SCREENING . '</td>
                     <td>'.$row -> IDENTIFIED_BY.'</td>
                     <td>'.$row -> ASSESSED_BY.'</td>
                     <td>'.$row -> VENUE_FOR_SCREENING.'</td>

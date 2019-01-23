@@ -14,6 +14,13 @@ class Children_model extends CI_Model{
         return $this->db->get('CHILDREN');
     }
 
+    function fetch_total()
+    {
+        $this->db->order_by('ID', 'DESC');
+
+        return $this->db->get('CHILDREN')->num_rows();
+    }
+
     function fetch_single_record($row_id){
         $this->db->where('ID', $row_id);
 
@@ -234,7 +241,71 @@ class Children_model extends CI_Model{
         return $output;
     }
 
+    function insert_record($field_data)
+    {
+        $this->db->insert('CHILDREN', $field_data);
 
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function get_child_name_from_db($child_id)
+    {
+
+        #Obtaining the child name
+        $this->db->select('NAME');
+        $this->db->where('CHILD_ID', $child_id);
+        $this->db->limit(1);
+
+        $child_data = $this->db->get('CHILDREN');
+
+        foreach ($child_data->result() as $row) {
+            $child_name = $row->NAME;
+        }
+
+        return $child_name;
+
+    }
+
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('CHILDREN');
+
+        return $data;
+
+    }
+
+    function check_if_this_disability_changed($row_id, $disability)
+    {
+        $this->db->where('ID', $row_id);
+        $result = $this->db->get('CHILDREN');
+
+        foreach ($result->result() as $data) {
+            if ($data->VULNERABILITY == $disability) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('CHILDREN');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return $this->db->error();
+        }
+    }
 
 }
 

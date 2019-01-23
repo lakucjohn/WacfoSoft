@@ -14,6 +14,13 @@ class Training_model extends CI_Model{
         return $this->db->get('TRAININGS');
     }
 
+    function fetch_total()
+    {
+        $this->db->order_by('ID', 'DESC');
+
+        return $this->db->get('TRAININGS')->num_rows();
+    }
+
     function fetch_single_record($row_id){
         $this->db->where('ID', $row_id);
 
@@ -47,7 +54,7 @@ class Training_model extends CI_Model{
         foreach($data->result() as $row) {
             $output .= '
                 
-                <tr title="' . $row->Topic . '">
+                <tr title="' . $row->TOPIC . '">
                     <td>
                     
                         <table style="width: 86%; font-size: 18px;" border="0" class="table table-responsive">
@@ -57,11 +64,11 @@ class Training_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Topic :</td>
-                                <td style="width: 75%">'.$row->Topic.'</td>
+                                <td style="width: 75%">' . $row->TOPIC . '</td>
                             </tr>
                             <tr style="">
                                 <td style="width:20%; text-align: right;">Objective :</td>
-                                <td style="width: 75%">'.$row->objective.'</td>
+                                <td style="width: 75%">' . $row->OBJECTIVE . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Venue :</td>
@@ -95,7 +102,7 @@ class Training_model extends CI_Model{
         foreach($data->result() as $row){
             $output .= '
                 
-                <tr title="'.$row->Topic.'">
+                <tr title="' . $row->TOPIC . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px;" border="0" class="table">
@@ -105,11 +112,11 @@ class Training_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Topic :</td>
-                                <td style="width: 75%">'.$row->Topic.'</td>
+                                <td style="width: 75%">' . $row->TOPIC . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Objective :</td>
-                                <td style="width: 75%">'.$row->objective.'</td>
+                                <td style="width: 75%">' . $row->OBJECTIVE . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Venue :</td>
@@ -144,7 +151,7 @@ class Training_model extends CI_Model{
         foreach($data->result() as $row){
             $output .= '
                 
-                <tr title="'.$row->Topic.'">
+                <tr title="' . $row->TOPIC . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px;" border="0" class="table">
@@ -154,11 +161,11 @@ class Training_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Topic :</td>
-                                <td style="width: 75%">'.$row->Topic.'</td>
+                                <td style="width: 75%">' . $row->TOPIC . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Objective :</td>
-                                <td style="width: 75%">'.$row->objective.'</td>
+                                <td style="width: 75%">' . $row->OBJECTIVE . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Venue :</td>
@@ -186,6 +193,39 @@ class Training_model extends CI_Model{
 
     }
 
+    public function insert_record($field_data)
+    {
+        $this->db->insert('TRAININGS', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('TRAININGS');
+
+        return $data;
+
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('TRAININGS');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return $this->db->error();
+        }
+    }
 
 
 }

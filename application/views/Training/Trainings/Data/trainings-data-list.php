@@ -43,16 +43,32 @@
 
                 foreach($data_set->result() as $row){
                     echo '
-                        <tr title="'.$row -> Topic.'" style="white-space: nowrap;">
-                            <td>'.$row -> DATE_OF_TRAINING.'</td>
-                            <td>'.$row -> Topic.'</td>
-                            <td>'.$row -> VENUE.'</td>
+                        <tr title="' . $row->TOPIC . '" style="white-space: nowrap;">
+                            <td>' . $row->DATE_OF_TRAINING . '</td>';
+                    ?>
+
+                    <td>
+                        <?php
+                        foreach ($courses->result() as $course) {
+                            if ($course->CODE == $row->COURSE) {
+                                foreach ($topics->result() as $topic) {
+                                    if ($topic->ID == $row->TOPIC) {
+                                        echo $topic->TOPIC;
+                                    }
+                                }
+                            }
+                        }
+                        ?>
+                    </td>
+                    <?php
+                    echo '<td>' . $row->VENUE . '</td>
                             <td>'.$row -> CONDUCTED_BY.'</td>
                             <td>
                                 <a href="'.site_url("training-details/edit/$row->ID").'" class="btn btn-link" title="Edit Training Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                 <button class="btn btn-link" title="Delete This Training" data-toggle="modal" data-target="#deleteTrainingModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
                                 <a href="'.site_url("training-details/$row->ID").'" class="btn btn-link" title="Read More about this Group"><i class="fa fa-info-circle fa-1x"></i></a>
                                 <a href="'.site_url("training-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Training\'s Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
+                                <a href="' . site_url("training-info/generate-attendance-sheet-pdf/$row->ID") . '" class="btn btn-link" title="Generate Blank Attendance Sheet for this Training"><i class="fa fa-users fa-1x" style="color:black; "></i></a>
                             </td>
                         </tr>
                     ';

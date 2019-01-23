@@ -34,7 +34,7 @@
             </div>
             <div class="col-md-4">
                 <label for="Date_of_interview">Date of Interview: </label>
-                <input type="text" class="form-control"  name="Date_of_interview" id="Date_of_interview" />
+                <input type="date" class="form-control" name="Date_of_interview" id="Date_of_interview"/>
             </div>
             <div class="col-md-4">
                 <label for="Location_of_household" class="last-document-content-text">Location of the household: </label>
@@ -62,31 +62,39 @@
         <br>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 Number of people living in the household (all ages):
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div style="font-size: 18px; font-weight: bold;">Females</div> <br>
                 <label for="Females_under_5">Under 5: </label>
-                <input type="text" class="form-control"  name="Females_under_5" id="Females_under_5" />
+                <input type="text" class="form-control" name="Females_under_5" id="Females_under_5"/><br>
                 <label for="Females_between_5_and_18">Between 6 and 18: </label>
-                <input type="text" class="form-control"  name="Females_between_5_and_18" id="Females_between_5_and_18" />
-                <label for="Females_between_18_and_45">Between 18 and 45: </label>
-                <input type="text" class="form-control"  name="Females_between_18_and_45" id="Females_between_18_and_45" />
+                <input type="text" class="form-control" name="Females_between_6_and_18" id="Females_between_6_and_18"/>
 
 
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div style="font-size: 18px; font-weight: bold;">Males</div> <br>
                 <label for="Males_under_5" class="last-document-content-text">Under 5: </label>
-                <input type="text" class="form-control last-document-content-text"  name="Males_under_5" id="Males_under_5" />
+                <input type="text" class="form-control last-document-content-text" name="Males_under_5"
+                       id="Males_under_5"/><br>
                 <label for="Males_between_5_and_18" class="last-document-content-text">Between 6 and 18: </label>
-                <input type="text" class="form-control last-document-content-text"  name="Males_between_5_and_18" id="Males_between_5_and_18" />
-                <label for="Males_between_18_and_45" class="last-document-content-text">Between 18 and 45: </label>
-                <input type="text" class="form-control last-document-content-text" name="Males_between_18_and_45" id="Males_between_18_and_45" />
+                <input type="text" class="form-control last-document-content-text" name="Males_between_6_and_18"
+                       id="Males_between_6_and_18"/>
 
+            </div>
+
+            <div class="col-md-3">
+                <div style="font-size: 18px; font-weight: bold;">Above 18</div>
+                <br>
+
+                <label for="Total_between_18_and_45" class="last-document-content-text">Total Between 18 and
+                    45: </label>
+                <input type="text" class="form-control last-document-content-text" name="Total_between_18_and_45"
+                       id="Total_between_18_and_45"/><br>
             </div>
         </div>
 
@@ -157,8 +165,14 @@
                                     </td>
                                     <td>
                                         <div class="col-md-12">
-                                            <input type="radio" id="increase_in_daily_household_income_from_one_year_ago" name="increase_in_daily_household_income_from_one_year_ago" />Yes <br>
-                                            <input type="radio" id="increase_in_daily_household_income_from_one_year_ago" name="increase_in_daily_household_income_from_one_year_ago" />No
+                                            <input type="radio"
+                                                   id="increase_in_daily_household_income_from_one_year_ago"
+                                                   name="increase_in_daily_household_income_from_one_year_ago"
+                                                   value="1"/>Yes <br>
+                                            <input type="radio"
+                                                   id="increase_in_daily_household_income_from_one_year_ago"
+                                                   name="increase_in_daily_household_income_from_one_year_ago"
+                                                   value="0"/>No
                                         </div>
                                     </td>
 
@@ -180,7 +194,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="number" min="1" maxlength="12" class="form-control"
-                                                       id="sources_of_income_now" name="sources_of_income_now"
+                                                       id="number_of_sources_of_income_now"
+                                                       name="number_of_sources_of_income_now"
                                                        placeholder="0"/>
                                             </div>
                                         </div>
@@ -189,7 +204,8 @@
                                     <td width="21.5%">
                                         Which ones are they?
 
-                                        <input type="text" class="form-control" id="sources_of_income_now" name="sources_of_income_now" />
+                                        <input type="text" class="form-control" id="listed_sources_of_income_now"
+                                               name="listed_sources_of_income_now"/>
 
                                     </td>
                                 </tr>
@@ -226,8 +242,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="number" min="0" maxlength="12" class="form-control"
-                                                       id="sources_of_income_one_year_ago"
-                                                       name="sources_of_income_one_year_ago" placeholder="0"/>
+                                                       id="number_of_sources_of_income_one_year_ago"
+                                                       name="number_of_sources_of_income_one_year_ago" placeholder="0"/>
                                             </div>
                                         </div>
 
@@ -235,8 +251,8 @@
                                     <td width="21.5%">
                                         Which ones are they?
 
-                                        <input type="text" class="form-control" id="sources_of_income_one_year_ago"
-                                               name="sources_of_income_one_year_ago"/>
+                                        <input type="text" class="form-control" id="list_sources_of_income_one_year_ago"
+                                               name="list_sources_of_income_one_year_ago"/>
 
                                     </td>
                                 </tr>
@@ -366,8 +382,11 @@
                                     </td>
                                     <td style="width: 21.5%">
                                         <div class="col-md-12">
-                                            <input type="radio" id="increase_in_diversity_of_income_from_one_year_ago" name="increase_in_diversity_of_income_from_one_year_ago" />Yes <br>
-                                            <input type="radio" id="increase_in_diversity_of_income_from_one_year_ago" name="increase_in_diversity_of_income_from_one_year_ago" />No
+                                            <input type="radio" id="increase_in_diversity_of_income_from_one_year_ago"
+                                                   name="increase_in_diversity_of_income_from_one_year_ago" value="1"/>Yes
+                                            <br>
+                                            <input type="radio" id="increase_in_diversity_of_income_from_one_year_ago"
+                                                   name="increase_in_diversity_of_income_from_one_year_ago" value="0"/>No
                                         </div>
 
                                     </td>
@@ -403,42 +422,47 @@
                                                 <td>
                                                     <div class="col-md-12">
 
-                                                        <input type="checkbox" name="increase_in_household_assets"
-                                                               id="increase_in_household_assets" value="land"
-                                                               onclick="show_land_size();"/>
-                                                        <div class="row" style="display: none;">
+                                                        <input type="checkbox" name="land_increase" id="land_increase"
+                                                               onchange="show_land_size();"/>
+                                                        <div class="row" style="display: none;" id="land_size_div">
                                                             size: <input type="text" name="land_increase_size" id="land_increase_size" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="checkbox" name="increase_in_household_assets" id="increase_in_household_assets" />
+                                                        <input type="checkbox" name="permanent_house_increase"
+                                                               id="permanent_house_increase"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="checkbox" name="increase_in_household_assets" id="increase_in_household_assets" />
+                                                        <input type="checkbox" name="semi_permament_house_increase"
+                                                               id="semi_permament_house_increase"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="checkbox" name="increase_in_household_assets" id="increase_in_household_assets" />
+                                                        <input type="checkbox" name="mud_or_off_cut_house_increase"
+                                                               id="mud_or_off_cut_house_increase"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="checkbox" name="increase_in_household_assets" id="increase_in_household_assets" />
+                                                        <input type="checkbox" name="radio_or_tv_increase"
+                                                               id="radio_or_tv_increase"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="checkbox" name="increase_in_household_assets" id="increase_in_household_assets" />
+                                                        <input type="checkbox" name="mobile_phone_increase"
+                                                               id="mobile_phone_increase"/>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="col-md-12">
-                                                        <input type="checkbox" name="increase_in_household_assets" id="increase_in_household_assets" />
+                                                        <input type="checkbox" name="bicycle_increase"
+                                                               id="bicycle_increase"/>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -498,42 +522,48 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="breakfast_yesterday"
+                                           id="breakfast_yesterday"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="breakfast_snack_yesterday"
+                                           id="breakfast_snack_yesterday"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="lunch_yesterday"
+                                           id="lunch_yesterday"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="lunch_snack_yesterday"
+                                           id="lunch_snack_yesterday"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="dinner_yesterday"
+                                           id="dinner_yesterday"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="dinner_snack_yesterday"
+                                           id="dinner_snack_yesterday"/>
                                 </div>
                             </div>
                         </td>
@@ -545,42 +575,48 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="breakfast_one_year_ago"
+                                           id="breakfast_one_year_ago"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="breakfast_snack_one_year_ago"
+                                           id="breakfast_snack_one_year_ago"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="lunch_one_year_ago"
+                                           id="lunch_one_year_ago"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="lunch_snack_one_year_ago"
+                                           id="lunch_snack_one_year_ago"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="dinner_one_year_ago"
+                                           id="dinner_one_year_ago"/>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" name="dinner_snack_one_year_ago"
+                                           id="dinner_snack_one_year_ago"/>
                                 </div>
                             </div>
                         </td>
@@ -627,16 +663,19 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="cereals_one_year_ago" id="cereals_one_year_ago"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="cereals_one_year_ago" id="cereals_one_year_ago"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="cereals_yesterday" id="cereals_yesterday" value="1"/> Yes
+                                    <br>
+                                    <input type="radio" name="cereals_yesterday" id="cereals_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -652,16 +691,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="vitamin_a_rich_vegetables_and_roots_one_year_ago"
+                                           id="vitamin_a_rich_vegetables_and_roots_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="vitamin_a_rich_vegetables_and_roots_one_year_ago"
+                                           id="vitamin_a_rich_vegetables_and_roots_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="vitamin_a_rich_vegetables_and_roots_yesterday"
+                                           id="vitamin_a_rich_vegetables_and_roots_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="vitamin_a_rich_vegetables_and_roots_yesterday"
+                                           id="vitamin_a_rich_vegetables_and_roots_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -676,16 +719,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="white_tubers_and_roots_one_year_ago"
+                                           id="white_tubers_and_roots_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="white_tubers_and_roots_one_year_ago"
+                                           id="white_tubers_and_roots_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="white_tubers_and_roots_yesterday"
+                                           id="white_tubers_and_roots_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="white_tubers_and_roots_yesterday"
+                                           id="white_tubers_and_roots_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -700,16 +747,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="dark_green_leafy_vegetables_one_year_ago"
+                                           id="dark_green_leafy_vegetables_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="dark_green_leafy_vegetables_one_year_ago"
+                                           id="dark_green_leafy_vegetables_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="dark_green_leafy_vegetables_yesterday"
+                                           id="dark_green_leafy_vegetables_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="dark_green_leafy_vegetables_yesterday"
+                                           id="dark_green_leafy_vegetables_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -724,16 +775,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="other_vegetables_one_year_ago"
+                                           id="other_vegetables_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="other_vegetables_one_year_ago"
+                                           id="other_vegetables_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="other_vegetables_yesterday"
+                                           id="other_vegetables_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="other_vegetables_yesterday"
+                                           id="other_vegetables_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -748,16 +803,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="vitamin_a_rich_fruits_one_year_ago"
+                                           id="vitamin_a_rich_fruits_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="vitamin_a_rich_fruits_one_year_ago"
+                                           id="vitamin_a_rich_fruits_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="vitamin_a_rich_fruits_yesterday"
+                                           id="vitamin_a_rich_fruits_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="vitamin_a_rich_fruits_yesterday"
+                                           id="vitamin_a_rich_fruits_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -772,16 +831,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="other_fruits_one_year_ago" id="other_fruits_one_year_ago"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="other_fruits_one_year_ago" id="other_fruits_one_year_ago"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="other_fruits_yesterday" id="other_fruits_yesterday"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="other_fruits_yesterday" id="other_fruits_yesterday"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -796,16 +859,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="organ_meat_one_year_ago" id="organ_meat_one_year_ago"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="organ_meat_one_year_ago" id="organ_meat_one_year_ago"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="organ_meat_yesterday" id="organ_meat_yesterday"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="organ_meat_yesterday" id="organ_meat_yesterday"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -820,16 +887,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="flesh_meats_one_year_ago" id="flesh_meats_one_year_ago"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="flesh_meats_one_year_ago" id="flesh_meats_one_year_ago"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="flesh_meats_yesterday" id="flesh_meats_yesterday"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="flesh_meats_yesterday" id="flesh_meats_yesterday"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -844,16 +915,17 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="eggs_one_year_ago" id="eggs_one_year_ago" value="1"/> Yes
+                                    <br>
+                                    <input type="radio" name="eggs_one_year_ago" id="eggs_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="eggs_yesterday" id="eggs_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="eggs_yesterday" id="eggs_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -868,16 +940,17 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="fish_one_year_ago" id="fish_one_year_ago" value="1"/> Yes
+                                    <br>
+                                    <input type="radio" name="fish_one_year_ago" id="fish_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="fish_yesterday" id="fish_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="fish_yesterday" id="fish_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -892,16 +965,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="legumes_nuts_and_seeds_one_year_ago"
+                                           id="legumes_nuts_and_seeds_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="legumes_nuts_and_seeds_one_year_ago"
+                                           id="legumes_nuts_and_seeds_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="legumes_nuts_and_seeds_yesterday"
+                                           id="legumes_nuts_and_seeds_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="legumes_nuts_and_seeds_yesterday"
+                                           id="legumes_nuts_and_seeds_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -916,16 +993,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="milk_and_milk_products_one_year_ago"
+                                           id="milk_and_milk_products_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="milk_and_milk_products_one_year_ago"
+                                           id="milk_and_milk_products_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="milk_and_milk_products_yesterday"
+                                           id="milk_and_milk_products_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="milk_and_milk_products_yesterday"
+                                           id="milk_and_milk_products_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -940,16 +1021,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="oils_and_fats_one_year_ago"
+                                           id="oils_and_fats_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="oils_and_fats_one_year_ago"
+                                           id="oils_and_fats_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="oils_and_fats_yesterday" id="oils_and_fats_yesterday"
+                                           value="1"/> Yes <br>
+                                    <input type="radio" name="oils_and_fats_yesterday"
+                                           id="oils_and_fats_yesterday value=" 0" /> No
                                 </div>
                             </div>
                         </td>
@@ -964,16 +1049,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="red_palm_products_one_year_ago"
+                                           id="red_palm_products_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="red_palm_products_one_year_ago"
+                                           id="red_palm_products_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="red_palm_products_yesterday"
+                                           id="red_palm_products_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="red_palm_products_yesterday"
+                                           id="red_palm_products_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -988,16 +1077,19 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="sweets_one_year_ago" id="sweets_one_year_ago" value="1"/>
+                                    Yes <br>
+                                    <input type="radio" name="sweets_one_year_ago" id="sweets_one_year_ago" value="0"/>
+                                    No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="sweets_yesterday" id="sweets_yesterday" value="1"/> Yes
+                                    <br>
+                                    <input type="radio" name="sweets_yesterday" id="sweets_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1012,16 +1104,20 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="spices_condiments_beverages_one_year_ago"
+                                           id="spices_condiments_beverages_one_year_ago" value="1"/> Yes <br>
+                                    <input type="radio" name="spices_condiments_beverages_one_year_ago"
+                                           id="spices_condiments_beverages_one_year_ago" value="0"/> No
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes <br>
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="spices_condiments_beverages_yesterday"
+                                           id="spices_condiments_beverages_yesterday" value="1"/> Yes <br>
+                                    <input type="radio" name="spices_condiments_beverages_yesterday"
+                                           id="spices_condiments_beverages_yesterday" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1038,8 +1134,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_has_drying_dish_rack"
+                                           id="household_has_drying_dish_rack" value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_has_drying_dish_rack"
+                                           id="household_has_drying_dish_rack" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1051,8 +1149,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_has_a_compost_pit"
+                                           id="household_has_a_compost_pit" value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_has_a_compost_pit"
+                                           id="household_has_a_compost_pit" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1064,8 +1164,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_has_a_cloth_drying_line"
+                                           id="household_has_a_cloth_drying_line" value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_has_a_cloth_drying_line"
+                                           id="household_has_a_cloth_drying_line" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1077,8 +1179,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_has_a_latrine" id="household_has_a_latrine"
+                                           value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_has_a_latrine" id="household_has_a_latrine"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1090,8 +1194,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_has_a_tippy_tap" id="household_has_a_tippy_tap"
+                                           value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_has_a_tippy_tap" id="household_has_a_tippy_tap"
+                                           value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1103,8 +1209,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_boils_drinking_water_for_use"
+                                           id="household_boils_drinking_water_for_use" value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_boils_drinking_water_for_use"
+                                           id="household_boils_drinking_water_for_use" value="0"/> No
                                 </div>
                             </div>
                         </td>
@@ -1121,8 +1229,14 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio"
+                                           name="household_thinks_they_have_improved_their_living_situation"
+                                           id="household_thinks_they_have_improved_their_living_situation" value="1"
+                                           onclick="show_significant_story_div();"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio"
+                                           name="household_thinks_they_have_improved_their_living_situation"
+                                           id="household_thinks_they_have_improved_their_living_situation" value="0"
+                                           onclick="show_challenge_story_div();"/> No
                                 </div>
                             </div>
                         </td>
@@ -1130,19 +1244,21 @@
 
                     <tr>
                         <td colspan="2">
-                            <div class="row" id="significant-story">
+                            <div class="row" id="significant-story" style="display: none;">
                                 <div class="col-md-12">
                                     <div class="col-md-8">
-                                        <label for="significant-story-text"> What is the most significant story of the household?</label>
-                                        <textarea rows="5" class="form-control" id="significant-story-text"></textarea>
+                                        <label for="significant_story_text"> What is the most significant story of the
+                                            household?</label>
+                                        <textarea rows="5" class="form-control" id="significant_story_text"></textarea>
 
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="challenge-story" style="display: none">                                <div class="col-md-12">
+                            <div class="row" id="challenge-story" style="display: none">
+                                <div class="col-md-12">
                                     <div class="col-md-8">
-                                        <label for="failure-story-text">Why?</label>
-                                        <textarea cols="5" class="form-control" id="failure-story-text"></textarea>
+                                        <label for="failure_story_text">Why?</label>
+                                        <textarea cols="5" class="form-control" id="failure_story_text"></textarea>
 
                                     </div>
                                 </div>
@@ -1164,8 +1280,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_has_increased_its_dietary_diversity"
+                                           id="household_has_increased_its_dietary_diversity" value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_has_increased_its_dietary_diversity"
+                                           id="household_has_increased_its_dietary_diversity" value="0"/> No
                                 </div>
                             </div>
 
@@ -1175,15 +1293,22 @@
                     <tr>
                         <td colspan="2">
                             <div class="col-md-12">
-                                Has this household increasediits knowledge of kitchen gardening/horticulture or agriculture, or received nutritional counseling in the past year?
+                                Has this household increased its knowledge of kitchen gardening/horticulture or
+                                agriculture, or received nutritional counseling in the past year?
                             </div>
                         </td>
 
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio"
+                                           name="household_has_increased_its_knowledge_of_kitchen_gardening"
+                                           id="household_has_increased_its_knowledge_of_kitchen_gardening" value="1"/>
+                                    Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio"
+                                           name="household_has_increased_its_knowledge_of_kitchen_gardening"
+                                           id="household_has_increased_its_knowledge_of_kitchen_gardening" value="0"/>
+                                    No
                                 </div>
                             </div>
 
@@ -1200,8 +1325,14 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio"
+                                           name="household_has_reduced_its_post_harvest_loss_through_improved_storage"
+                                           id="household_has_reduced_its_post_harvest_loss_through_improved_storage"
+                                           value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio"
+                                           name="household_has_reduced_its_post_harvest_loss_through_improved_storage"
+                                           id="household_has_reduced_its_post_harvest_loss_through_improved_storage"
+                                           value="0"/> No
                                 </div>
                             </div>
 
@@ -1218,8 +1349,10 @@
                         <td colspan="2">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="radio" name="" id="" /> Yes &nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="" id="" /> No
+                                    <input type="radio" name="household_has_increased_its_asset_base"
+                                           id="household_has_increased_its_asset_base" value="1"/> Yes &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" name="household_has_increased_its_asset_base"
+                                           id="household_has_increased_its_asset_base" value="0"/> No
                                 </div>
                             </div>
 
@@ -1229,7 +1362,7 @@
                         <td colspan="4">
                             <div class="col-md-12">
                                 <label for="conclusion">Conclusion: </label>
-                                <textarea class="form-control" rows="5" id="conclusion">
+                                <textarea class="form-control" rows="5" id="conclusion" name="conclusion">
 
                                 </textarea>
                             </div>
@@ -1238,8 +1371,8 @@
                     <tr>
                         <td colspan="4">
                             <div class="col-md-12">
-                                <label for="recommendation">Recommendation: </label>
-                                <textarea class="form-control" rows="5" id="recommendation">
+                                <label for="recommendation">Recommendations for improvement: </label>
+                                <textarea class="form-control" rows="5" id="recommendation" name="recommendation">
 
                                 </textarea>
                             </div>
@@ -1268,15 +1401,25 @@
 </form>
 
 <script type="text/javascript">
-    $(function () {
-        $("#chkPassport").click(function () {
-            if ($(this).is(":checked")) {
-                $("#dvPassport").show();
-                $("#AddPassport").hide();
-            } else {
-                $("#dvPassport").hide();
-                $("#AddPassport").show();
-            }
-        });
-    });
+
+    function show_land_size() {
+        if ($("#land_increase").is(":checked")) {
+            $("#land_size_div").show();
+        } else {
+            $("#land_size_div").hide();
+        }
+    }
+
+    function show_significant_story_div() {
+        document.getElementById('significant-story').style.display = 'block';
+        document.getElementById('challenge-story').style.display = 'none';
+
+    }
+
+    function show_challenge_story_div() {
+        document.getElementById('significant-story').style.display = 'none';
+        document.getElementById('challenge-story').style.display = 'block';
+
+    }
+
 </script>

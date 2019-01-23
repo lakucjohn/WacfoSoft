@@ -8,8 +8,6 @@
 
 ?>
 
-
-
 <!-- Example DataTables Card-->
 <hr>
 <p>

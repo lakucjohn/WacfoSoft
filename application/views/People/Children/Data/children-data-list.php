@@ -72,7 +72,6 @@
 
 <!-- Modal Dialogs -->
 
-
 <!-- The modal dialog for deletion -->
 <div class="modal" id="deleteChildModal">
     <div class="modal-dialog">

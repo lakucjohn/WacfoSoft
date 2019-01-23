@@ -98,6 +98,54 @@ class Staff_model extends CI_Model{
         return $output;
     }
 
+    function insert_record($field_data)
+    {
+        $this->db->insert('ORGANIZATION_STAFF_NEW', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('ORGANIZATION_STAFF_NEW');
+
+        return $data;
+
+    }
+
+    function check_if_the_department_changed($row_id, $department)
+    {
+        $this->db->where('ID', $row_id);
+        $result = $this->db->get('ORGANIZATION_STAFF_NEW');
+
+        foreach ($result->result() as $data) {
+            if ($data->DEPARTMENT == $department) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('ORGANIZATION_STAFF_NEW');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return $this->db->error();
+        }
+    }
+
 
 
 }

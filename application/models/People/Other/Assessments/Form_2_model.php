@@ -98,7 +98,39 @@ class Form_2_model extends CI_Model{
         return $output;
     }
 
+    function insert_record($field_data)
+    {
+        $this->db->insert('ASSESSMENT_2_RECORDS_NEW', $field_data);
 
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('ASSESSMENT_2_RECORDS_NEW');
+
+        return $data;
+
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('ASSESSMENT_2_RECORDS_NEW');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 

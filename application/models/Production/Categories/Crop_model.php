@@ -12,13 +12,13 @@ class Crop_model extends CI_Model{
         $this->db->order_by('ID','DESC');
         $this->db->where('STATUS', TRUE);
 
-        return $this->db->get('CROP_PRODUCTION');
+        return $this->db->get('VEGETABLE_PRODUCTION_NEW');
     }
 
     function fetch_single_record($row_id){
         $this->db->where('ID', $row_id);
 
-        $data = $this->db->get('CROP_PRODUCTION');
+        $data = $this->db->get('VEGETABLE_PRODUCTION_NEW');
 
 
         $output = '<div class="table-responsive">
@@ -32,9 +32,10 @@ class Crop_model extends CI_Model{
                     <td>
                         <p>
                             <strong>Individual: </strong>'.$row->INDIVIDUAL.'<br>
-                            <strong>Crop: </strong>'.$row->CROP.'<br>
+                            <strong>Food Stuff: </strong>' . $row->FOOD_STUFF . '<br>
+                            <strong>Category: </strong>' . $row->CATEGORY . '<br>
                             <strong>Income: </strong>'.$row->INCOME.'<br>
-                            <strong>Sales Increase: </strong>'.$row->SALES_INCREASE.'<br>
+                            <strong>Acres Planted: </strong>' . $row->ACRES_PLANTED . '<br>
                         </p>
                     </td>
                 </tr>
@@ -48,7 +49,39 @@ class Crop_model extends CI_Model{
         return $output;
     }
 
+    function insert_record($field_data)
+    {
+        $this->db->insert('VEGETABLE_PRODUCTION_NEW', $field_data);
 
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('VEGETABLE_PRODUCTION_NEW');
+
+        return $data;
+
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('VEGETABLE_PRODUCTION_NEW');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 

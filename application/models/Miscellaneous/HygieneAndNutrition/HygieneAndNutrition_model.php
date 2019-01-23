@@ -47,6 +47,58 @@ class HygieneAndNutrition_model extends CI_Model{
         return $output;
     }
 
+    function insert_record($field_data)
+    {
+        $this->db->insert('HYGIENE_AND_NUTRITION_CHECKLIST', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function fetch_single_row_data_to_edit($row)
+    {
+        $this->db->where('ID', $row);
+
+        $data = $this->db->get('HYGIENE_AND_NUTRITION_CHECKLIST');
+
+        return $data;
+
+    }
+
+    function generate_report_with_all_data()
+    {
+
+    }
+
+    function get_member_group($row_id)
+    {
+        $this->db->where('ID', $row_id);
+
+        $query = $this->db->get('HYGIENE_AND_NUTRITION_CHECKLIST');
+        $group_id = '';
+
+        foreach ($query->result() as $group) {
+            $group_id = $group->GROUP_NAME;
+        }
+
+        return $group_id;
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('HYGIENE_AND_NUTRITION_CHECKLIST');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

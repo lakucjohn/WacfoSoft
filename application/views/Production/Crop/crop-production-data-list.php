@@ -12,18 +12,18 @@
 
 <!-- Example DataTables Card-->
 <hr>
-<p>
-<div class="row nowrap clear-both-sides">
-    <div class="float-content-left">
-
-    </div>
-    <div class="float-content-right">
-        <a class="btn btn-primary btn-md space-sm-right" href="#"><i class="fa fa-plus-circle"></i> New Crop Production Record</a>
-        <a class="btn btn-success btn-md space-sm-right" href="#"><i class="fa fa-filter"></i> Filter</a>
-        <a class="btn btn-danger btn-md space-sm-right" href="#"><i class="fa fa-file-pdf-o"></i> Generate Pdf</a>
-    </div>
-</div>
-</p>
+<!--<p>-->
+<!--<div class="row nowrap clear-both-sides">-->
+<!--    <div class="float-content-left">-->
+<!---->
+<!--    </div>-->
+<!--    <div class="float-content-right">-->
+<!--        <a class="btn btn-primary btn-md space-sm-right" href="#"><i class="fa fa-plus-circle"></i> New Crop Production Record</a>-->
+<!--        <a class="btn btn-success btn-md space-sm-right" href="#"><i class="fa fa-filter"></i> Filter</a>-->
+<!--        <a class="btn btn-danger btn-md space-sm-right" href="#"><i class="fa fa-file-pdf-o"></i> Generate Pdf</a>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</p>-->
 <hr>
 <div class="card mb-3">
     <div class="card-header">
@@ -34,7 +34,8 @@
                 <thead>
                 <tr>
                     <th>Individual</th>
-                    <th>Crop</th>
+                    <th>Food Stuff</th>
+                    <th>Category</th>
                     <th>Income</th>
                     <th>Options</th>
                 </tr>
@@ -45,9 +46,10 @@
 
                 foreach($data_set->result() as $row){
                     echo '
-                        <tr title="Child Id">
+                        <tr title="' . $row->INDIVIDUAL . '">
                             <td>'.$row -> INDIVIDUAL.'</td>
-                            <td>'.$row -> CROP.'</td>
+                            <td>' . $row->FOOD_STUFF . '</td>
+                            <td>' . $row->CATEGORY . '</td>
                             <td>'.$row -> INCOME.'</td>
                             <td>
                                 <a href="'.site_url("production/crop%20production-details/edit/$row->ID").'" class="btn btn-link" title="Edit Training Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>

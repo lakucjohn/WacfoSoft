@@ -36,7 +36,16 @@ class Challenge extends AuthContentController {
     }
 
     public function edit(){
-        echo 'OK';
+        $data = array(
+
+            'title' => 'Edit Production Challenge',
+
+        );
+
+        $data['data_set'] = $this->challenges_model->fetch();
+
+        $this->template->load('default', 'Production/Challenges/challenge-edit', $data);
+
 
     }
 

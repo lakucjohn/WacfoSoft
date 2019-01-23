@@ -32,22 +32,37 @@
 
             <p>
                 <label for="group_parish">Parish: </label>
-                <select name="group_parish" id="group_parish" class="form-control">
+                <select name="group_parish" id="group_parish" class="form-control"
+                        onchange="fetch_villages(this.value);">
                     <option value="">Select Parish</option>
+
+                    <?php
+                    foreach ($parish_list->result() as $row) {
+                        echo '<option value="' . $row->ID . '">' . $row->PARISH . '</option>';
+                    }
+                    ?>
                 </select>
             </p>
 
             <p>
+            <div id="group_village_div">
                 <label for="group_village">Village: </label>
-                <select name="group_village" id="group_village" class="form-control">
+                <select name="group_village" id="group_village" class="form-control" required>
                     <option value="">Select Village</option>
                 </select>
+            </div>
             </p>
 
             <p>
                 <label for="group_type">Livelihood Category: </label>
-                <select name="group_type" id="group_type" class="form-control">
+                <select name="group_type" id="group_type" class="form-control" required>
                     <option value="">Select Livelihood Category</option>
+
+                    <?php
+                    foreach ($category_list->result() as $row) {
+                        echo '<option value="' . $row->ID . '">' . $row->CATEGORYNAME . '</option>';
+                    }
+                    ?>
                 </select>
             </p>
 
@@ -66,4 +81,19 @@
     </div>
     <hr>
 </div>
-</form>
+</form></form>
+
+<script type="text/javascript">
+    function fetch_villages(parish_id) {
+        if (parish_id !== '') {
+            $.ajax({
+                url: "<?php echo base_url('Settings/Welcome/settings/fetch_villages_for_parish_for_group');?>",
+                method: "POST",
+                data: {parish_id: parish_id},
+                success: function (data) {
+                    document.getElementById('group_village_div').innerHTML = data;
+                }
+            });
+        }
+    }
+</script>
