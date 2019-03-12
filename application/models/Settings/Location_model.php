@@ -177,8 +177,8 @@ class Location_model extends CI_Model
 
         $query = $this->db->get('SUBCOUNTY');
 
-        $output = '<label for="subcounty_county_input">Sub-County:</label>
-                    <select name="subcounty_county_input" id="subcounty_county_input" class="form-control" required>
+        $output = '<label for="parish_subcounty_input">Sub-County:</label>
+                    <select name="parish_subcounty_input" id="parish_subcounty_input" class="form-control" required>
                         <option value="">Select Sub-County</option>';
 
         foreach ($query->result() as $row) {
@@ -273,6 +273,149 @@ class Location_model extends CI_Model
 
     }
 
+    function create_county($field_data)
+    {
+
+        $this->db->insert('COUNTY', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function edit_county($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('COUNTY');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function create_subcounty($field_data)
+    {
+
+        $this->db->insert('SUBCOUNTY', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function edit_subcounty($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('SUBCOUNTY');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function create_parish($field_data)
+    {
+
+        $this->db->insert('PARISH', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function edit_parish($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('PARISH');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function create_village($field_data)
+    {
+
+        $this->db->insert('VILLAGE', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function edit_village($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('VILLAGE');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function get_county_name($county_id)
+    {
+        $this->db->select('COUNTY');
+        $this->db->where('ID', $county_id);
+        $query = $this->db->get('COUNTY');
+
+        foreach ($query->result() as $row) {
+            return $row->COUNTY;
+        }
+    }
+
+    function get_subcounty_name($subcounty_id)
+    {
+        $this->db->select('SUBCOUNTY');
+        $this->db->where('ID', $subcounty_id);
+        $query = $this->db->get('SUBCOUNTY');
+
+        foreach ($query->result() as $row) {
+            return $row->SUBCOUNTY;
+        }
+    }
+
+    function get_parish_name($parish_id)
+    {
+        $this->db->select('PARISH');
+        $this->db->where('ID', $parish_id);
+        $query = $this->db->get('PARISH');
+
+        foreach ($query->result() as $row) {
+            return $row->PARISH;
+        }
+    }
+
+    function get_village_name($village_id)
+    {
+        $this->db->select('VILLAGE');
+        $this->db->where('ID', $village_id);
+        $query = $this->db->get('VILLAGE');
+
+        foreach ($query->result() as $row) {
+            return $row->VILLAGE;
+        }
+    }
 }
 
 ?>

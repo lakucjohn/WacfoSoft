@@ -53,10 +53,10 @@
                             <td>'.$row -> USED_UNDERGROUND_WATER.'</td>
                             <td>'.$row -> USED_PESTICIDES.'</td>
                             <td>
-                                <a href="' . site_url("production/adoption%20to%20technology-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Survey Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Crop Misean Cara Baseline Survey" data-toggle="modal" data-target="#deleteTechnologyAdoptionModal"><i class="fa fa-remove fa-2x" style="color: red;"></i></button>
-                                <a href="' . site_url("production/adoption%20to%20technology-details/$row->ID") . '" class="btn btn-link" title="Read More about this Survey"><i class="fa fa-info-circle fa-2x"></i></a>
-                                <a href="' . site_url("production/adoption%20to%20technology-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Crop Survey Information"><i class="fa fa-file-pdf-o fa-2x" style="color:red; "></i></a>
+                                <a href="' . site_url("production/adoption%20to%20technology-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Survey Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                <a class="btn btn-link" title="Delete This Crop Misean Cara Baseline Survey" href="' . base_url('delete_data/delete_row/MISEAN_CARA_BENEFICIARIES_NEW/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
+                                <a href="' . site_url("production/adoption%20to%20technology-details/$row->ID") . '" class="btn btn-link" title="Read More about this Survey"><i class="fa fa-info-circle fa-1x"></i></a>
+                                <a href="' . site_url("production/adoption%20to%20technology-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Crop Survey Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>
                         </tr>
                     ';

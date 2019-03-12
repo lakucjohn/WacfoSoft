@@ -55,8 +55,8 @@ class CropProduction extends MainController {
     public function details()
     {
 
-        if($this->uri->segment(2)){
-            $row_id = $this->uri->segment(2);
+        if ($this->uri->segment(3)) {
+            $row_id = $this->uri->segment(3);
 
             $data['title'] = 'Crop Production Details';
 

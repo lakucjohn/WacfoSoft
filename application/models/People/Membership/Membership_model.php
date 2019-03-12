@@ -7,7 +7,15 @@
  * Time: 9:23 PM
  */
 require_once (APPPATH.'models/Header.php');
+require_once(APPPATH . 'models/Trainings/Training_model.php');
 class Membership_model extends CI_Model{
+
+    private $training_model;
+
+    public function __construct()
+    {
+        $this->training_model = new Training_model();
+    }
 
     function fetch(){
         $this->db->order_by('MEMBERSHIP_ID', 'ASC');
@@ -39,6 +47,7 @@ class Membership_model extends CI_Model{
         $data = $this->db->get('MEMBERSHIP');
 
 
+        $member_id = '';
         $output = '<div class="table-responsive">
                     <div class="card w-100">
                     <table width="100%">
@@ -64,6 +73,7 @@ class Membership_model extends CI_Model{
 
 
         foreach($data->result() as $row) {
+            $member_id = $row->MEMBERSHIP_ID;
             $output .= '
                 
                 <tr title="' . $row->NAME . '">
@@ -98,48 +108,49 @@ class Membership_model extends CI_Model{
         }
 
 
-        $output.='<tr>
+        $output .= '<tr>
                     <td>
-                        <hr>
+                        &nbsp;
                     </td>
                   </tr>';
 
-        $output.='<tr style="font-size: 18px; font-weight: bold;">
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
                     <td>
-                        SUPPORT RENDERED
+                    <div class="row">
+                        
+                        <div class="col-md-8">SUPPORT HISTORY</div>
+                        <div class="col-md-2"><!--<a class="btn btn-primary">New Support</a>-->
+                            <a class="btn btn-primary" title="Record New Support" href="' . base_url("People/Groupings/groupings/create_support/$member_id") . '"><i class="fa fa-plus-circle"></i> New Support</a>
+                        </div>
+                        <!--<div class="col-md-2"><a class="btn btn-success">New Outcome</a> </div>-->
+                    </div>
                     </td>
                   </tr>';
 
 
-        foreach($data->result() as $row){
+        foreach ($data->result() as $row) {
             $output .= '
                 
-                <tr title="'.$row->NAME.'">
+                <tr title="' . $row->NAME . '">
                     <td>
                     
-                        <table style="width: 100%; font-size: 18px;" border="0" class="table">
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Membership Id :</td>
-                                <td style="width: 75%">'.$row->MEMBERSHIP_ID.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Member\'s Name :</td>
-                                <td style="width: 75%">'.$row->NAME.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Gender :</td>
-                                <td style="width: 75%">'.$row->SEX.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Date of birth :</td>
-                                <td style="width: 75%">'.$row->DATE_OF_BIRTH.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Joining Date :</td>
-                                <td style="width: 75%">'.$row->DATE_OF_JOINING.'</td>
-                            </tr>
-                        
-                        </table>
+                        <table style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered" id="member_support_records">
+                            <tr>
+                                <th style="width: 10%">Date of Support</th>
+                                <th style="width:30%;">Support Rendered</th>
+                                <th style="width: 40%">OUTCOME</th>
+                                <th style="width: 10%">Realisation Date</th>
+                            </tr>';
+            if (empty($this->fetch_support_for_this_entity($member_id))) {
+                $output .= '<tr style="text-align: center; color: red;">
+                                            <td colspan="4">No Support Provided</td>
+                                            
+                                        </tr>';
+            } else {
+                $output .= $this->fetch_support_for_this_entity($member_id);
+            }
+
+            $output .= '</table>
                         
                     </td>
                 </tr>
@@ -155,7 +166,7 @@ class Membership_model extends CI_Model{
 
         $output.='<tr style="font-size: 18px; font-weight: bold;">
                     <td>
-                        TRAININGS ATTENDED
+                        TRAININGS PROVIDED
                     </td>
                   </tr>';
 
@@ -166,29 +177,22 @@ class Membership_model extends CI_Model{
                 <tr title="'.$row->NAME.'">
                     <td>
                     
-                        <table style="width: 100%; font-size: 18px;" border="0" class="table">
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Membership Id :</td>
-                                <td style="width: 75%">'.$row->MEMBERSHIP_ID.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Member\'s Name :</td>
-                                <td style="width: 75%">'.$row->NAME.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Gender :</td>
-                                <td style="width: 75%">'.$row->SEX.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Date of birth :</td>
-                                <td style="width: 75%">'.$row->DATE_OF_BIRTH.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Joining Date :</td>
-                                <td style="width: 75%">'.$row->DATE_OF_JOINING.'</td>
-                            </tr>
-                        
-                        </table>
+                        <table style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered">
+                            <tr>
+                                <th style="width: 10%">Date of Training</th>
+                                <th style="width:30%;">Course / Topic</th>
+                                <th style="width: 40%">Trainer</th>
+                                <th style="width: 10%">Venue</th>
+                            </tr>';
+            if (empty($this->training_model->fetch_training_information_for_this_member($row->MEMBERSHIP_ID))) {
+                $output .= '<tr style="text-align: center; color: red;">
+                                                <td colspan="4">No Training Provided</td>
+                                                
+                                            </tr>';
+            } else {
+                $output .= $this->training_model->fetch_training_information_for_this_member($row->MEMBERSHIP_ID);
+            }
+            $output .= '</table>
                         
                     </td>
                 </tr>
@@ -204,6 +208,212 @@ class Membership_model extends CI_Model{
         return $output;
 
 
+    }
+
+    function fetch_support_for_this_entity($entity)
+    {
+        $this->db->where('BENEFICIARY', $entity);
+        $this->db->where('STATUS', TRUE);
+
+        $query_results = $this->db->get('SUPPORT_RENDERED');
+
+        $output = '';
+        foreach ($query_results->result() as $row) {
+            $output .= '<tr>
+                            <td>' . $row->DATE_OF_SUPPORT . '</td>
+                            <td>' . $row->SUPPORT . '</td>';
+            if (!empty($this->get_support_outcome_for_this_support($row->ID))) {
+                $output .= $this->get_support_outcome_for_this_support($row->ID);
+            } else {
+                $output .= '<td>&nbsp;</td>';
+                $output .= '<td>&nbsp;</td>';
+            }
+            $output .= '</tr>';
+        }
+
+        return $output;
+
+    }
+
+    function get_support_outcome_for_this_support($support_id)
+    {
+        $this->db->where('SUPPORT_ID', $support_id);
+        $this->db->where('STATUS', TRUE);
+
+        $query_results = $this->db->get('SUPPORT_OUTCOMES');
+
+        $output = '';
+        foreach ($query_results->result() as $row) {
+            $output .= '<td>' . $row->OUTCOME . '</td>
+            <td>' . $row->TIMESTAMP . '</td>';
+        }
+
+        return $output;
+
+    }
+
+    function fetch_single_member_and_print($row_id)
+    {
+        $this->db->where('ID', $row_id);
+
+        $data = $this->db->get('MEMBERSHIP');
+
+
+        $member_id = '';
+        $output = '<div class="table-responsive">
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
+
+        $output .= '<tr style="text-align: center">
+                    <td>
+                        ' . showHeader() . '
+                    </td>
+                  </tr>';
+
+        $output.='<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output.='<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        PERSONAL DETAILS
+                    </td>
+                  </tr>';
+
+
+        foreach ($data->result() as $row) {
+            $member_id = $row->MEMBERSHIP_ID;
+            $output .= '
+                
+                <tr title="' . $row->NAME . '">
+                    <td>
+                    
+                        <table style="width: 100%; font-size: 18px;" border="0" class="table">
+                            <tr style="white-space: nowrap; height: 40px;">
+                                <td style="width:20%; text-align: right;">Membership Id :</td>
+                                <td style="width: 75%">'.$row->MEMBERSHIP_ID.'</td>
+                            </tr>
+                            <tr style="white-space: nowrap; height: 40px;">
+                                <td style="width:20%; text-align: right;">Member\'s Name :</td>
+                                <td style="width: 75%">'.$row->NAME.'</td>
+                            </tr>
+                            <tr style="white-space: nowrap; height: 40px;">
+                                <td style="width:20%; text-align: right;">Gender :</td>
+                                <td style="width: 75%">'.$row->SEX.'</td>
+                            </tr>
+                            <tr style="white-space: nowrap; height: 40px;">
+                                <td style="width:20%; text-align: right;">Date of birth :</td>
+                                <td style="width: 75%">'.$row->DATE_OF_BIRTH.'</td>
+                            </tr>
+                            <tr style="white-space: nowrap; height: 40px;">
+                                <td style="width:20%; text-align: right;">Joining Date :</td>
+                                <td style="width: 75%">'.$row->DATE_OF_JOINING.'</td>
+                            </tr>
+                        
+                        </table>
+                        
+                    </td>
+                </tr>';
+        }
+
+
+        $output .= '<tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                    <div class="row">
+                        
+                        <div class="col-md-8">SUPPORT HISTORY</div>
+                    </div>
+                    </td>
+                  </tr>';
+
+
+        foreach ($data->result() as $row) {
+            $output .= '
+                
+                <tr title="' . $row->NAME . '">
+                    <td>
+                    
+                        <table style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered" id="member_support_records">
+                            <tr>
+                                <th style="width: 10%">Date of Support</th>
+                                <th style="width:30%;">Support Rendered</th>
+                                <th style="width: 40%">OUTCOME</th>
+                                <th style="width: 10%">Realisation Date</th>
+                            </tr>';
+            if (empty($this->fetch_support_for_this_entity($member_id))) {
+                $output .= '<tr style="text-align: center; color: red;">
+                                            <td colspan="4">No Support Provided</td>
+                                            
+                                        </tr>';
+            } else {
+                $output .= $this->fetch_support_for_this_entity($member_id);
+            }
+
+            $output .= '</table>
+                        
+                    </td>
+                </tr>
+                ';
+        }
+
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        TRAININGS PROVIDED
+                    </td>
+                  </tr>';
+
+
+        foreach ($data->result() as $row) {
+            $output .= '
+                
+                <tr title="' . $row->NAME . '">
+                    <td>
+                    
+                        <table style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered">
+                            <tr>
+                                <th style="width: 10%">Date of Training</th>
+                                <th style="width:30%;">Course / Topic</th>
+                                <th style="width: 40%">Trainer</th>
+                                <th style="width: 10%">Venue</th>
+                            </tr>';
+            if (empty($this->training_model->fetch_training_information_for_this_member($row->MEMBERSHIP_ID))) {
+                $output .= '<tr style="text-align: center; color: red;">
+                                                <td colspan="4">No Training Provided</td>
+                                                
+                                            </tr>';
+            } else {
+                $output .= $this->training_model->fetch_training_information_for_this_member($row->MEMBERSHIP_ID);
+            }
+            $output .= '</table>
+                        
+                    </td>
+                </tr>
+                ';
+        }
+
+
+        $output .= '
+                            </table>
+                        </div>
+                    </div>';
+
+        return $output;
     }
 
     function return_group_members_list($group_name)
@@ -1021,6 +1231,7 @@ class Membership_model extends CI_Model{
     {
         $this->db->where('GROUPS', $group_id);
         $this->db->where('STATUS', TRUE);
+        $this->db->order_by('NAME', 'ASC');
 
         $query = $this->db->get('MEMBERSHIP');
 
@@ -1029,9 +1240,9 @@ class Membership_model extends CI_Model{
             $output = '<table border="1px solid" style="border-collapse: collapse;">';
             $output .= '<tr>
                             <th style="width: 80px;">#</th>
-                            <th style="width: 200px;;">INDIVIDUAL ID</th>
-                            <th style="width: 200px;;">NAME</th>
-                            <th style="width: 200px;;">SIGNATURE</th>
+                            <th style="width: 200px;">INDIVIDUAL ID</th>
+                            <th style="width: 200px;">NAME</th>
+                            <th style="width: 200px;">SIGNATURE</th>
                         </tr>
                         ';
             foreach ($query->result() as $row) {
@@ -1041,6 +1252,40 @@ class Membership_model extends CI_Model{
                         <td>' . $row->MEMBERSHIP_ID . '</td>
                         <td>' . $row->NAME . '</td>
                         <td>&nbsp;</td>
+                    </tr>
+                ';
+            }
+            $output .= '</table>';
+
+            return $output;
+        }
+
+
+    }
+
+    function show_blank_registration_sheet_for_this_group($group_id)
+    {
+        $this->db->where('GROUPS', $group_id);
+        $this->db->where('STATUS', TRUE);
+        $this->db->order_by('NAME', 'ASC');
+
+        $query = $this->db->get('MEMBERSHIP');
+
+        if ($query->num_rows() > 0) {
+            $counter = 0;
+            $output = '<table class="table table-striped" border="1px solid" style="border-collapse: collapse;">';
+            $output .= '<tr>
+                            <th style="width: 80px; text-align: center"><input type="checkbox" id="select-all" onchange="select_all_members();" /> </th>
+                            <th style="width: 400px;">INDIVIDUAL ID</th>
+                            <th style="width: 400px;">NAME</th>
+                        </tr>
+                        ';
+            foreach ($query->result() as $row) {
+                $output .= '
+                    <tr style="height: 30px;">
+                        <td style="text-align: center;"><input type="checkbox"  value="' . $row->MEMBERSHIP_ID . '" class="group_members_trained" name="training_group_members_attendants[]" id="training_group_members_attendants" onchange="check_if_a_field_is_unchecked();" /> </td>
+                        <td>' . $row->MEMBERSHIP_ID . '</td>
+                        <td>' . $row->NAME . '</td>
                     </tr>
                 ';
             }
@@ -1065,5 +1310,6 @@ class Membership_model extends CI_Model{
     }
 
 }
+
 
 ?>

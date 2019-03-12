@@ -28,6 +28,7 @@ class Children extends AuthContentController {
             'title' => 'Children | WACFO',
 
         );
+        $data['disability_list'] = $this->disability_model->fetch();
         $data['children_list'] = $this->children_model->fetch();
 
         $this->template->load('default', 'People/Children/Data/children-data-list', $data);
@@ -185,6 +186,21 @@ class Children extends AuthContentController {
     }
 
     public function generate_pdf_document(){
+
+        if ($this->uri->segment(3)) {
+
+            $row_id = $this->uri->segment(3);
+            $page_data = $this->children_model->fetch_single_record($row_id);
+
+            $html_content = '<h3>About ' . $row_id . '</h3>';
+            $html_content .= $page_data;
+
+            $this->pdf->loadHtml($html_content);
+            $this->pdf->setPaper('A4', 'landscape');
+            $this->pdf->render();
+
+            $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+        }
 
     }
 

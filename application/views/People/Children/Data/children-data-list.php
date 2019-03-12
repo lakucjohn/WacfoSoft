@@ -48,11 +48,20 @@
                     <td>'.$row -> NAME.'</td>
                     <td>'.$row -> SEX.'</td>
                     <td>'.$row -> DATE_OF_BIRTH.'</td>
-                    <td>'.$row -> VULNERABILITY.'</td>
+                    <td>';
+
+            foreach ($disability_list->result() as $disability) {
+                if ($disability->DISABILITY_ID == $row->VULNERABILITY) {
+                    echo $disability->DISABILITY_NAME;
+                }
+            }
+
+            echo '</td>
                     <td>'.$row -> DATE_OF_JOINING.'</td>
                     <td>
                         <a href="' . site_url("child-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Child Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                        <button class="btn btn-link" title="Delete This Child" data-toggle="modal" data-target="#deleteChildModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                        <!-- <button class="btn btn-link" title="Delete This Child" data-toggle="modal" data-target="#deleteChildModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                            
+                        <a class="btn btn-link" title="Delete This Child" href="' . base_url('delete_data/delete_row/CHILDREN/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                         <a href="' . site_url("child-details/$row->ID") . '" class="btn btn-link" title="Read More about this Child"><i class="fa fa-info-circle fa-1x"></i></a>
                         <a href="' . site_url("child-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Child\'s Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                     </td>

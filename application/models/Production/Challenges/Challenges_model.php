@@ -6,6 +6,7 @@
  * Time: 9:23 PM
  */
 
+require_once(APPPATH . 'models/Header.php');
 class Challenges_model extends CI_Model{
 
     function fetch(){
@@ -22,23 +23,56 @@ class Challenges_model extends CI_Model{
 
 
         $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
-
-            foreach($data->result() as $row){
-                $output .= '
-                
-                <tr title="'.$row->NAME.'">
+        $output .= '<tr style="text-align: center">
                     <td>
-                        <p>
-                            <strong>Group: </strong>'.$row->GROUP_NAME.'<br>
-                            <strong>Vegetable Production Problem: </strong>'.$row->VEGETABLE_PRODUCTION_PROBLEMS.'<br>
-                            <strong>Crop Production Problem: </strong>'.$row->CROP_PRODUCTION_PROBLEMS.'<br>
-                        </p>
+                        ' . showHeader() . '
                     </td>
-                </tr>
-                ';
-            }
+                  </tr>';
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        GROUP INFORMATION
+                    </td>
+                  </tr>';
+
+        $output .= '</table>';
+
+        $output .= '<table class="table table-bordered table-responsive" width="100%" cellspacing="50" cellpadding="50" style="border-collapse: collapse;">';
+
+
+        foreach ($data->result() as $row) {
+
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Mention problems affecting vegetable production</strong></td>
+                                <td colspan="3"><strong> Mention the challenges faced in marketing vegetable products</strong></td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3">' . $row->VEGETABLE_PRODUCTION_PROBLEMS . '</td>
+                                <td colspan="3">' . $row->VEGETABLE_MARKETING_PROBLEMS . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Mention problems affecting crop production</strong></td>
+                                <td colspan="3"><strong>Problems hindering marketing crop products</strong></td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3">' . $row->CROP_PRODUCTION_PROBLEMS . '</td>
+                                <td colspan="3">' . $row->CROP_MARKETING_PROBLEMS . '</td>
+                            </tr>';
+        }
 
 
             $output .= '</table>

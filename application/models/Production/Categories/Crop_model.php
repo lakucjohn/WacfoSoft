@@ -6,6 +6,7 @@
  * Time: 9:23 PM
  */
 
+require_once(APPPATH . 'models/Header.php');
 class Crop_model extends CI_Model{
 
     function fetch(){
@@ -22,25 +23,56 @@ class Crop_model extends CI_Model{
 
 
         $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
-
-            foreach($data->result() as $row){
-                $output .= '
-                
-                <tr title="'.$row->NAME.'">
+        $output .= '<tr style="text-align: center">
                     <td>
-                        <p>
-                            <strong>Individual: </strong>'.$row->INDIVIDUAL.'<br>
-                            <strong>Food Stuff: </strong>' . $row->FOOD_STUFF . '<br>
-                            <strong>Category: </strong>' . $row->CATEGORY . '<br>
-                            <strong>Income: </strong>'.$row->INCOME.'<br>
-                            <strong>Acres Planted: </strong>' . $row->ACRES_PLANTED . '<br>
-                        </p>
+                        ' . showHeader() . '
                     </td>
-                </tr>
-                ';
-            }
+                  </tr>';
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        GROUP INFORMATION
+                    </td>
+                  </tr>';
+
+        $output .= '</table>';
+
+        $output .= '<table class="table table-bordered" width="100%" cellspacing="50" cellpadding="50" style="border-collapse: collapse;">';
+
+        $output .= '<tr>
+                        <td>Individual ID</td>
+                        <td>Food Stuff</td>
+                        <td>Category</td>
+                        <td>Acres</td>
+                        <td>Yield</td>
+                        <td>Quantity Sold</td>
+                        <td>Income</td>
+                    </tr>';
+        foreach ($data->result() as $row) {
+            $output .= '<tr>';
+
+            $output .= '<td>' . $row->INDIVIDUAL . '</td>';
+            $output .= '<td>' . $row->FOOD_STUFF . '</td>';
+            $output .= '<td>' . $row->CATEGORY . '</td>';
+            $output .= '<td>' . $row->ACRES_PLANTED . '</td>';
+            $output .= '<td>' . $row->YIELD_OBTAINED . '</td>';
+            $output .= '<td>' . $row->QUANTITY_SOLD . '</td>';
+            $output .= '<td>' . $row->INCOME . '</td>';
+
+            $output .= '</tr>';
+
+
+        }
 
 
             $output .= '</table>

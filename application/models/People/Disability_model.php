@@ -36,7 +36,22 @@ class Disability_model extends CI_Model
         $children_query = $this->db->get('CHILDREN');
         $next_id = $children_query->num_rows() + 1;
 
-        return $prefix_code . '/' . $next_id;
+        $child_id = $prefix_code . '/' . $next_id;
+
+        while (true) {
+            $this->db->where('CHILD_ID', $child_id);
+            $query_result = $this->db->get('CHILDREN');
+
+            if ($query_result->num_rows() > 0) {
+                $next_id++;
+                $child_id = $prefix_code . '/' . $next_id;
+            } else {
+                $child_id = $prefix_code . '/' . $next_id;
+                break;
+            }
+        }
+
+        return $child_id;
 
     }
 

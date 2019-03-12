@@ -28,8 +28,7 @@ class Groupings extends AuthContentController {
             'title' => 'Livelihood Groups | WACFO',
 
         );
-
-
+        $data['livelihood_categories'] = $this->grouping_model->fetch_all_categories();
 
             $data['group_list'] = $this->grouping_model->fetch();
 
@@ -149,7 +148,7 @@ class Groupings extends AuthContentController {
         if($this->uri->segment(3)) {
 
             $row_id = $this->uri->segment(3);
-            $group_info =  $this->grouping_model->fetch_single_record($row_id);
+            $group_info = $this->grouping_model->fetch_single_group_and_print($row_id);
 
             $html_content = '<h3>About '.$row_id.'</h3>';
             $html_content .= $group_info;
@@ -159,6 +158,40 @@ class Groupings extends AuthContentController {
             $this->pdf->render();
 
             $this->pdf->stream("".$row_id.".pdf",array("Attachment"=>0));
+        }
+
+    }
+
+    public function create_support()
+    {
+        $data = array();
+        $data['title'] = 'Support this Entity';
+        $group_id = $this->uri->segment(5) . '/' . $this->uri->segment(6) . '/' . $this->uri->segment(7);
+
+        $data['group_id'] = $group_id;
+        $support = $this->input->post('support_item');
+        $date = $this->input->post('date_of_support');
+        $group_supported = $this->input->post('group_id');
+
+        # Performing Validation Checks
+        $this->form_validation->set_rules('date_of_support', 'Date', 'required');
+        $this->form_validation->set_rules('support_item[]', 'Support Items', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'People/Livelihood/Groupings/Registration/support-registration-form', $data);
+        } else {
+
+            $supported_with = implode(', ', $support);
+
+            $field_data = array(
+                'DATE_OF_SUPPORT' => $date,
+                'BENEFICIARY' => $group_supported,
+                'CATEGORY' => 'Group',
+                'SUPPORT' => $supported_with,
+            );
+            $this->grouping_model->insert_support_record($field_data);
+
+            redirect($_SERVER['HTTP_REFERER']);
         }
 
     }

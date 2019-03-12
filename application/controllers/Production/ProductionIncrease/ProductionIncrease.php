@@ -55,13 +55,13 @@ class ProductionIncrease extends AuthContentController
     public function details()
     {
 
-        if($this->uri->segment(2)){
-            $row_id = $this->uri->segment(2);
+        if ($this->uri->segment(3)) {
+            $row_id = $this->uri->segment(3);
 
-            $data['title'] = 'Marketing Details';
+            $data['title'] = 'Increase in Productivity Details';
 
-            $data['marketing_info'] = $this->productionIncrease_model->fetch_single_record($row_id);
-            $this->template->load('default', 'Production-Increase/increase_in_production_details', $data);
+            $data['productivity_increase_info'] = $this->productionIncrease_model->fetch_single_record($row_id);
+            $this->template->load('default', 'Production/Production-Increase/increase_in_production_details', $data);
         }
 
     }

@@ -71,7 +71,7 @@ class Visit extends AuthContentController {
                 'CHILD_ID_VISITED' => $child_id_visited,
                 'PROJECT' => $project_visit_type,
                 'VILLAGE' => $village,
-                'PARISH	' => $parish,
+                'PARISH' => $parish,
                 'SUBCOUNTY' => $subcounty,
                 'ACTIVITY_CARRIED_OUT' => $child_visit_activities,
                 'NEXT_VISIT_ACTIVITY' => $child_next_visit_activities,

@@ -6,6 +6,7 @@
  * Date: 12/16/18
  * Time: 9:23 PM
  */
+require_once(APPPATH . 'models/Header.php');
 class ProductionIncrease_model extends CI_Model
 {
 
@@ -25,24 +26,82 @@ class ProductionIncrease_model extends CI_Model
 
 
         $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
+        $output .= '<tr style="text-align: center">
+                    <td>
+                        ' . showHeader() . '
+                    </td>
+                  </tr>';
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        GROUP INFORMATION
+                    </td>
+                  </tr>';
+
+        $output .= '</table>';
+
+        $output .= '<table class="table table-bordered" width="100%" cellspacing="50" cellpadding="50" style="border-collapse: collapse;">';
+
+
+        $output .= '<tr><td colspan="6">&nbsp;</td></tr>';
+
+        $output .= '<tr><td colspan="6">Table 3.0: Vegetable Product </td></tr>';
 
         foreach ($data->result() as $row) {
-            $output .= '
-                
-                <tr title="' . $row->NAME . '">
-                    <td>
-                        <p>
-                            <strong>Group: </strong>' . $row->GROUP_ID . '<br>
-                            <strong>Percentage Increase in Vegetable Production: </strong>' . $row->INCREASE_IN_VEGETABLE_PRODUCTION . '<br>
-                            <strong>Percentage Increase in Vegetable Sales: </strong>' . $row->INCREASE_IN_VEGETABLE_SALES . '<br>
-                            <strong>Percentage Increase in Crop Production: </strong>' . $row->INCREASE_IN_CROP_PRODUCTION . '<br>
-                            <strong>Percentage Increase in Crop Sales: </strong>' . $row->INCREASE_IN_CROP_SALES . '<br>
-                        </p>
-                    </td>
-                </tr>
-                ';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>% increase in value of sales (UGX)</strong></td>
+                                <td colspan="3">' . $row->INCREASE_IN_VEGETABLE_SALES . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>% increase in productivity (Kg/Acre)</strong></td>
+                                <td colspan="3">' . $row->INCREASE_IN_VEGETABLE_PRODUCTION . '</td>
+                            </tr>';
+        }
+
+        $output .= '<tr><td colspan="6">&nbsp;</td></tr>';
+
+        $output .= '<tr><td colspan="6">Table 4.0: Crop Product </td></tr>';
+
+        foreach ($data->result() as $row) {
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>% increase in value of sales (UGX)</strong></td>
+                                <td colspan="3">' . $row->INCREASE_IN_CROP_SALES . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>% increase in productivity (Kg/Acre)</strong></td>
+                                <td colspan="3">' . $row->INCREASE_IN_CROP_PRODUCTION . '</td>
+                            </tr>';
+        }
+
+        $output .= '<tr><td colspan="6">&nbsp;</td></tr>';
+
+        $output .= '<tr><td colspan="6">Table 7.0: Fish Farming</td></tr>';
+
+        foreach ($data->result() as $row) {
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>% increase in value of sales (UGX)</strong></td>
+                                <td colspan="3">' . $row->INCREASE_IN_FISH_SALES . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>% increase in productivity (Kg/Acre)</strong></td>
+                                <td colspan="3">' . $row->INCREASE_IN_FISH_PRODUCTIVITY . '</td>
+                            </tr>';
         }
 
 

@@ -80,7 +80,8 @@
                             <td>'.$row -> NAME_OF_VULNERABLE.'</td>
                             <td>
                                 <a href="'.site_url("miscellaneous%20baseline%20survey-details/edit/$row->ID").'" class="btn btn-link" title="Edit Porticus Baseline Survey Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Porticus Baseline Survey Information" data-toggle="modal" data-target="#deleteBaselineSurveyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                <!-- <button class="btn btn-link" title="Delete This Porticus Baseline Survey Information" data-toggle="modal" data-target="#deleteBaselineSurveyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                           
+                                <a class="btn btn-link" title="Delete This Record" href="' . base_url('delete_data/delete_row/PORTICUS_BASELINE_ASSESSMENTS/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                 <a href="'.site_url("miscellaneous%20baseline%20survey-details/$row->ID").'" class="btn btn-link" title="Read More about this Porticus Baseline Survey Information"><i class="fa fa-info-circle fa-1x"></i></a>
                                 <a href="'.site_url("miscellaneous%20baseline%20survey-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Porticus Baseline Survey Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>

@@ -28,12 +28,11 @@ class Courses extends AuthContentController {
             'title' => 'Courses | WACFO',
 
         );
+        $data['livelihood_categories'] = $this->grouping_model->fetch_all_categories();
 
+        $data['data_set'] = $this->courses_model->fetch();
 
-
-            $data['data_set'] = $this->courses_model->fetch();
-
-            $this->template->load('default', 'Training/Courses_And_Topics/Data/courses-and-topics-data-list', $data);
+        $this->template->load('default', 'Training/Courses_And_Topics/Data/courses-and-topics-data-list', $data);
 
 
 
@@ -157,7 +156,7 @@ class Courses extends AuthContentController {
         if($this->uri->segment(3)) {
 
             $row_id = $this->uri->segment(3);
-            $group_info =  $this->grouping_model->fetch_single_record($row_id);
+            $group_info = $this->courses_model->fetch_single_record($row_id);
 
             $html_content = '<h3>About '.$row_id.'</h3>';
             $html_content .= $group_info;

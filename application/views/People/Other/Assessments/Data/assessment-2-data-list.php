@@ -62,7 +62,8 @@
                     <td>'.$row -> VENUE_FOR_SCREENING.'</td>
                     <td>
                         <a href="' . site_url("assessments/form-2-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Assessment 2 Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                        <button class="btn btn-link" title="Delete This Child" data-toggle="modal" data-target="#deleteAssessment2Modal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                        <!-- <button class="btn btn-link" title="Delete This Child" data-toggle="modal" data-target="#deleteAssessment2Modal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                            
+                        <a class="btn btn-link" title="Delete This Record" href="' . base_url('delete_data/delete_row/ASSESSMENT_2_RECORDS_NEW/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                         <a href="' . site_url("assessments/form-2-details/$row->ID") . '" class="btn btn-link" title="Read More about this Assessment"><i class="fa fa-info-circle fa-1x"></i></a>
                         <a href="' . site_url("assessments/form-2/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Assessment Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                     </td>

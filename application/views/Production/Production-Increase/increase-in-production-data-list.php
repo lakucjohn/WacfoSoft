@@ -59,7 +59,7 @@
                             <td>' . $row->INCREASE_IN_FISH_SALES . '</td>
                             <td style="white-space: nowrap;">
                                 <a href="' . site_url("production/increase/edit/$row->ID") . '" class="btn btn-link" title="Edit Production Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Vegetable Production Record" data-toggle="modal" data-target="#deleteVegetableProductionModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                <a class="btn btn-link" title="Delete This Vegetable Production Record" href="' . base_url('delete_data/delete_row/INCREASE_IN_PRODUCTIVITY/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                 <a href="' . site_url("production/increase-details/$row->ID") . '" class="btn btn-link" title="Read More about this Vegetable Production"><i class="fa fa-info-circle fa-1x"></i></a>
                                 <a href="' . site_url("production/increase-details/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Vegetable Production Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>

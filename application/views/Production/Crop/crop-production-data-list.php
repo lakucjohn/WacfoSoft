@@ -52,10 +52,10 @@
                             <td>' . $row->CATEGORY . '</td>
                             <td>'.$row -> INCOME.'</td>
                             <td>
-                                <a href="'.site_url("production/crop%20production-details/edit/$row->ID").'" class="btn btn-link" title="Edit Training Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Crop Production Record" data-toggle="modal" data-target="#deleteCropProductionModal"><i class="fa fa-remove fa-2x" style="color: red;"></i></button>
-                                <a href="'.site_url("production/crop%20production-details/$row->ID").'" class="btn btn-link" title="Read More about this Crop Production"><i class="fa fa-info-circle fa-2x"></i></a>
-                                <a href="'.site_url("production/crop%20production-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Crop Production Information"><i class="fa fa-file-pdf-o fa-2x" style="color:red; "></i></a>
+                                <a href="' . site_url("production/crop%20production-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Training Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                <a class="btn btn-link" title="Delete This Food Production Record" href="' . base_url('delete_data/delete_row/VEGETABLE_PRODUCTION_NEW/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
+                                <a href="' . site_url("production/crop%20production-details/$row->ID") . '" class="btn btn-link" title="Read More about this Crop Production"><i class="fa fa-info-circle fa-1x"></i></a>
+                                <a href="' . site_url("production/crop%20production-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Crop Production Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>
                         </tr>
                     ';

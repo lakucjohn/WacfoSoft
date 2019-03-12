@@ -51,10 +51,10 @@
                             <td>'.$row -> VEGETABLE_PRODUCTION_PROBLEMS.'</td>
                             <td>'.$row -> CROP_PRODUCTION_PROBLEMS.'</td>
                             <td>
-                                <a href="'.site_url("production/challenge-details/edit/$row->ID").'" class="btn btn-link" title="Edit Challenge Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Challenge" data-toggle="modal" data-target="#deleteChallengeModal"><i class="fa fa-remove fa-2x" style="color: red;"></i></button>
-                                <a href="'.site_url("production/challenge-details/$row->ID").'" class="btn btn-link" title="Read More about this Challenge"><i class="fa fa-info-circle fa-2x"></i></a>
-                                <a href="'.site_url("production/challenge-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Challenge Information"><i class="fa fa-file-pdf-o fa-2x" style="color:red; "></i></a>
+                                <a href="' . site_url("production/challenge-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Challenge Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                <a class="btn btn-link" title="Delete This Challenge" href="' . base_url('delete_data/delete_row/PRODUCTION_PROBLEMS/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
+                                <a href="' . site_url("production/challenge-details/$row->ID") . '" class="btn btn-link" title="Read More about this Challenge"><i class="fa fa-info-circle fa-1x"></i></a>
+                                <a href="' . site_url("production/challenge-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Challenge Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>
                         </tr>
                     ';

@@ -45,10 +45,23 @@
                         <tr title="'.$row -> CODE.'" style="white-space: nowrap;">
                             <td>'.$row -> CODE.'</td>
                             <td>'.$row -> COURSE.'</td>
-                            <td>'.$row -> GROUP_TRAINED.'</td>
+                            <td>';
+
+                    $targets = explode(',', $row->GROUP_TRAINED);
+                    $target_names = array();
+                    foreach ($targets as $target) {
+                        foreach ($livelihood_categories->result() as $livelihood_category) {
+                            if ($livelihood_category->ID == $target) {
+                                array_push($target_names, $livelihood_category->CATEGORYNAME);
+                            }
+                        }
+                    }
+                    echo implode(', ', $target_names);
+
+                    echo '</td>
                             <td>
                                 <a href="'.site_url("course-details/edit/$row->ID").'" class="btn btn-link" title="Edit Course Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Course" data-toggle="modal" data-target="#deleteCourseModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                <a class="btn btn-link" title="Delete This Course" href="' . base_url('delete_data/delete_row/COURSES/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                 <a href="'.site_url("course-details/$row->ID").'" class="btn btn-link" title="Read More about this Course"><i class="fa fa-info-circle fa-1x"></i></a>
                                 <a href="'.site_url("course-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Course\'s Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>

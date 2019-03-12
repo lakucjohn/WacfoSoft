@@ -106,6 +106,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
         if ($this->form_validation->run() == FALSE) {
             $this->template->load('default', 'Production/Survey/Registration/misean-cara-baseline-survey-economic-security-form', $data);
         } else {
+            $track_id = $this->baseline_survey_model->generate_track_id();
             $field_data_basic = array(
                 'GRANTEE' => $name_of_the_grantee,
                 'GROUP_NAME' => $group_id,
@@ -123,6 +124,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                 'NORMAL_IN_SCHOOL' => $number_of_children_normal_in_school,
                 'MEALS_PER_DAY' => $number_of_meals_per_day,
                 'MEDICAL_TREATMENT' => $able_to_meet_medical_expenses_for_children,
+                'TRACK_ID' => $track_id,
             );
 
             $result = $this->baseline_survey_model->insert_record($field_data_basic);
@@ -139,6 +141,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                 'VEGETABLE_MARKETING_PROBLEMS' => $challenges_faced_in_marketing_vegetable_products,
                 'CROP_PRODUCTION_PROBLEMS' => $problems_affecting_crop_production,
                 'CROP_MARKETING_PROBLEMS' => $problems_hindering_marketing_crop_products,
+                'TRACK_ID' => $track_id,
             );
 
             $result = $this->challenges_model->insert_record($field_data_problems);
@@ -158,6 +161,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                 'IMPROVED_POST_HARVEST_HANDLING' => $used_post_harvest_handling_and_processing_techniques,
                 'USED_ROW_PLANTING' => $had_the_opportunity_to_plant_crops_in_rows,
                 'OTHER_TECHNIQUES_USED' => $other_techniques_used,
+                'TRACK_ID' => $track_id,
             );
 
             $result = $this->technology_model->insert_record($field_data_techonology);
@@ -179,6 +183,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                 'CROP_MARKET_PLACE_1' => $crop_market_place_1,
                 'CROP_MARKET_PLACE_2' => $crop_market_place_2,
                 'CROP_MARKET_PLACE_3' => $crop_market_place_3,
+                'TRACK_ID' => $track_id,
             );
 
             $result = $this->marketing_model->insert_record($field_data_marketing_knowledge);
@@ -198,6 +203,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                 'INCREASE_IN_CROP_SALES' => $percentage_increase_in_sale_of_crops,
                 'INCREASE_IN_FISH_PRODUCTIVITY' => $percentage_increase_in_fish_productivity,
                 'INCREASE_IN_FISH_SALES' => $percentage_increase_in_fish_sales,
+                'TRACK_ID' => $track_id,
             );
 
             $result = $this->productionIncrease_model->insert_record($field_data_increase_in_productivity);
@@ -229,6 +235,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $onions_yield,
                     'QUANTITY_SOLD' => $onions_sold,
                     'INCOME' => $onions_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_onion);
@@ -249,6 +256,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $tomatoes_yield,
                     'QUANTITY_SOLD' => $tomatoes_sold,
                     'INCOME' => $tomatoes_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_tomatoes);
@@ -268,6 +276,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $egg_plants_yield,
                     'QUANTITY_SOLD' => $egg_plants_sold,
                     'INCOME' => $egg_plants_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_egg_plants);
@@ -287,6 +296,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $okra_yield,
                     'QUANTITY_SOLD' => $okra_sold,
                     'INCOME' => $okra_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_okra);
@@ -307,6 +317,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $soya_beans_yield,
                     'QUANTITY_SOLD' => $soya_beans_sold,
                     'INCOME' => $soya_beans_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_soya_beans);
@@ -327,6 +338,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $ground_nuts_yield,
                     'QUANTITY_SOLD' => $ground_nuts_sold,
                     'INCOME' => $ground_nuts_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_ground_nuts);
@@ -347,6 +359,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $sesames_yield,
                     'QUANTITY_SOLD' => $sesames_sold,
                     'INCOME' => $sesames_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_sesames);
@@ -367,6 +380,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'YIELD_OBTAINED' => $beans_yield,
                     'QUANTITY_SOLD' => $beans_sold,
                     'INCOME' => $beans_amount_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->crop_model->insert_record($field_data_beans);
@@ -384,6 +398,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     'NUMBER_OF_FISH_HARVESTED' => $number_of_fish_harvested,
                     'QUANTITY_IN_KG' => $quantity_yield_in_kg,
                     'INCOME' => $income_ugx,
+                    'TRACK_ID' => $track_id,
                 );
 
                 $this->fishing_model->insert_record($field_data_fish);
@@ -496,18 +511,35 @@ class MiseanCaraBaselineSurvey extends AuthContentController
     public function details()
     {
 
-        if($this->uri->segment(2)){
-            $row_id = $this->uri->segment(2);
+        if ($this->uri->segment(3)) {
+            $row_id = $this->uri->segment(3);
+//            echo $row_id;
 
             $data['title'] = 'Baseline Survey Details';
 
             $data['baseline_survey_info'] =  $this->baseline_survey_model->fetch_single_record($row_id);
-            $this->template->load('default','Production/Survey/baseline_survey_details',$data);
+            $this->template->load('default', 'Production/Survey/Data/misean-cara-baseline-survey-details', $data);
         }
 
     }
 
     public function generate_pdf_document(){
+
+        if ($this->uri->segment(4)) {
+
+            $row_id = $this->uri->segment(4);
+//            echo $row_id;
+            $page_data = $this->baseline_survey_model->fetch_single_record($row_id);
+
+            $html_content = '<h3>About ' . $row_id . '</h3>';
+            $html_content .= $page_data;
+////
+            $this->pdf->loadHtml($html_content);
+            $this->pdf->setPaper('A4', 'landscape');
+            $this->pdf->render();
+
+            $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+        }
 
     }
 

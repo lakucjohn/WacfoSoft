@@ -54,7 +54,7 @@ class Visit_model extends CI_Model{
         foreach($data->result() as $row) {
             $output .= '
                 
-                <tr title="' . $row->CHILD_NAME . '">
+                <tr title="' . $row->CHILD_ID_VISITED . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px;" border="0" class="table">
@@ -68,7 +68,7 @@ class Visit_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Child Visited :</td>
-                                <td>ID: '.$row->CHILD_ID_VISITED.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NAME:'.$row->CHILD_NAME.'</td>
+                                <td>ID: ' . $row->CHILD_ID_VISITED . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NAME:' . $row->CHILD_ID_VISITED . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Project :</td>

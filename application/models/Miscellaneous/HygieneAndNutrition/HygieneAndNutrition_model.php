@@ -5,7 +5,7 @@
  * Date: 12/16/18
  * Time: 9:23 PM
  */
-
+require_once(APPPATH . 'models/Header.php');
 class HygieneAndNutrition_model extends CI_Model{
 
     function fetch(){
@@ -22,27 +22,147 @@ class HygieneAndNutrition_model extends CI_Model{
 
 
         $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
-
-            foreach($data->result() as $row){
-                $output .= '
-                
-                <tr title="'.$row->NAME_OF_FARMER.'">
+        $output .= '<tr style="text-align: center">
                     <td>
-                        <p>
-                            <strong>Farmer\'s Name: </strong>'.$row->NAME_OF_FARMER.'<br>
-                            <strong>Gender: </strong>'.$row->SEX.'<br>
-                            <strong>Group: </strong>'.$row->GROUP_NAME.'<br>
-                        </p>
+                        ' . showHeader() . '
                     </td>
-                </tr>
-                ';
-            }
+                  </tr>';
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        NUTRITION AND HYGIENE CHECKLIST
+                    </td>
+                  </tr>';
+
+        $output .= '</table>';
+
+        $output .= '<table class="table table-bordered table-responsive" width="100%" cellspacing="50" cellpadding="50" style="border-collapse: collapse;">';
 
 
-            $output .= '</table>
-                    </div>';
+        foreach ($data->result() as $row) {
+            $output .= '
+            
+            <tr>
+                <td>
+                    <strong>Farmer\'s ID: </strong>
+                </td>
+                <td>
+                    ' . $row->MEMBERSHIP_ID . '
+                </td>
+                <td>
+                    <strong>Farmer\'s Name: </strong>
+                </td>
+                <td>
+                    ' . $row->MEMBERSHIP_ID . '
+                </td>
+            </tr>
+            <tr>
+                <td>
+                     <strong>Gender: </strong>
+                </td>
+                <td>
+                     ' . $row->SEX . '<br>
+                </td>
+                <td>
+                    <strong>Group: </strong>
+                </td>
+                <td>
+                    ' . $row->GROUP_NAME . '<br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                     <strong>Subcounty: </strong>
+                </td>
+                <td>
+                     ' . $row->SUBCOUNTY . '<br>
+                </td>
+                <td>
+                    <strong>Parish: </strong>
+                </td>
+                <td>
+                    ' . $row->PARISH . '<br>
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="4">&nbsp;</td>
+            </tr>
+            
+            <tr>
+                <td colspan="4">DETAILS</td>
+            </tr>
+            
+            <tr>
+                <td colspan="4">
+                    
+                    <table>
+                        <tr>
+                            <td>PIT LATRINE</td>
+                            <td>RUBBISH PIT</td>
+                            <td>BATHING SHELTER</td>
+                            <td>TIPPY TAP</td>
+                            <td>PLATE DRYING_RACK</td>
+                        </tr>
+                        <tr>
+                            <td>' . $row->PIT_LATRINE . '</td>
+                            <td>' . $row->RUBBISH_PIT . '</td>
+                            <td>' . $row->BATHING_SHELTER . '</td>
+                            <td>' . $row->TIPPY_TAP . '</td>
+                            <td>' . $row->PLATE_DRYING_RACK . '</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>KITCHEN GARDEN</td>
+                            <td>FRUIT TREES</td>
+                            <td>NRM PRACTICES</td>
+                            <td>MAIZE CRIB</td>
+                            <td>DRYING RACK</td>
+                        </tr>
+                        <tr>
+                            <td>' . $row->KITCHEN_GARDEN . '</td>
+                            <td>' . $row->FRUIT_TREES . '</td>
+                            <td>' . $row->NRM_PRACTICES . '</td>
+                            <td>' . $row->MAIZE_CRIB . '</td>
+                            <td>' . $row->DRYING_RACK . '</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>TAPAULIN</td>
+                            <td>GRANARY</td>
+                            <td>PAPYRUS MAT</td>
+                            <td>EARTH FLOOR</td>
+                        </tr>
+                        <tr>
+                            <td>' . $row->TAPAULIN . '</td>
+                            <td>' . $row->GRANARY . '</td>
+                            <td>' . $row->PAPYRUS_MAT . '</td>
+                            <td>' . $row->EARTH_FLOOR . '</td>
+                        </tr>
+                    </table>
+                    
+                </td>
+            </tr>
+            ';
+        }
+
+
+        $output .= '</table>
+                </div>';
 
         return $output;
     }

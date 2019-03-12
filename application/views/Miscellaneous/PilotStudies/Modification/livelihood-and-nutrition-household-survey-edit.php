@@ -92,7 +92,13 @@ foreach ($default_value_array->result() as $default) {
                     <label for="Females_between_5_and_18">Between 6 and 18: </label>
                     <input value="<?php echo $default->FEMALES_BETWEEN_6_AND_18; ?>" type="text" class="form-control"
                            name="Females_between_6_and_18"
-                           id="Females_between_6_and_18"/>
+                           id="Females_between_6_and_18"/><br>
+
+                    <label for="Females_between_18_and_45" class="last-document-content-text">Between 18 and
+                        45: </label>
+                    <input value="<?php echo $default->FEMALES_BETWEEN_18_AND_45; ?>" type="text"
+                           class="form-control last-document-content-text"
+                           name="Females_between_18_and_45" id="Females_between_18_and_45"/><br>
 
 
                 </div>
@@ -108,19 +114,19 @@ foreach ($default_value_array->result() as $default) {
                         18: </label>
                     <input value="<?php echo $default->MALES_BETWEEN_6_AND_18; ?>" type="text"
                            class="form-control last-document-content-text" name="Males_between_6_and_18"
-                           id="Males_between_6_and_18"/>
+                           id="Males_between_6_and_18"/><br>
+
+                    <label for="Males_between_18_and_45" class="last-document-content-text">Between 18 and
+                        45: </label>
+                    <input value="<?php echo $default->MALES_BETWEEN_18_AND_45; ?>" type="text"
+                           class="form-control last-document-content-text"
+                           name="Males_between_18_and_45" id="Males_between_18_and_45"/><br>
 
                 </div>
 
                 <div class="col-md-3">
                     <div style="font-size: 18px; font-weight: bold;">Above 18</div>
                     <br>
-
-                    <label for="Total_between_18_and_45" class="last-document-content-text">Total Between 18 and
-                        45: </label>
-                    <input value="<?php echo $default->TOTAL_BETWEEN_18_AND_45; ?>" type="text"
-                           class="form-control last-document-content-text"
-                           name="Total_between_18_and_45" id="Total_between_18_and_45"/><br>
                 </div>
             </div>
 

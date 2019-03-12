@@ -49,7 +49,7 @@
 
                 foreach($data_set->result() as $row){
                     echo '
-                        <tr title="Child Id">
+                        <tr title="' . $row->ID . '">
                             <td>'.$row -> GRANTEE.'</td>
                             <td>'.$row -> GROUP_NAME.'</td>
                             <td>'.$row -> DISTRICT.'</td>
@@ -57,7 +57,7 @@
                             <td>'.$row -> SUBCOUNTY.'</td>
                             <td>
                                 <a href="' . site_url("production/misean%20cara%20baseline%20survey-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Survey Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Crop Misean Cara Baseline Survey" data-toggle="modal" data-target="#deleteMiseanCaraBaselineSurveyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                <a class="btn btn-link" title="Delete This Crop Misean Cara Baseline Survey" href="' . base_url('delete_data/delete_row/MISEAN_CARA_BASELINE_SURVEYS/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                 <a href="' . site_url("production/misean%20cara%20baseline%20survey-details/$row->ID") . '" class="btn btn-link" title="Read More about this Survey"><i class="fa fa-info-circle fa-1x"></i></a>
                                 <a href="' . site_url("production/misean%20cara%20baseline%20survey-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Crop Survey Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>

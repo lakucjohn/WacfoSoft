@@ -52,12 +52,12 @@ class Challenge extends AuthContentController {
     public function details()
     {
 
-        if($this->uri->segment(2)){
-            $row_id = $this->uri->segment(2);
+        if ($this->uri->segment(3)) {
+            $row_id = $this->uri->segment(3);
 
             $data['title'] = 'Challenge Details';
 
-            $data['challenge_info'] =  $this->grouping_model->fetch_single_record($row_id);
+            $data['challenge_info'] = $this->challenges_model->fetch_single_record($row_id);
             $this->template->load('default','Production/Challenges/challenge_details',$data);
         }
 

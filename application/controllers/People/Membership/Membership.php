@@ -226,6 +226,21 @@ class Membership extends AuthContentController {
 
     public function generate_pdf_document(){
 
+        if ($this->uri->segment(3)) {
+
+            $row_id = $this->uri->segment(3);
+            $group_info = $this->grouping_model->fetch_single_member_and_print($row_id);
+
+            $html_content = '<h3>About ' . $row_id . '</h3>';
+            $html_content .= $group_info;
+
+            $this->pdf->loadHtml($html_content);
+            $this->pdf->setPaper('A4', 'landscape');
+            $this->pdf->render();
+
+            $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+        }
+
     }
 
     public function generate_detailed_pdf(){

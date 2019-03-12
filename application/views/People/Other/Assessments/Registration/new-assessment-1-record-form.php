@@ -189,10 +189,11 @@
                     <label for="child_uses_medicine">Does the child use medicine?: </label><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="child_uses_medicine"
                                                                            id="child_uses_medicine" value="1"
-                                                                           onclick="turn_on_field('name_of_medicine');"/>Yes<br>
+                                                                           onclick="turn_on_field('medicine_name_div');"/>Yes<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="child_uses_medicine"
                                                                            id="child_uses_medicine"
-                                                                           value="0"/>No<br><br>
+                                                                           value="0"
+                                                                           onclick="turn_off_field('medicine_name_div');"/>No<br><br>
                     <div style="display:none" id="medicine_name_div">
                         <label for="name_of_medicine">If yes, give its name:</label>
                         <input type="text" name="name_of_medicine" id="name_of_medicine" class="form-control"/>

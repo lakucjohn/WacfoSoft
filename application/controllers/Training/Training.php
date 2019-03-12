@@ -1,8 +1,3 @@
-<style>
-    .page_break {
-        page-break-before: always;
-    }
-</style>
 <?php
 /**
  * Created by PhpStorm.
@@ -106,6 +101,7 @@ class Training extends AuthContentController {
 
             $data['training_info'] =  $this->training_model->fetch_single_record($row_id);
             $this->template->load('default','Training/Trainings/Data/training_details',$data);
+//            print_r($this->training_model->fetch_single_record($row_id));
         }
 
     }
@@ -196,28 +192,215 @@ class Training extends AuthContentController {
 
                 $html_content .= '<h3>GROUP:  ' . $group->NAME . '</h3>';
                 $html_content .= $group_members;
-//            $html_content .= '<div class="page_break"></div>';
+                $html_content .= '<div style="page-break-after: always;"></div>';
+
 //            echo $html_content;
             }
 
         }
-        echo $html_content;
+
+        $html_content .= '<table border="1px solid" style="border-collapse: collapse;">';
+
+        $html_content .= '<tr>';
+
+        $html_content .= '<th>#</th>';
+
+        $html_content .= '<th style="width: 160px;">NAME</th>';
+
+        $html_content .= '<th style="width: 200px;">ADDRESS</th>';
+
+        $html_content .= '<th style="width: 160px;">CONTACT(S)</th>';
+
+        $html_content .= '<th style="width: 160px;">SIGNATURE</th>';
+
+
+        $html_content .= '</tr>';
+
+
+        for ($i = 1; $i <= 150; $i++) {
+
+            $html_content .= '<tr>';
+
+            $html_content .= '<td>' . $i . '</td>';
+
+            $html_content .= '<td></td>';
+
+            $html_content .= '<td></td>';
+
+            $html_content .= '<td></td>';
+
+            $html_content .= '<td></td>';
+
+
+            $html_content .= '</tr>';
+        }
+
+        $html_content .= '</table>';
+//        echo $html_content;
         $this->pdf->loadHtml($html_content);
         $this->pdf->setPaper('A4', 'portrait');
         $this->pdf->render();
 
-        $this->pdf->stream("" . $record_id . ".pdf", array("Attachment" => 1));
+        $this->pdf->stream($topic_name . ".pdf", array("Attachment" => 0));
 
-        if (headers_sent($f, $l)) {
-            echo $f, '<br/>', $l, '<br/>';
-            die('now detect line');
+    }
+
+    public function register_member_attendants()
+    {
+        $record_id = $this->uri->segment(2);
+
+        $training = $this->training_model->fetch_single_row_data_to_edit($record_id);
+
+        foreach ($training->result() as $data) {
+            $course = $data->COURSE;
+        }
+
+        $target_groups = $this->courses_model->fetch_course_target_groups($course);
+
+        foreach ($target_groups->result() as $group) {
+            $targets = $group->GROUP_TRAINED;
+        }
+
+        $targets = explode(',', $targets);
+
+        $data_sheet = $this->grouping_model->get_groups_under_this_category_as_dropdown($targets);
+        $data = array(
+            'title' => 'Register New Training Attendants',
+            'row_id' => $record_id,
+            'input_form' => $data_sheet,
+        );
+
+        $this->form_validation->set_rules('training_group_members_attendants[]', 'List of Attendants', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+
+            $this->template->load('default', 'Training/Trainings/Registration/training-attendance-registration-form', $data);
+        } else {
+
+            if ($this->input->post('training_group_members_attendants')) {
+                $members_list = $this->input->post('training_group_members_attendants');
+                foreach ($members_list as $member) {
+                    $field_data = array(
+                        'TRAINING_ID' => $record_id,
+                        'ATTENDANT' => $member,
+                        'TYPE' => 'Member',
+                    );
+
+                    $this->training_model->insert_attendance_record($field_data);
+                };
+                redirect('training-attendants/' . $record_id . '/record-member-list');
+
+            }
         }
 
     }
+
+    public function register_beneficiaries()
+    {
+        $record_id = $this->uri->segment(2);
+        $data = array(
+            'title' => 'Register New Training Attendants',
+            'row_id' => $record_id,
+        );
+
+        $this->form_validation->set_rules('name_of_attendant', 'Name', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+
+            $this->template->load('default', 'Training/Trainings/Registration/non-members-registration', $data);
+        } else {
+
+            $name = $this->input->post('name_of_attendant');
+            $address = $this->input->post('address_of_attendant');
+            $contact = $this->input->post('contact_of_attendant');
+
+
+            $field_data = array(
+                'TRAINING_ID' => $record_id,
+                'ATTENDANT' => $name,
+                'ADDRESS' => $address,
+                'CONTACT' => $contact,
+                'TYPE' => 'Non-Member',
+            );
+
+//                    print_r($field_data);
+
+            $this->training_model->insert_attendance_record($field_data);
+
+            redirect('training-attendants/' . $record_id . '/record-new-beneficiary-list');
+
+
+        }
+
+    }
+
+    public function register_training_outcome()
+    {
+        $record_id = $this->uri->segment(2);
+        $data = array(
+            'title' => 'Register New Training Attendants',
+            'row_id' => $record_id,
+        );
+
+        $this->form_validation->set_rules('outcome', 'Training Outcome', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+
+            $this->template->load('default', 'Training/Trainings/Registration/new-training-outcome', $data);
+        } else {
+
+            $outcome = $this->input->post('outcome');
+
+
+            $field_data = array(
+                'TRAINING_ID' => $record_id,
+                'OUTCOME' => $outcome,
+            );
+
+//                    print_r($field_data);
+
+            $this->training_model->insert_outcome_record($field_data);
+
+            redirect('training-details/' . $record_id);
+
+
+        }
+
+    }
+
+    public function generate_empty_list_of_attendants()
+    {
+        if ($this->input->post('group_id')) {
+            $group_id = $this->input->post('group_id');
+            echo $this->membership_model->show_blank_registration_sheet_for_this_group($group_id);
+        }
+    }
+
+    public function generate_pdf_document()
+    {
+
+        if ($this->uri->segment(3)) {
+
+            $row_id = $this->uri->segment(3);
+//            echo $row_id;
+            $page_data = $this->training_model->fetch_single_training_and_print($row_id);
+//            echo $page_data;
+
+            $html_content = '<h3>About ' . $row_id . '</h3>';
+            $html_content .= $page_data;
+
+            $this->pdf->loadHtml($html_content);
+            $this->pdf->setPaper('A4', 'landscape');
+            $this->pdf->render();
+//
+            $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+        }
+
+    }
+
 
     public function generate_detailed_pdf(){
 
     }
 
 }
-?>

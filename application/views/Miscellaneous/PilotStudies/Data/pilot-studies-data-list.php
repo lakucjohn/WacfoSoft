@@ -51,7 +51,8 @@
                             <td>'.$row -> RESPONDENT.'</td>
                             <td>
                                 <a href="'.site_url("miscellaneous%20pilot%20study-details/edit/$row->ID").'" class="btn btn-link" title="Edit Pilot Study Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Pilot Study" data-toggle="modal" data-target="#deletePilotStudyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                               <!-- <button class="btn btn-link" title="Delete This Pilot Study" data-toggle="modal" data-target="#deletePilotStudyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                           
+                                        <a class="btn btn-link" title="Delete This Record" href="' . base_url('delete_data/delete_row/PILOT_STUDIES/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                 <a href="'.site_url("miscellaneous%20pilot%20study-details/$row->ID").'" class="btn btn-link" title="Read More about this Pilot Study Information"><i class="fa fa-info-circle fa-1x"></i></a>
                                 <a href="'.site_url("miscellaneous%20pilot%20study-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Pilot Study Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>

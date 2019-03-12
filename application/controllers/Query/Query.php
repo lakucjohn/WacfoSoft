@@ -28,12 +28,140 @@ class Query extends AuthContentController
 
     public function run_query_and_show_results()
     {
-        echo 'continue and build the query with your query builder';
+        $tableslist = array();
+        $fieldslist = array();
+        $joinslist = array();
+        $conditionslist = array();
+//        echo 'continue and build the query with your query builder';
+        if (isset($_POST['tables'])) {
+            $tableslist = $_POST['tables'];
+        }
+        if (isset($_POST['fields'])) {
+            $fieldslist = $_POST['fields'];
+        }
+        if (isset($_POST['joints'])) {
+            $joinslist = $_POST['joints'];
+        }
+        if (isset($_POST['conditions'])) {
+            $conditionslist = $_POST['conditions'];
+        }
 
-        $generated_sql = $this->build_query($table = array(), $fields = array(), $joins = array(), $cosnditions = array());
+//        print_r($tableslist);
+//        echo '<br><br>';
+//        print_r($fieldslist);
+//        echo '<br><br>';
+//        print_r($joinslist);
+//        echo '<br><br>';
+//        print_r($conditionslist);
 
-//        $result_set = $this->query_model->execute_query($generated_sql);
-        echo $generated_sql;
+        $final_or_conditions_array = array();
+        $final_and_conditions_array = array();
+        $final_conditions = array();
+
+        if (isset($conditionslist) & count($conditionslist) != 0) {
+            foreach ($conditionslist as $condition) {
+                # Checking the or for date query strings if it doesn't exists
+                if (!preg_match('/\bBETWEEN\b/i', $condition[1])) {
+
+                    if (preg_match('/\bOR\b/i', $condition[1])) {
+//                        $or_conditions = explode(' OR ', $condition[1]);
+//                        foreach ($or_conditions as $or_condition) {
+//                            $conditionsegment = $condition[0] . " LIKE '%" . $or_condition . "%'";
+//
+//                            array_push($final_or_conditions_array, $conditionsegment);
+//                        }
+                    } else {
+                        $condition_segment = $condition[0] . " LIKE '%" . $condition[1] . "%'";
+//                        echo $condition_segment;
+                        array_push($final_and_conditions_array, $condition_segment);
+                    }
+                } else {
+                    # Working the query string for date
+                    if (preg_match('/\bOR\b/i', $condition[1])) {
+                        $or_conditions = explode(' OR ', $condition[1]);
+                        foreach ($or_conditions as $or_condition) {
+                            $conditionsegment = $condition[0] . ' ' . $or_condition;
+
+                            array_push($final_or_conditions_array, $conditionsegment);
+                        }
+                    } else {
+                        $conditionsegment = $condition[0] . ' ' . $condition[1];
+                        array_push($final_and_conditions_array, $conditionsegment);
+                    }
+                }
+//
+            }
+        }
+
+//        $final_conditions = array('AND' => $final_and_conditions_array, 'OR' => $final_or_conditions_array);
+        if (isset($final_and_conditions_array) & count($final_and_conditions_array) != 0) {
+
+            $final_conditions['AND'] = $final_and_conditions_array;
+        }
+
+        if (isset($final_or_conditions_array) & count($final_or_conditions_array) != 0) {
+
+            $final_conditions['OR'] = $final_or_conditions_array;
+        }
+
+//        print_r($final_conditions);
+
+//        print_r($final_conditions);
+
+//        print_r($conditionslist);
+
+//        print_r($fieldslist);
+
+        $generated_sql = $this->build_query($table = $tableslist, $fields = $fieldslist, $joins = $joinslist, $conditions = $final_conditions);
+
+//        # Format of a query builder input pattern
+////        $generated_sql = $this->build_query($table = array(), $fields = array(), $joins = array(), $cosnditions = array());
+///
+//            echo $generated_sql;
+//        print_r($tableslist);
+//
+        $result_set = $this->query_model->execute_query($generated_sql);
+////        echo $generated_sql;
+//////        print_r($result_set);
+////
+////        print_r($result_set->result());
+////
+        $output = '<table class="table table-bordered">';
+        $output .= '<tr>';
+        $output .= '<th>#</th>';
+
+        foreach ($result_set->list_fields() as $field) {
+            if ($field = str_replace('_', ' ', $field)) {
+                $fieldname = $field;
+            } else {
+                $fieldname = $field;
+            }
+
+            $output .= '<th>' . $fieldname . '</th>';
+        }
+
+        $output .= '</tr>';
+        $counter = 0;
+
+        foreach ($result_set->result_array() as $row) {
+
+            $output .= '<tr>';
+            $output .= '<td>' . ++$counter . '</td>';
+            foreach ($result_set->list_fields() as $field) {
+                $output .= '<td>' . $row[$field] . '</td>';
+            }
+            $output .= '</tr>';
+            #print_r($row);
+
+        }
+
+        #$colspan = count($result_set->list_fields())+1;
+        #$output .= '<td style="text-align:right;" colspan='.$colspan.'>&nbsp;</td>';
+        #$output .= '<td style="text-align:right;" colspan='.$colspan.'>'.$result_set->num_rows().' Results Found</td>';
+        $output .= '</table>';
+
+        echo $output;
+
     }
 
     public function build_query($tables = array(), $fields = array(), $joins = array(), $conditions = array())
@@ -139,13 +267,13 @@ class Query extends AuthContentController
          */
 
         return $sql;
-
+//        $query_result_set = $this->query_model->execute_query($sql);
 
     }
 
     public function test()
     {
-        $this->build_query($tables = array('MEMBERSHIP', 'GROUPS'), $fields = array('GROUPS.*', 'MEMBERSHIP.*'), $joins = array(array('GROUPS', 'GROUPS.GROUP_ID=MEMBERSHIP.MEMBERSHIP_ID'), array('VEGETABLE_PRODUCTION_NEW', 'VEGETABLE_PRODUCTION_NEW.INDIVIDUAL=MEMBERSHIP.MEMBERSHIP_ID')), $conditions = array('OR' => array("MEMBERSHIP.VULNERABILITY='YOUTH'", "MEMBERSHIP.VULNERABILITY='EVI'", "MEMBERSHIP.VULNERABILITY='WIDOWS'"), 'AND' => array("MEMBERSHIP.GROUPS = 'AB/2/4'", "MEMBERSHIP.SEX = 'F'")));
+        echo $this->build_query($tables = array('MEMBERSHIP', 'GROUPS'), $fields = array('GROUPS.*', 'MEMBERSHIP.*'), $joins = array(array('GROUPS', 'GROUPS.GROUP_ID=MEMBERSHIP.MEMBERSHIP_ID'), array('VEGETABLE_PRODUCTION_NEW', 'VEGETABLE_PRODUCTION_NEW.INDIVIDUAL=MEMBERSHIP.MEMBERSHIP_ID')), $conditions = array('OR' => array("MEMBERSHIP.VULNERABILITY='YOUTH'", "MEMBERSHIP.VULNERABILITY='EVI'", "MEMBERSHIP.VULNERABILITY='WIDOWS'"), 'AND' => array("MEMBERSHIP.GROUPS = 'AB/2/4'", "MEMBERSHIP.SEX = 'F'")));
     }
 
 }

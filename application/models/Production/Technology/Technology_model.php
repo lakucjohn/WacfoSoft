@@ -6,6 +6,7 @@
  * Time: 9:23 PM
  */
 
+require_once(APPPATH . 'models/Header.php');
 class Technology_model extends CI_Model{
 
     function fetch(){
@@ -22,25 +23,72 @@ class Technology_model extends CI_Model{
 
 
         $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
-
-            foreach($data->result() as $row){
-                $output .= '
-                
-                <tr title="'.$row->INDIVIDUAL_ID.'">
+        $output .= '<tr style="text-align: center">
                     <td>
-                        <p>
-                            <strong>Individual: </strong>'.$row->INDIVIDUAL_ID.'<br>
-                            <strong>Uses Improved Seeds: </strong>'.$row->USED_IMPROVED_SEEDS.'<br>
-                            <strong>Uses Underground Water: </strong>'.$row->USED_UNDERGROUND_WATER.'<br>
-                            <strong>Uses Pesticides: </strong>'.$row->USED_PESTICIDES.'<br>
-                            <strong>Uses Farm Implements: </strong>'.$row->USED_FARM_IMPLEMENTS.'<br>
-                        </p>
+                        ' . showHeader() . '
                     </td>
-                </tr>
-                ';
-            }
+                  </tr>';
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        GROUP INFORMATION
+                    </td>
+                  </tr>';
+
+        $output .= '</table>';
+
+        $output .= '<table class="table table-bordered table-responsive" width="100%" cellspacing="50" cellpadding="50" style="border-collapse: collapse;">';
+
+
+        $output .= '<tr><td colspan="6">Table 5.0: Number of Misean Cara beneficiaries adopting new technologies in vegetables and crop production</td></tr>';
+
+        foreach ($data->result() as $row) {
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Did you use any improved seed during the year in your production</strong></td>
+                                <td colspan="3">' . $row->USED_IMPROVED_SEEDS . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Did you use underground water in your crop production process during the dry season?</strong></td>
+                                <td colspan="3">' . $row->USED_UNDERGROUND_WATER . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Did you use any pesticides on your crops(vegetables)?</strong></td>
+                                <td colspan="3">' . $row->USED_PESTICIDES . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Use of farm imlements e.g. zero tillage during land opening?</strong></td>
+                                <td colspan="3">' . $row->USED_FARM_IMPLEMENTS . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Have you been using any method of post-harvest handling and processing techniques?</strong></td>
+                                <td colspan="3">' . $row->IMPROVED_POST_HARVEST_HANDLING . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>Did you have any opportunity in planting your crops in Rows/Lines as oppsed to random sowing/scattering? </strong></td>
+                                <td colspan="3">' . $row->USED_ROW_PLANTING . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="3"><strong>What other techniques did you use apart from the ones discussed here? (Name them)</strong></td>
+                                <td colspan="3">' . $row->OTHER_TECHNIQUES_USED . '</td>
+                            </tr>';
+        }
 
 
             $output .= '</table>

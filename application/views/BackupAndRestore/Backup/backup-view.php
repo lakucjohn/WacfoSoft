@@ -217,7 +217,7 @@
 
         <p>&nbsp;</p>
         <p>
-            To restore your information, drag and drop the developer of the software in order to get instructions on how
+            To restore your information, contact the developer of the software in order to get instructions on how
             to successfully recover your data
         </p>
         <p>&nbsp;</p>

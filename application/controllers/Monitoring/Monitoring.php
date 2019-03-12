@@ -482,14 +482,30 @@ class Monitoring extends AuthContentController {
         if($this->uri->segment(2)){
             $row_id = $this->uri->segment(2);
 
-            $data['title'] = 'Group Details';
+            $data['title'] = 'Monitoring Details';
 
-            $data['group_info'] =  $this->grouping_model->fetch_single_record($row_id);
-            $this->template->load('default','People/Livelihood/Groupings/group_details',$data);
+            $data['monitoring_info'] = $this->monitoring_model->fetch_single_record($row_id);
+            $this->template->load('default', 'Monitoring/Data/monitoring_details', $data);
         }
     }
 
     public function generate_pdf_document(){
+
+        if ($this->uri->segment(3)) {
+
+            $row_id = $this->uri->segment(3);
+            $page_data = $this->monitoring_model->fetch_single_record($row_id);
+
+            $html_content = '<h3>About ' . $row_id . '</h3>';
+            $html_content .= $page_data;
+
+            $this->pdf->loadHtml($html_content);
+            $this->pdf->setPaper('A4', 'landscape');
+            $this->pdf->render();
+
+            $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+        }
+
 
     }
 

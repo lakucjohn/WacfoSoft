@@ -53,11 +53,22 @@ if(isset($group_list)){
                                 <tr title="'.$row -> GROUP_ID.'" style="white-space: nowrap;">
                                     <td>'.$row -> GROUP_ID.'</td>
                                     <td>'.$row -> NAME.'</td>
-                                    <td>'.$row -> TYPE.'</td>
-                                    <td>'.$row -> LOCATION.'</td>
+                                    <td>
+                                    ';
+
+                            foreach ($livelihood_categories->result() as $category) {
+                                if ($category->CATEGORYNAME == $row->TYPE) {
+                                    ?>
+                                    <?php echo $category->CATEGORYNAME; ?>
+                                    <?php
+                                }
+                            }
+                            echo '</td>
+                                <td>' . $row->LOCATION . '</td>
                                     <td>
                                         <a href="'.site_url("group-details/edit/$row->ID").'" class="btn btn-link" title="Edit Group Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                        <button class="btn btn-link" title="Delete This Group" data-toggle="modal" data-target="#deleteGroupingModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                        <!-- <button class="btn btn-link delete-btn" title="Delete This Group" data-toggle="modal" data-id="' . $row->ID . '" data-target="#deleteGroupingModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                                        
+                                        <a class="btn btn-link" title="Delete This Group" href="' . base_url('delete_data/delete_row/GROUPS/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                         <a href="'.site_url("group-details/$row->ID").'" class="btn btn-link" title="Read More about this Group"><i class="fa fa-info-circle fa-1x"></i></a>
                                         <a href="'.site_url("group-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Group\'s Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                                     </td>
@@ -87,21 +98,23 @@ if(isset($group_list)){
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <!-- The modal header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Confirm Delete</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <!-- The modal body -->
-            <div class="modal-body">
-                Are you sure you want to delete this Group and all information related to it?
-            </div>
-            <!-- The modal footer -->
-            <div class="modal-footer">
-                <button class="btn btn-danger">Yes, I'm Sure</button>
-                <button type="button" class="btn btn-neutral" data-dismiss="modal">Cancel</button>
-            </div>
+            <form action="" method="post">
+                <!-- The modal header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Delete</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- The modal body -->
+                <div class="modal-body">
+                    Are you sure you want to delete this Group and all information related to it?
+                </div>
+                <input type="text" name="RowToDelete" id="RowToDelete"/>
+                <!-- The modal footer -->
+                <div class="modal-footer">
+                    <button class="btn btn-danger">Yes, I'm Sure</button>
+                    <button type="button" class="btn btn-neutral" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-

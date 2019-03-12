@@ -60,13 +60,13 @@ class FishFarming extends MainController
     public function details()
     {
 
-        if ($this->uri->segment(2)) {
-            $row_id = $this->uri->segment(2);
+        if ($this->uri->segment(3)) {
+            $row_id = $this->uri->segment(3);
 
             $data['title'] = 'Crop Production Details';
 
-            $data['crop_production_info'] = $this->fishing_model->fetch_single_record($row_id);
-            $this->template->load('default', 'Production/Crop/crop_production_details', $data);
+            $data['fishing_info'] = $this->fishing_model->fetch_single_record($row_id);
+            $this->template->load('default', 'Production/Fishing/fishing_details', $data);
         }
 
     }

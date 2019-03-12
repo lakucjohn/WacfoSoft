@@ -51,10 +51,10 @@
                             <td>'.$row -> SELLS_ALL_VEGETABLES.'</td>
                             <td>'.$row -> SELLS_ALL_CROPS.'</td>
                             <td>
-                                <a href="'.site_url("production/marketing-details/edit/$row->ID").'" class="btn btn-link" title="Edit Challenge Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Marketing Information" data-toggle="modal" data-target="#deleteMarketingModal"><i class="fa fa-remove fa-2x" style="color: red;"></i></button>
-                                <a href="'.site_url("production/marketing-details/$row->ID").'" class="btn btn-link" title="Read More about this Marketing Information"><i class="fa fa-info-circle fa-2x"></i></a>
-                                <a href="'.site_url("production/marketing-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Marketing Information"><i class="fa fa-file-pdf-o fa-2x" style="color:red; "></i></a>
+                                <a href="' . site_url("production/marketing-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Challenge Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                <a class="btn btn-link" title="Delete This Marketing Information" href="' . base_url('delete_data/delete_row/CHANGE_IN_KNOWLEDGE_NEWER/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
+                                <a href="' . site_url("production/marketing-details/$row->ID") . '" class="btn btn-link" title="Read More about this Marketing Information"><i class="fa fa-info-circle fa-1x"></i></a>
+                                <a href="' . site_url("production/marketing-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Marketing Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>
                         </tr>
                     ';

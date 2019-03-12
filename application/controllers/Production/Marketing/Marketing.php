@@ -53,8 +53,8 @@ class Marketing extends AuthContentController {
     public function details()
     {
 
-        if($this->uri->segment(2)){
-            $row_id = $this->uri->segment(2);
+        if ($this->uri->segment(3)) {
+            $row_id = $this->uri->segment(3);
 
             $data['title'] = 'Marketing Details';
 

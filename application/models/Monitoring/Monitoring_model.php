@@ -32,32 +32,169 @@ class Monitoring_model extends CI_Model{
         $data = $this->db->get('MONITORING_VISITS');
 
 
-        $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+        $output = '
+        <head>
+            <style>
+                table td{
+                    border: 1px solid;
+                    border-collapse: collapse;
+                }
+                #innertable td{
+                    border: 1px solid;
+                    border-collapse: collapse;
+                }
+            </style>
+        </head>
+        <div class="table-responsive">
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
-
-            foreach($data->result() as $row){
-                $output .= '
-                
-                <tr title="'.$row->NAME.'">
+        $output .= '<tr style="text-align: center">
                     <td>
-                        <p>
-                            <strong>Staff: </strong>' . $row->STAFF_ID . '<br>
-                            <strong>Date of Visit: </strong>' . $row->DATE_OF_VISIT . '<br>
-                            <strong>Type of Visit: </strong>' . $row->VISIT_TYPE . '<br>
-                            <strong>Track Id: </strong>'.$row->TRACK_ID.'<br>
-                            <strong>General Comments: </strong>' . $row->GENERAL_COMMENTS . '<br>
-                        </p>
+                        ' . showHeader() . '
                     </td>
-                </tr>
-                ';
+                  </tr>';
+
+        $output .= '<tr style="text-align: center">
+                    <td>';
+
+
+        $output .= '<table class="table table-bordered" width="100%" style="border-collapse: collapse;">';
+
+        foreach ($data->result() as $row) {
+
+            $output .= '<tr>';
+            $output .= '<td colspan="4">General Information</td>';
+            $output .= '</tr>';
+            $output .= '<tr>';
+            $output .= '<td style="text-align: right"><strong>Staff ID</strong></td>';
+            $output .= '<td>' . $row->STAFF_ID . '</td>';
+            $output .= '<td style="text-align: right"><strong>Date of Visit</strong></td>';
+            $output .= '<td>' . $row->DATE_OF_VISIT . '</td>';
+            $output .= '</tr>';
+
+            $output .= '<tr>';
+            $output .= '<td style="text-align: right"><strong>Type of Visit</strong></td>';
+            $output .= '<td colspan="3">' . $row->VISIT_TYPE . '</td>';
+            $output .= '</tr>';
+
+            $output .= '<tr>';
+            $output .= '<td style="text-align: right"><strong>General Comments</strong></td>';
+            $output .= '<td colspan="3">' . $row->GENERAL_COMMENTS . '</td>';
+            $output .= '</tr>';
+
+            $output .= '<tr>';
+            $output .= '<td colspan="4">&nbsp;</td>';
+            $output .= '</tr>';
+
+            $output .= '<tr>';
+            $output .= '<td colspan="4">DETAILS OF THE VISIT</td>';
+            $output .= '</tr>';
+
+            if ($row->VISIT_TYPE == 'Savings Tracking') {
+                $output .= $this->fetch_related_savings_tracking_visit($row->TRACK_ID);
+            } else if ($row->VISIT_TYPE == 'Field Support') {
+                $output .= $this->fetch_related_field_support_visit($row->TRACK_ID);
+
             }
 
+        }
+        $output .= '</table>';
 
-            $output .= '</table>
+        $output .= '</td>
+                  </tr>';
+
+        $output .= '</table>
                     </div>';
 
         return $output;
+    }
+
+    function fetch_related_savings_tracking_visit($track_id)
+    {
+        $this->db->where('TRACK_ID', $track_id);
+        $resultset = $this->db->get('SAVINGS_TRAKING_VISIT');
+        $output = '
+        <head>
+            <style>
+                #innertable td, th{
+                    border: 1px solid;
+                    border-collapse: collapse;
+                }
+            </style>
+        </head>';
+        $output .= '<tr>';
+        $output .= '<td colspan="4">';
+        $output .= '<table id="innertable" class="table table-bordered" style="border-collapse: collapse;">';
+        $output .= '<tr>';
+        $output .= '<th>GROUP ID</th>';
+        $output .= '<th>Total savings per each group</th>';
+        $output .= '<th>Amount Loan out</th>';
+        $output .= '<th>Total amount paid back</th>';
+        $output .= '<th>Interest paid per group</th>';
+        $output .= '<th>Issues Identified</th>';
+        $output .= '<th>Action taken</th>';
+        $output .= '<th>Total amount</th>';
+        $output .= '</tr>';
+
+        foreach ($resultset->result() as $row) {
+            $output .= '<tr>';
+            $output .= '<td>' . $row->GROUP_ID . '</td>';
+            $output .= '<td>' . $row->TOTAL_SAVINGS . '</td>';
+            $output .= '<td>' . $row->AMOUNT_LOAN_OUT . '</td>';
+            $output .= '<td>' . $row->TOTAL_AMOUNT_PAID_BACK . '</td>';
+            $output .= '<td>' . $row->INTEREST_PAID . '</td>';
+            $output .= '<td>' . $row->ISSUES_IDENTIFIED . '</td>';
+            $output .= '<td>' . $row->ACTION_TAKEN . '</td>';
+            $output .= '<td>' . $row->TOTAL_AMOUNT . '</td>';
+            $output .= '</tr>';
+        }
+        $output .= '</table>';
+        $output .= '</td>';
+        $output .= '</tr>';
+
+        return $output;
+
+    }
+
+    function fetch_related_field_support_visit($track_id)
+    {
+        $this->db->where('TRACK_ID', $track_id);
+        $resultset = $this->db->get('FIELD_SUPPORT_MONITORING_VISITS');
+        $output = '
+        <head>
+            <style>
+                #innertable td, th{
+                    border: 1px solid;
+                    border-collapse: collapse;
+                }
+            </style>
+        </head>';
+        $output .= '<tr>';
+        $output .= '<td colspan="4">';
+        $output .= '<table id="innertable" class="table table-bordered" style="border-collapse: collapse;">';
+        $output .= '<tr>';
+        $output .= '<th>GROUP ID</th>';
+        $output .= '<th>Activities Carried Out</th>';
+        $output .= '<th>Issues Identified</th>';
+        $output .= '<th>Action taken</th>';
+        $output .= '</tr>';
+
+        foreach ($resultset->result() as $row) {
+            $output .= '<tr>';
+            $output .= '<td>' . $row->GROUP_ID . '</td>';
+            $output .= '<td>' . $row->ACTIVITIES . '</td>';
+            $output .= '<td>' . $row->ISSUES_IDENTIFIED . '</td>';
+            $output .= '<td>' . $row->ACTION_TAKEN . '</td>';
+            $output .= '</tr>';
+        }
+        $output .= '</table>';
+        $output .= '</td>';
+        $output .= '</tr>';
+
+        return $output;
+
     }
 
     function insert_monitoring_visit_record($field_data)

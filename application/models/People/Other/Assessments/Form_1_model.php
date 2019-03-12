@@ -47,7 +47,7 @@ class Form_1_model extends CI_Model{
         foreach($data->result() as $row) {
             $output .= '
                 
-                <tr title="' . $row->CHILD_NAME . '">
+                <tr title="' . $row->CHILD_ID . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px;" border="0" class="table">
@@ -77,7 +77,7 @@ class Form_1_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Child Name :</td>
-                                <td>'.$row->CHILD_NAME.'</td>
+                                <td>' . $row->CHILD_ID . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Date of Birth :</td>

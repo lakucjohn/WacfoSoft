@@ -27,6 +27,18 @@ class Livelihood_Categories_model extends CI_Model
         return $data;
 
     }
+
+    function insert($field_data)
+    {
+
+        $this->db->insert('LIVELIHOODGROUPCATEGORIES', $field_data);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>

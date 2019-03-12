@@ -39,10 +39,12 @@
                                 These are the categories of livelihood groups that are supported by the organization
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-primary" title="Create New Livelihood Category"
-                                        data-toggle="modal" data-target="#addCategoryModal"><i
+                                <a class="btn btn-primary" title="Create New Livelihood Category"
+                                   href="<?php echo site_url('settings/new_livelihood_category'); ?>"
+
+                                   y1 6><i
                                             class="fa fa-plus-circle"></i>New Livelihood Category
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <br>
@@ -72,7 +74,7 @@
                                                     <td>' . $row->CATEGORYNAME . '</td>
                                                     <td>
                                                         <a href="' . site_url("category-details/edit/1") . '" class="btn btn-link" title="Edit Category Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This Category" data-toggle="modal" data-target="#deleteCategoryModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                        <a class="btn btn-link" title="Delete This Category" href="' . base_url('delete_data/delete_row/LIVELIHOODGROUPCATEGORIES/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -163,7 +165,7 @@
                                                     <td>' . $row->COUNTY . '</td>
                                                     <td>
                                                         <a href="' . site_url("county-details/edit/1") . '" class="btn btn-link" title="Edit County Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This County" data-toggle="modal" data-target="#deleteCountyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                        <a class="btn btn-link" title="Delete This County" href="' . base_url('delete_data/delete_row/COUNTY/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -207,7 +209,7 @@
                                                     <td>' . $row->SUBCOUNTY . '</td>
                                                     <td>
                                                         <a href="' . site_url("subcounty-details/edit/1") . '" class="btn btn-link" title="Edit Sub-County Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This Sub-County" data-toggle="modal" data-target="#deleteSubCountyModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                        <a class="btn btn-link" title="Delete This Sub-County" href="' . base_url('delete_data/delete_row/SUBCOUNTY/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -262,7 +264,7 @@
                                                     <td>' . $row->PARISH . '</td>
                                                     <td>
                                                         <a href="' . site_url("parish-details/edit/1") . '" class="btn btn-link" title="Edit Parish Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This Parish" data-toggle="modal" data-target="#deleteParishModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                        <a class="btn btn-link" title="Delete This Parish" href="' . base_url('delete_data/delete_row/PARISH/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -328,7 +330,7 @@
                                                     <td>' . $row->PREFIX_CODE . '</td>
                                                     <td>
                                                         <a href="' . site_url("village-details/edit/1") . '" class="btn btn-link" title="Edit Village Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This Village" data-toggle="modal" data-target="#deletVillageModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                        <a class="btn btn-link" title="Delete This Village" href="' . base_url('delete_data/delete_row/VILLAGE/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -366,10 +368,11 @@
                                 can support
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-primary" title="Record New Disability" data-toggle="modal"
-                                        data-target="#addDisabilityModal"><i class="fa fa-plus-circle"></i>New
+                                <a class="btn btn-primary" title="Record New Disability"
+                                   href="<?php echo site_url('settings/new_disability'); ?>"><i
+                                            class="fa fa-plus-circle"></i>New
                                     Disability
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <br>
@@ -388,7 +391,7 @@
                                         <tr>
                                             <th>Disability Name</th>
                                             <th>Description</th>
-                                            <th>Disability ID</th>
+                                            <th>Disability Prefix</th>
                                             <th>Options</th>
                                         </tr>
                                         </thead>
@@ -400,10 +403,10 @@
                                                 <tr title="' . $row->ID . '" style="white-space: nowrap;">
                                                     <td>' . $row->DISABILITY_NAME . '</td>
                                                     <td>' . $row->DISABILITY_DESCRIPTION . '</td>
-                                                    <td>' . $row->DISABILITY_ID . '</td>
+                                                    <td>' . $row->DISABILITY_PREFIX . '</td>
                                                     <td>
                                                         <a href="' . site_url("disability-details/edit/1") . '" class="btn btn-link" title="Edit DIsability Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This Disability" data-toggle="modal" data-target="#deleteDisabilityModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                        <a class="btn btn-link" title="Delete This Disability" href="' . base_url('delete_data/delete_row/DISABILITIES/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -437,9 +440,9 @@
                                 These are the details of the currently authenticated user to operate in this system
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-primary" title="Create New User Account" data-toggle="modal"
-                                        data-target="#addUserModal"><i class="fa fa-plus-circle"></i>Create New User
-                                </button>
+                                <!--                                <button class="btn btn-primary" title="Create New User Account" data-toggle="modal"-->
+                                <!--                                        data-target="#addUserModal"><i class="fa fa-plus-circle"></i>Create New User-->
+                                <!--                                </button>-->
                             </div>
                         </div>
                         <br>
@@ -471,7 +474,7 @@
                                                     <td>*********************************</td>
                                                     <td>
                                                         <a href="' . site_url("user-details/edit/1") . '" class="btn btn-link" title="Edit User Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This User" data-toggle="modal" data-target="#deleteUserModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                <!--        <button class="btn btn-link" title="Delete This User" data-toggle="modal" data-target="#deleteUserModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>    -->
                                                     </td>
                                                 </tr>
                                                 ';
@@ -505,10 +508,10 @@
                                 constrained to work with these departments only
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-primary" title="Record New Department in the Organization"
-                                        data-toggle="modal" data-target="#addDepartmentModal"><i
+                                <a class="btn btn-primary" title="Record New Department in the Organization"
+                                   href="<?php echo site_url('settings/new_department'); ?>"><i
                                             class="fa fa-plus-circle"></i>New Department
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <br>
@@ -540,7 +543,7 @@
                                                     <td>' . $row->PREFIX . '</td>
                                                     <td>
                                                         <a href="' . site_url("user-details/edit/1") . '" class="btn btn-link" title="Edit User Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                                        <button class="btn btn-link" title="Delete This User" data-toggle="modal" data-target="#deleteUserModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                                        <a class="btn btn-link" title="Delete This User" href="' . base_url('delete_data/delete_row/ORGANIZATION_DEPARTMENTS_NEW/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -605,7 +608,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form>
+            <?php echo form_open('settings/new_county'); ?>
                 <!-- The modal header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Create New County</h4>
@@ -631,7 +634,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form>
+            <?php echo form_open('settings/new_subcounty'); ?>
                 <!-- The modal header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Create New Sub-County</h4>
@@ -652,8 +655,8 @@
                             ?>
                         </select>
                     </div>
-                    <label for="county_name">Name of Sub-County: </label>
-                    <input type="text" name="county_name" id="county_name" class="form-control" required/>
+                    <label for="subcounty_name">Name of Sub-County: </label>
+                    <input type="text" name="subcounty_name" id="subcounty_name" class="form-control" required/>
                 </div>
                 <!-- The modal footer -->
                 <div class="modal-footer">
@@ -670,7 +673,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form>
+            <?php echo form_open('settings/new_parish'); ?>
                 <!-- The modal header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Create New Parish</h4>
@@ -718,7 +721,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form>
+            <?php echo form_open('settings/new_village'); ?>
                 <!-- The modal header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Create New Village</h4>
@@ -755,9 +758,14 @@
 
                         </select>
                     </div>
+
                     <br>
                     <label for="village_name">Name of Village: </label>
                     <input type="text" name="village_name" id="village_name" class="form-control" required/>
+                    <br>
+
+                    <label for="village_prefix">Village Prefix Code: </label>
+                    <input type="text" name="village_prefix" id="village_prefix" class="form-control" required/>
                 </div>
                 <!-- The modal footer -->
                 <div class="modal-footer">

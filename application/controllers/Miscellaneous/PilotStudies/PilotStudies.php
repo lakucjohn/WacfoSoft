@@ -52,7 +52,8 @@ class PilotStudies extends AuthContentController {
         $Females_between_5_and_18 = $this->input->post('Females_between_6_and_18');
         $Males_under_5 = $this->input->post('Males_under_5');
         $Males_between_5_and_18 = $this->input->post('Males_between_6_and_18');
-        $Total_between_18_and_45 = $this->input->post('Total_between_18_and_45');
+        $Males_between_18_and_45 = $this->input->post('Males_between_18_and_45');
+        $Females_between_18_and_45 = $this->input->post('Females_between_18_and_45');
         $Length_of_time_involved_in_project = $this->input->post('Length_of_time_involved_in_project');
         $daily_household_income_now = $this->input->post('daily_household_income_now');
         $daily_household_income_one_year_ago = $this->input->post('daily_household_income_one_year_ago');
@@ -151,7 +152,8 @@ class PilotStudies extends AuthContentController {
         $this->form_validation->set_rules('Females_between_6_and_18', 'Females Between 5 and 18', 'required');
         $this->form_validation->set_rules('Males_under_5', 'Males under 5', 'required');
         $this->form_validation->set_rules('Males_between_6_and_18', 'Males Between 5 and 18', 'required');
-        $this->form_validation->set_rules('Total_between_18_and_45', 'Total Between 18 and 45', 'required');
+        $this->form_validation->set_rules('Males_between_18_and_45', 'Males Between 18 and 45', 'required');
+        $this->form_validation->set_rules('Femaes_between_18_and_45', 'Females Between 18 and 45', 'required');
         $this->form_validation->set_rules('Length_of_time_involved_in_project', 'Length of time involved in project', 'required');
         $this->form_validation->set_rules('daily_household_income_now', 'Typical daily household income now', 'required');
         $this->form_validation->set_rules('daily_household_income_one_year_ago', 'Typical daily household income one year ago', 'required');
@@ -248,7 +250,8 @@ class PilotStudies extends AuthContentController {
                 'FEMALES_BETWEEN_6_AND_18' => $Females_between_5_and_18,
                 'MALES_UNDER_5' => $Males_under_5,
                 'MALES_BETWEEN_6_and_18' => $Males_between_5_and_18,
-                'TOTAL_BETWEEN_18_and_45' => $Total_between_18_and_45,
+                'MALES_BETWEEN_18_and_45' => $Males_between_18_and_45,
+                'FEMALES_BETWEEN_18_and_45' => $Females_between_18_and_45,
                 'LENGTH_OF_TIME_INVOLVED_IN_PROJECTS' => $Length_of_time_involved_in_project,
                 'DAILY_HOUSEHOLD_INCOME_NOW' => $daily_household_income_now,
                 'DAILY_HOUSEHOLD_INCOME_ONE_YEAR_AGO' => $daily_household_income_one_year_ago,
@@ -370,7 +373,8 @@ class PilotStudies extends AuthContentController {
         $Females_between_5_and_18 = $this->input->post('Females_between_6_and_18');
         $Males_under_5 = $this->input->post('Males_under_5');
         $Males_between_5_and_18 = $this->input->post('Males_between_6_and_18');
-        $Total_between_18_and_45 = $this->input->post('Total_between_18_and_45');
+        $Males_between_18_and_45 = $this->input->post('Males_between_18_and_45');
+        $Feales_between_18_and_45 = $this->input->post('Females_between_18_and_45');
         $Length_of_time_involved_in_project = $this->input->post('Length_of_time_involved_in_project');
         $daily_household_income_now = $this->input->post('daily_household_income_now');
         $daily_household_income_one_year_ago = $this->input->post('daily_household_income_one_year_ago');
@@ -469,7 +473,8 @@ class PilotStudies extends AuthContentController {
         $this->form_validation->set_rules('Females_between_6_and_18', 'Females Between 5 and 18', 'required');
         $this->form_validation->set_rules('Males_under_5', 'Males under 5', 'required');
         $this->form_validation->set_rules('Males_between_6_and_18', 'Males Between 5 and 18', 'required');
-        $this->form_validation->set_rules('Total_between_18_and_45', 'Total Between 18 and 45', 'required');
+        $this->form_validation->set_rules('Males_between_18_and_45', 'Males Between 18 and 45', 'required');
+        $this->form_validation->set_rules('Females_between_18_and_45', 'Females Between 18 and 45', 'required');
         $this->form_validation->set_rules('Length_of_time_involved_in_project', 'Length of time involved in project', 'required');
         $this->form_validation->set_rules('daily_household_income_one_year_ago', 'Typical daily household income one year ago', 'required');
         $this->form_validation->set_rules('increase_in_daily_household_income_from_one_year_ago', 'Has there been an increase in household daily income from one year ago to now', 'required');
@@ -540,7 +545,8 @@ class PilotStudies extends AuthContentController {
                 'FEMALES_BETWEEN_6_AND_18' => $Females_between_5_and_18,
                 'MALES_UNDER_5' => $Males_under_5,
                 'MALES_BETWEEN_6_and_18' => $Males_between_5_and_18,
-                'TOTAL_BETWEEN_18_and_45' => $Total_between_18_and_45,
+                'MALES_BETWEEN_18_and_45' => $Males_between_18_and_45,
+                'FEMALES_BETWEEN_18_and_45' => $Females_between_18_and_45,
                 'LENGTH_OF_TIME_INVOLVED_IN_PROJECTS' => $Length_of_time_involved_in_project,
                 'DAILY_HOUSEHOLD_INCOME_NOW' => $daily_household_income_now,
                 'DAILY_HOUSEHOLD_INCOME_ONE_YEAR_AGO' => $daily_household_income_one_year_ago,
@@ -658,6 +664,21 @@ class PilotStudies extends AuthContentController {
     }
 
     public function generate_pdf_document(){
+
+        if ($this->uri->segment(3)) {
+
+            $row_id = $this->uri->segment(3);
+            $page_data = $this->pilotStudies_model->fetch_single_record($row_id);
+
+            $html_content = '<h3>About ' . $row_id . '</h3>';
+            $html_content .= $page_data;
+
+            $this->pdf->loadHtml($html_content);
+            $this->pdf->setPaper('A4', 'landscape');
+            $this->pdf->render();
+
+            $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+        }
 
     }
 

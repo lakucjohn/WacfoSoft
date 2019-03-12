@@ -85,22 +85,21 @@ class Courses_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Group(s) Intended :</td>
-                                <td>'.$row->GROUP_TRAINED.'</td>
+                                <td>' . $this->return_category_names_separated_by_commas($row->GROUP_TRAINED) . '</td>
                             </tr>
                         
                         </table>
                         
                     </td>
                 </tr>';
-        }
 
-        $output.='<tr>
+            $output .= '<tr>
                     <td>
                         <hr>
                     </td>
                   </tr>';
 
-        $output.='<tr style="font-size: 18px; font-weight: bold;">
+            $output .= '<tr style="font-size: 18px; font-weight: bold;">
                     <td>
                     <div class="main-content">
                             <div class="left-content">
@@ -114,46 +113,72 @@ class Courses_model extends CI_Model{
                     </td>
                   </tr>';
 
+            $output .= $this->fetch_modules_under_this_course($row->CODE);
 
-        foreach($data->result() as $row) {
+
             $output .= '
-                
-                <tr title="' . $row->COURSE . '">
-                    <td>
-                    
-                        <table style="width: 100%; font-size: 18px;" border="0" class="table">
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:40%; text-align: right;">Course :</td>
-                                <td>'.$row->COURSE.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Code :</td>
-                                <td>'.$row->CODE.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Group(s) Intended :</td>
-                                <td>'.$row->GROUP_TRAINED.'</td>
-                            </tr>
-                        
-                        </table>
-                        
-                    </td>
-                </tr>';
-        }
-
-
-        $output.='<tr>
-                    <td>
-                        <hr>
-                    </td>
-                  </tr>';
-
-
-        $output .= '
                             </table>
                         </div>
                     </div>';
+        }
 
+        return $output;
+    }
+
+    public function return_category_names_separated_by_commas($category_string)
+    {
+        $category_string_to_array = explode(', ', $category_string);
+
+        $category_name_string = '';
+        $category_name_array = array();
+        foreach ($category_string_to_array as $category) {
+            $category_name_string = $this->get_category_name($category);
+            array_push($category_name_array, $category_name_string);
+        }
+
+
+        return implode(', ', $category_name_array);
+
+    }
+
+    public function get_category_name($category_id)
+    {
+        $this->db->where('ID', $category_id);
+        $resultset = $this->db->get('LIVELIHOODGROUPCATEGORIES');
+
+        $category_name = '';
+        foreach ($resultset->result() as $result) {
+            $category_name = $result->CATEGORYNAME;
+        }
+
+        return $category_name;
+    }
+
+    public function fetch_modules_under_this_course($course_code)
+    {
+
+        $this->db->where('COURSE', $course_code);
+        $this->db->where('STATUS', TRUE);
+        $this->db->order_by('TOPIC', 'ASC');
+
+        $query = $this->db->get('COURSES_AND_TOPICS');
+
+        $output = '';
+        $counter = 0;
+        $output .= '<tr>';
+        $output .= '<td>';
+        $output .= '<table class="table table-bordered">';
+        foreach ($query->result() as $row) {
+            $output .= '<tr>';
+
+            $output .= '<td style="text-align: right;">' . ++$counter . '</td>';
+            $output .= '<td>' . $row->TOPIC . '</td>';
+
+            $output .= '</tr>';
+        }
+        $output .= '</table>';
+        $output .= '</td>';
+        $output .= '</tr>';
         return $output;
     }
 
@@ -188,7 +213,7 @@ class Courses_model extends CI_Model{
         $query = $this->db->get('COURSES_AND_TOPICS');
 
         $output = '<label for="training_module">Module:</label>
-                    <select name="training_module" id="training_module" class="form-control" required>
+                    <select name="training_module" id="training_module" class="form-control">
                         <option value="">Select the module</option>';
 
         foreach ($query->result() as $row) {

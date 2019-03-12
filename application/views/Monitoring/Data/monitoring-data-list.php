@@ -56,10 +56,10 @@
                             <td>' . $row->VISIT_TYPE . '</td>
                             <td>'.$row -> TRACK_ID.'</td>
                             <td>
-                                <a href="'.site_url("monitoring-details/edit/$row->ID").'" class="btn btn-link" title="Edit Monitoring Details"><i class="fa fa-edit fa-2x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Monitoring Activity" data-toggle="modal" data-target="#deleteMonitoringModal"><i class="fa fa-remove fa-2x" style="color: red;"></i></button>
-                                <a href="'.site_url("monitoring-details/$row->ID").'" class="btn btn-link" title="Read More about this Group"><i class="fa fa-info-circle fa-2x"></i></a>
-                                <a href="'.site_url("monitoring-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Monitoring Information"><i class="fa fa-file-pdf-o fa-2x" style="color:red; "></i></a>
+                                <a href="' . site_url("monitoring-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Monitoring Details"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                <a class="btn btn-link" title="Delete This Monitoring Activity" href="' . base_url('delete_data/delete_row/MONITORING_VISITS/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
+                                <a href="' . site_url("monitoring-details/$row->ID") . '" class="btn btn-link" title="Read More about this Group"><i class="fa fa-info-circle fa-1x"></i></a>
+                                <a href="' . site_url("monitoring-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Monitoring Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>
                         </tr>
                     ';

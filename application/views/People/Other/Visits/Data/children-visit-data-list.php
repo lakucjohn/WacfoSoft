@@ -52,7 +52,8 @@
                     <td>'.$row -> PROJECT.'</td>
                     <td>
                         <a href="' . site_url("visitation-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Visit Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                        <button class="btn btn-link" title="Delete This Child" data-toggle="modal" data-target="#deleteVisitModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                        <!-- <button class="btn btn-link" title="Delete This Child" data-toggle="modal" data-target="#deleteVisitModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                            
+                        <a class="btn btn-link" title="Delete This Group" href="' . base_url('') . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                         <a href="' . site_url("visitation-details/$row->ID") . '" class="btn btn-link" title="Read More about this Visit"><i class="fa fa-info-circle fa-1x"></i></a>
                         <a href="' . site_url("visitation-info/generate-pdf/$row->ID") . '" class="btn btn-link" title="Generate PDF for this Visit Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                     </td>

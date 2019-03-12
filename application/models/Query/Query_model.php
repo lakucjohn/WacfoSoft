@@ -12,7 +12,11 @@ class Query_model extends CI_Model
     {
         $query = $this->db->query($sql);
 
-        print_r($query->result());
+        if ($query) {
+            return $query;
+        } else {
+            return $this->db->error();
+        }
     }
 
 }

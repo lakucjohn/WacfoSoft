@@ -13,7 +13,9 @@
 	"require": {
       "php": ">=5.3.7",
       "sebastiansulinski/dotenv": "^1.1",
-      "sebastiansulinski/php-backup": "^1.2"
+      "sebastiansulinski/php-backup": "^1.2",
+      "davmixcool/php-dbcloud": "^0.8.2",
+      "srmklive/flysystem-dropbox-v2": "^1.0"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

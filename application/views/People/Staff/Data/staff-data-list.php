@@ -52,7 +52,8 @@
                             <td>'.$row -> TELEPHONE.'</td>
                             <td>
                                 <a href="'.site_url("staff-details/edit/$row->ID").'" class="btn btn-link" title="Edit Staff Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
-                                <button class="btn btn-link" title="Delete This Staff Member" data-toggle="modal" data-target="#deleteStaffModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>
+                                <!-- <button class="btn btn-link" title="Delete This Staff Member" data-toggle="modal" data-target="#deleteStaffModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                            
+                                <a class="btn btn-link" title="Delete This Staff Member" href="' . base_url('delete_data/delete_row/ORGANIZATION_STAFF_NEW/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                 <a href="'.site_url("staff-details/$row->ID").'" class="btn btn-link" title="Read More about this Staff"><i class="fa fa-info-circle fa-1x"></i></a>
                                 <a href="'.site_url("staff-info/generate-pdf/$row->ID").'" class="btn btn-link" title="Generate PDF for this Staff\'s Information"><i class="fa fa-file-pdf-o fa-1x" style="color:red; "></i></a>
                             </td>

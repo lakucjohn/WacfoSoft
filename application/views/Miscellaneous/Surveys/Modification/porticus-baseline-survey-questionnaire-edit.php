@@ -247,7 +247,7 @@ foreach ($default_value_array->result() as $default) {
 
             <div class="row">
                 <div class="col-md-12">
-                    <label for="list_of_known_disabilities">2. Can you list som of the disabilities you
+                    <label for="list_of_known_disabilities">2. Can you list some of the disabilities you
                         know?</label>
                     <input value="<?php echo $default->LIST_OF_DISABILITIES_KNOWN; ?>" type="text"
                            name="list_of_known_disabilities" id="list_of_known_disabilities"

@@ -20,12 +20,18 @@ class Auth_model extends CI_Model
     function check_user($username, $password)
     {
         $this->db->where('USERNAME', $username);
-        $this->db->where('PASSWORD', $password);
+//        $this->db->where('PASSWORD', password_verify($password, PASSWORD_DEFAULT));
 
-        $result = $this->db->get('USERS');
+        $resultset = $this->db->get('USERS');
 
-        if ($result->num_rows() == 1) {
-            return true;
+        if ($resultset->num_rows() == 1) {
+            foreach ($resultset->result() as $row) {
+                if (password_verify($password, $row->PASSWORD)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
             return false;
         }
@@ -39,6 +45,19 @@ class Auth_model extends CI_Model
 
         return $data;
 
+    }
+
+    function update_record($record_id, $field_data)
+    {
+        $this->db->where('ID', $record_id);
+        $this->db->set($field_data);
+        $this->db->update('USERS');
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return $this->db->error();
+        }
     }
 }
 

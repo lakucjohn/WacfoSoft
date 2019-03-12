@@ -22,24 +22,49 @@ class Fishing_model extends CI_Model
 
 
         $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
-
-        foreach($data->result() as $row){
-            $output .= '
-                
-                <tr title="'.$row->NAME.'">
+        $output .= '<tr style="text-align: center">
                     <td>
-                        <p>
-                            <strong>Individual: </strong>' . $row->INDIVIDUAL_ID . '<br>
-                            <strong>Size of pond: </strong>' . $row->SIZE_OF_POND . '<br>
-                            <strong>Number of fish: </strong>' . $row->NUMBER_OF_FISH_HARVESTED . '<br>
-                            <strong>Quantity (Kg): </strong>' . $row->QUANTITY_IN_KG . '<br>
-                            <strong>Income: </strong>'.$row->INCOME.'<br>
-                        </p>
+                        ' . showHeader() . '
                     </td>
-                </tr>
-                ';
+                  </tr>';
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        GROUP INFORMATION
+                    </td>
+                  </tr>';
+
+        $output .= '</table>';
+
+        $output .= '<table class="table table-bordered" width="100%" cellspacing="50" cellpadding="50" style="border-collapse: collapse;">';
+
+        $output .= '<tr><td colspan="6">&nbsp;</td></tr>';
+        $output .= '<tr><td colspan="6">Fish Farming </td></tr>';
+        $output .= '<tr>
+                        <td colspan="2">Individual ID</td>
+                        <td>Size of pond</td>
+                        <td>No. of Fish harvested</td>
+                        <td>Qty yield (Kg) </td>
+                        <td>Income (UGX)</td>
+                    </tr>';
+        foreach ($data->result() as $row) {
+            $output .= '<tr>
+                        <td colspan="2">' . $row->INDIVIDUAL_ID . '</td>
+                        <td>' . $row->SIZE_OF_POND . '</td>
+                        <td>' . $row->NUMBER_OF_FISH_HARVESTED . '</td>
+                        <td>' . $row->QUANTITY_IN_KG . '</td>
+                        <td>' . $row->INCOME . '</td>
+                    </tr>';
         }
 
 

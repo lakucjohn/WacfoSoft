@@ -6,6 +6,7 @@
  * Time: 9:23 PM
  */
 
+require_once(APPPATH . 'models/Header.php');
 class Marketing_model extends CI_Model{
 
     function fetch(){
@@ -22,23 +23,81 @@ class Marketing_model extends CI_Model{
 
 
         $output = '<div class="table-responsive">
-            <table class="table" width="100%" cellspacing="50" cellpadding="50">';
+                    <div class="card w-100">
+                    <table width="100%">
+                    ';
 
-
-            foreach($data->result() as $row){
-                $output .= '
-                
-                <tr title="'.$row->NAME.'">
+        $output .= '<tr style="text-align: center">
                     <td>
-                        <p>
-                            <strong>Individual: </strong>'.$row->INDIVIDUAL_ID.'<br>
-                            <strong>Sells all the Vegetables: </strong>'.$row->SELLS_ALL_VEGETABLES.'<br>
-                            <strong>Sells all the Crops: </strong>'.$row->SELLS_ALL_CROPS.'<br>
-                        </p>
+                        ' . showHeader() . '
                     </td>
-                </tr>
-                ';
-            }
+                  </tr>';
+
+        $output .= '<tr>
+                    <td>
+                        <hr>
+                    </td>
+                  </tr>';
+
+        $output .= '<tr style="font-size: 18px; font-weight: bold;">
+                    <td>
+                        GROUP INFORMATION
+                    </td>
+                  </tr>';
+
+        $output .= '</table>';
+
+        $output .= '<table class="table table-bordered" width="100%" cellspacing="50" cellpadding="50" style="border-collapse: collapse;">';
+
+        $output .= '<tr><td colspan="6">&nbsp;</td></tr>';
+
+        $output .= '<tr><td colspan="6">Table 6.0: % Change in People\'s knowledge on Marketing and Processing</td></tr>';
+
+        foreach ($data->result() as $row) {
+
+            $output .= '<tr>
+                                <td colspan="2"><strong>Do you sell all your vegetable products?</strong></td>
+                                <td colspan="4">' . $row->SELLS_ALL_VEGETABLES . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="2"><strong>In what forms do you market the product?</strong></td>
+                                <td>Place 1</td>
+                                <td>Place 2</td>
+                                <td colspan="2">Place 3</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="2">&nbsp;</td>
+                                <td>' . $row->VEGETABLE_MARKET_PLACE_1 . '</td>
+                                <td>' . $row->VEGETABLE_MARKET_PLACE_2 . '</td>
+                                <td colspan="2">' . $row->VEGETABLE_MARKET_PLACE_3 . '</td>
+                            </tr>';
+        }
+
+        $output .= '<tr><td colspan="6">&nbsp;</td></tr>';
+
+        foreach ($data->result() as $row) {
+
+            $output .= '<tr>
+                                <td colspan="2"><strong>Do you sell all your crop products?</strong></td>
+                                <td colspan="4">' . $row->SELLS_ALL_CROPS . '</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="2"><strong>In what forms do you market the product?</strong></td>
+                                <td>Place 1</td>
+                                <td>Place 2</td>
+                                <td colspan="2">Place 3</td>
+                            </tr>';
+
+            $output .= '<tr>
+                                <td colspan="2">&nbsp;</td>
+                                <td>' . $row->CROP_MARKET_PLACE_1 . '</td>
+                                <td>' . $row->CROP_MARKET_PLACE_2 . '</td>
+                                <td colspan="2">' . $row->CROP_MARKET_PLACE_3 . '</td>
+                            </tr>';
+        }
 
 
             $output .= '</table>
