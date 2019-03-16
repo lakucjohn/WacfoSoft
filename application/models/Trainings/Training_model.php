@@ -6,7 +6,14 @@
  * Time: 9:23 PM
  */
 require_once (APPPATH.'models/Header.php');
+require_once(APPPATH . 'models/Trainings/Courses_model.php');
 class Training_model extends CI_Model{
+    private $course;
+
+    public function __construct()
+    {
+        $this->course = new Courses_model();
+    }
 
     function fetch(){
         $this->db->order_by('ID','DESC');
@@ -96,7 +103,7 @@ class Training_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Topic :</td>
-                                <td style="width: 75%">' . $row->TOPIC . '</td>
+                                <td style="width: 75%">' . $this->course->get_name_of_topic($row->TOPIC) . '</td>
                             </tr>
                             <tr style="">
                                 <td style="width:20%; text-align: right;">Objective :</td>
@@ -402,7 +409,7 @@ class Training_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Topic :</td>
-                                <td style="width: 75%">' . $row->TOPIC . '</td>
+                                <td style="width: 75%">' . $this->course->get_name_of_topic($row->TOPIC) . '</td>
                             </tr>
                             <tr style="">
                                 <td style="width:20%; text-align: right;">Objective :</td>
@@ -613,22 +620,6 @@ class Training_model extends CI_Model{
 
         }
         return $output;
-    }
-
-    function check_if_member_attended_a_training($member, $training_id)
-    {
-        $this->db->where('ATTENDANT', $member);
-        $this->db->where('TRAINING_ID', $training_id);
-        $this->db->where('STATUS', TRUE);
-
-        $query_result = $this->db->get('TRAINING_ATTENDANCE');
-
-        if ($query_result->num_rows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     public function fetch_training_information_for_this_member($member_id)

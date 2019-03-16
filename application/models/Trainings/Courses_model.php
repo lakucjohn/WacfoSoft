@@ -169,17 +169,115 @@ class Courses_model extends CI_Model{
         $output .= '<td>';
         $output .= '<table class="table table-bordered">';
         foreach ($query->result() as $row) {
-            $output .= '<tr>';
+            $output .= '<tr title="' . $row->ID . '">';
 
-            $output .= '<td style="text-align: right;">' . ++$counter . '</td>';
-            $output .= '<td>' . $row->TOPIC . '</td>';
+            $output .= '<td style="text-align: right; width: 10%;">' . ++$counter . '</td>';
+            $output .= '<td style="width: 50%;">' . $row->TOPIC . '</td>';
+            $output .= '<td style="width: 30%;"><a data-toggle="collapse" href="#trainingCollapse' . $row->ID . '" role="button" aria-expanded="false" aria-controls="trainingCollapse' . $row->ID . '">View History of Training This Course</a> </td>';
 
             $output .= '</tr>';
+            $output .= '<tr>';
+            $output .= '<td colspan="3">
+                            <div class="collapse" id="trainingCollapse' . $row->ID . '">
+                              <div class="card card-body">';
+            $output .= $this->fetch_groups_trained_in_this_module($course_code, $row->ID);
+            if ($this->fetch_groups_trained_in_this_module($course_code, $row->ID) !== '<div style="color:red;">No Training Records Found for this Module</div>') {
+                $output .= '<div class="col-md-12"><a href="' . base_url('Training/courses/generate_training_information_for_this_module/' . $course_code . '/' . $row->ID) . '" class="btn btn-danger">Print This text</a> </div>';
+            }
+
+            $output .= '</div>
+                            </div>
+                        </td>';
+            $output .= '<tr>';
+
         }
         $output .= '</table>';
         $output .= '</td>';
         $output .= '</tr>';
         return $output;
+    }
+
+    function fetch_groups_trained_in_this_module($course_code, $row_id)
+    {
+
+        $this->db->where('COURSE', $course_code);
+        $this->db->where('TOPIC', $row_id);
+        $this->db->set('STATUS', TRUE);
+        $training_result = $this->db->get('TRAININGS');
+
+        $output = '';
+
+        if ($training_result->num_rows() != 0) {
+
+            $this->db->where('STATUS', TRUE);
+            $groups = $this->db->get('GROUPS');
+
+
+            $output = '
+                <head>
+                 <style>
+                
+                    #innertable td{
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                    }
+                
+                    #innertable-2 td, th{
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                    }
+                </style>
+                </head>';
+
+            $output .= '<table id="innertable-2" class="table table-bordered" style="border: 1px solid; border-collapse: collapse;">';
+            $output .= '<tr>';
+            $output .= '<th>DATE OF TRAINING</th>';
+            $output .= '<th>OBJECTIVE</th>';
+            $output .= '<th>VENUE</th>';
+            $output .= '<th>CONDUCTED BY</th>';
+            $output .= '<th>IS STAFF</th>';
+            $output .= '<th>GROUP ID</td>';
+            $output .= '<th>GROUP NAME</td>';
+            $output .= '</tr>';
+
+            foreach ($training_result->result() as $training) {
+                foreach ($groups->result() as $group) {
+                    if ($this->check_if_a_group_member_attended_this_training($group->GROUP_ID)) {
+                        $output .= '<tr>';
+                        $output .= '<td>' . $training->DATE_OF_TRAINING . '</td>';
+                        $output .= '<td>' . $training->OBJECTIVE . '</td>';
+                        $output .= '<td>' . $training->VENUE . '</td>';
+                        $output .= '<td>' . $training->CONDUCTED_BY . '</td>';
+                        $output .= '<td>' . $training->IS_STAFF . '</td>';
+                        $output .= '<td>' . $group->GROUP_ID . '</td>';
+                        $output .= '<td>' . $group->NAME . '</td>';
+                        $output .= '</tr>';
+                    }
+                }
+
+            }
+
+            $output .= '</table>';
+
+        } else {
+            $output .= '<div style="color:red;">No Training Records Found for this Module</div>';
+        }
+
+        return $output;
+
+    }
+
+    function check_if_a_group_member_attended_this_training($group_id)
+    {
+        $this->db->like('ATTENDANT', $group_id);
+        $this->db->where('STATUS', TRUE);
+        $attendants = $this->db->get('TRAINING_ATTENDANCE');
+
+        if ($attendants->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function insert_course($field_data)
@@ -336,7 +434,6 @@ class Courses_model extends CI_Model{
             return $this->db->error();
         }
     }
-
 
 
 }

@@ -269,7 +269,7 @@ class PilotStudies extends AuthContentController {
                 'FOOD_EXPENSE' => $food_percentage,
                 'HOUSEHOLD_ASSETS' => $household_assets_percentage,
                 'OTHER_EXPENSES' => $others_percentage,
-                '$breakfast_snack_one_year_ago' => $increase_in_diversity_of_income_from_one_year_ago,
+                'INCREASE_IN_DIVERSITY_OF_SOURCES_OF_INCOME' => $increase_in_diversity_of_income_from_one_year_ago,
                 'LAND_INCREASE' => $land_increase,
                 'LAND_SIZE' => $land_increase_size,
                 'PERMANENT_HOUSE' => $permanent_house_increase,
@@ -374,7 +374,7 @@ class PilotStudies extends AuthContentController {
         $Males_under_5 = $this->input->post('Males_under_5');
         $Males_between_5_and_18 = $this->input->post('Males_between_6_and_18');
         $Males_between_18_and_45 = $this->input->post('Males_between_18_and_45');
-        $Feales_between_18_and_45 = $this->input->post('Females_between_18_and_45');
+        $Females_between_18_and_45 = $this->input->post('Females_between_18_and_45');
         $Length_of_time_involved_in_project = $this->input->post('Length_of_time_involved_in_project');
         $daily_household_income_now = $this->input->post('daily_household_income_now');
         $daily_household_income_one_year_ago = $this->input->post('daily_household_income_one_year_ago');
@@ -557,7 +557,7 @@ class PilotStudies extends AuthContentController {
                 'SOURCES_OF_INCOME_1_YEAR_AGO' => $list_sources_of_income_one_year_ago,
                 'INCOME_ONE_YEAR_AGO_ADDITIONAL_NOTES' => $income_additional_notes_one_year_ago,
                 'INCREASE_IN_DAILY_HOUSEHOLD_INCOME' => $increase_in_daily_household_income_from_one_year_ago,
-                'INCREASE_IN_DIVERSITY_OF_SOURCES_OF_INCOME' => $increase_in_daily_household_income_from_one_year_ago,
+                'INCREASE_IN_INCOME' => $increase_in_daily_household_income_from_one_year_ago,
                 'MEDICAL_EXPENSE' => $medical_percentage,
                 'EDUCATION_EXPENSE' => $education_percentage,
                 'HOUSE_EXPENSE' => $house_rent_percentage,
@@ -565,7 +565,7 @@ class PilotStudies extends AuthContentController {
                 'FOOD_EXPENSE' => $food_percentage,
                 'HOUSEHOLD_ASSETS' => $household_assets_percentage,
                 'OTHER_EXPENSES' => $others_percentage,
-                'SNACK_FOR_BREAKFAST_1_YEAR_AGO' => $increase_in_diversity_of_income_from_one_year_ago,
+                'INCREASE_IN_DIVERSITY_OF_SOURCES_OF_INCOME' => $increase_in_diversity_of_income_from_one_year_ago,
                 'LAND_INCREASE' => $land_increase,
                 'LAND_SIZE' => $land_increase_size,
                 'PERMANENT_HOUSE' => $permanent_house_increase,

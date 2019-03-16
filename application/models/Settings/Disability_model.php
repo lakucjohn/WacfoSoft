@@ -28,6 +28,17 @@ class Disability_model extends CI_Model
 
     }
 
+    function get_disability_name($disability_id)
+    {
+        $this->db->select('DISABILITY_NAME');
+        $this->db->where('ID', $disability_id);
+        $query = $this->db->get('DISABILITIES');
+
+        foreach ($query->result() as $row) {
+            return $row->DISABILITY_NAME;
+        }
+    }
+
     function insert($field_data)
     {
 

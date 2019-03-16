@@ -7,7 +7,7 @@
  */
 ?>
 
-<?php echo form_open("group-support/create"); ?>
+<?php echo form_open("member-support/create"); ?>
 <!-- The modal header -->
 <div class="modal-header">
     <h4 class="modal-title">Register New Support for this Member</h4>

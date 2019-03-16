@@ -7,13 +7,16 @@
  */
 require_once (APPPATH.'models/Header.php');
 require_once(APPPATH . 'models/Settings/Location_model.php');
+require_once(APPPATH . 'models/Settings/Disability_model.php');
 class Children_model extends CI_Model{
 
     private $location;
+    private $disability;
 
     public function __construct()
     {
         $this->location = new Location_model();
+        $this->disability = new Disability_model();
     }
 
     function fetch(){
@@ -87,7 +90,7 @@ class Children_model extends CI_Model{
                                 <td style="font-weight:bold; text-align: right;">Date of Birth :</td>
                                 <td>' . $row->DATE_OF_BIRTH . '</td>
                                 <td style="font-weight:bold; text-align: right;">Vulnerability :</td>
-                                <td>' . $row->VULNERABILITY . '</td>
+                                <td>' . $this->disability->get_disability_name($row->VULNERABILITY) . '</td>
                                 <td style="font-weight:bold; text-align: right;">Date of Joining :</td>
                                 <td>' . $row->DATE_OF_JOINING . '</td>
                             </tr>
@@ -141,15 +144,15 @@ class Children_model extends CI_Model{
             $output .= '<tr style="font-weight: bold"><td colspan="6">PART 1: ASSESSMENT FORM 1</td> </tr>                        
                         <tr style="height: 40px;">
                             <td style="font-weight:bold; text-align: right;">County :</td>
-                            <td>' . $row->COUNTY . '</td>
+                            <td>' . $this->location->get_county_name($row->COUNTY) . '</td>
                             <td style="font-weight:bold; text-align: right;">Sub-county :</td>
-                            <td>' . $row->SUBCOUNTY . '</td>
+                            <td>' . $this->location->get_subcounty_name($row->SUBCOUNTY) . '</td>
                             <td style="font-weight:bold; text-align: right;">Parish :</td>
-                            <td>' . $row->PARISH . '</td>
+                            <td>' . $this->location->get_parish_name($row->PARISH) . '</td>
                         </tr>
                         <tr style="height: 40px;">
                             <td style="font-weight:bold; text-align: right;">Village :</td>
-                            <td colspan="5">' . $row->VILLAGE . '</td>
+                            <td colspan="5">' . $this->location->get_village_name($row->VILLAGE) . '</td>
                         </tr>  
                         <tr style="height: 40px;">
                             <td colspan="6">&nbsp;</td>

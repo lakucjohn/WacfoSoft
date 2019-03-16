@@ -31,6 +31,7 @@ class Groupings extends AuthContentController {
         $data['livelihood_categories'] = $this->grouping_model->fetch_all_categories();
 
             $data['group_list'] = $this->grouping_model->fetch();
+        $data['villages'] = $this->location_model->fetch_all_villages();
 
             $this->template->load('default', 'People/Livelihood/Groupings/Data/groupings-data-list', $data);
 
@@ -172,6 +173,7 @@ class Groupings extends AuthContentController {
         $support = $this->input->post('support_item');
         $date = $this->input->post('date_of_support');
         $group_supported = $this->input->post('group_id');
+        $support_quantities = $this->input->post('support_quantity');
 
         # Performing Validation Checks
         $this->form_validation->set_rules('date_of_support', 'Date', 'required');
@@ -181,7 +183,15 @@ class Groupings extends AuthContentController {
             $this->template->load('default', 'People/Livelihood/Groupings/Registration/support-registration-form', $data);
         } else {
 
-            $supported_with = implode(', ', $support);
+            $i = 0;
+            $support_items_and_their_quantities = array();
+            while ($i < count($support)) {
+                array_push($support_items_and_their_quantities, $support[$i] . ' (' . $support_quantities[$i] . ')');
+
+                $i++;
+            }
+
+            $supported_with = implode(', ', $support_items_and_their_quantities);
 
             $field_data = array(
                 'DATE_OF_SUPPORT' => $date,

@@ -253,5 +253,20 @@ class Courses extends AuthContentController {
 
     }
 
+    public function generate_training_information_for_this_module($course_code, $row_id)
+    {
+
+        $page_info = $this->courses_model->fetch_groups_trained_in_this_module($course_code, $row_id);
+
+        $html_content = '<h3>About ' . $row_id . '</h3>';
+        $html_content .= $page_info;
+
+        $this->pdf->loadHtml($html_content);
+        $this->pdf->setPaper('A4', 'landscape');
+        $this->pdf->render();
+
+        $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+    }
+
 }
 ?>

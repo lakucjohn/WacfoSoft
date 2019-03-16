@@ -249,7 +249,7 @@
                                                 foreach ($subcounty_settings->result() as $subcounty) {
                                                     if ($subcounty->ID == $row->ID) {
                                                         $subcounty_name = $subcounty->SUBCOUNTY;
-                                                        $subcounty_county_id = $subcounty->ID;
+                                                        $subcounty_county_id = $subcounty->COUNTY;
                                                     }
                                                 }
 
@@ -314,7 +314,7 @@
                                                 foreach ($subcounty_settings->result() as $subcounty) {
                                                     if ($subcounty->ID == $parish_subcounty_id) {
                                                         $subcounty_name = $subcounty->SUBCOUNTY;
-                                                        $parish_county_id = $subcounty->ID;
+                                                        $parish_county_id = $subcounty->COUNTY;
                                                     }
                                                 }
 

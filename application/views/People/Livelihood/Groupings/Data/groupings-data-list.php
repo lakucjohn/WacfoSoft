@@ -5,7 +5,8 @@
  * Date: 12/10/18
  * Time: 8:51 PM
  */
-
+#include (APPPATH.'models/Settings/Location_model.php');
+//$location = new Location_model();
 ?>
 
 
@@ -57,14 +58,24 @@ if(isset($group_list)){
                                     ';
 
                             foreach ($livelihood_categories->result() as $category) {
-                                if ($category->CATEGORYNAME == $row->TYPE) {
+                                if ($category->ID == $row->TYPE) {
                                     ?>
                                     <?php echo $category->CATEGORYNAME; ?>
                                     <?php
                                 }
                             }
                             echo '</td>
-                                <td>' . $row->LOCATION . '</td>
+                                <td>';
+
+                            foreach ($villages->result() as $village) {
+                                if ($village->ID == $row->LOCATION) {
+                                    ?>
+                                    <?php echo $village->VILLAGE; ?>
+                                    <?php
+                                }
+                            }
+
+                            echo '</td>
                                     <td>
                                         <a href="'.site_url("group-details/edit/$row->ID").'" class="btn btn-link" title="Edit Group Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                         <!-- <button class="btn btn-link delete-btn" title="Delete This Group" data-toggle="modal" data-id="' . $row->ID . '" data-target="#deleteGroupingModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button> -->                                        

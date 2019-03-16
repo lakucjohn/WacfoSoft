@@ -323,7 +323,7 @@
     <script src="<?php echo base_url('Assets/js/sb-admin-datatables.min.js') ?>"></script>
     <script src="<?php echo base_url('Assets/js/sb-admin-charts.min.js') ?>"></script>
 <script src="<?php echo base_url('Assets/js/app_main.js') ?>"></script>
-<script src="<?php echo base_url('Assets/js/query_data.js') ?>"></script>
+<!--<script src="--><?php //echo base_url('Assets/js/query_data.js') ?><!--"></script>-->
 </div>
 </body>
 

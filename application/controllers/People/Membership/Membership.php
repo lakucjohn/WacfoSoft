@@ -243,6 +243,49 @@ class Membership extends AuthContentController {
 
     }
 
+    public function create_support()
+    {
+        $data = array();
+        $data['title'] = 'Support this Entity';
+        $group_id = $this->uri->segment(5) . '/' . $this->uri->segment(6) . '/' . $this->uri->segment(7) . '/' . $this->uri->segment(8);
+
+        $data['group_id'] = $group_id;
+        $support = $this->input->post('support_item');
+        $support_quantities = $this->input->post('support_quantity');
+        $date = $this->input->post('date_of_support');
+        $group_supported = $this->input->post('group_id');
+
+        # Performing Validation Checks
+        $this->form_validation->set_rules('date_of_support', 'Date', 'required');
+        $this->form_validation->set_rules('support_item[]', 'Support Items', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'People/Livelihood/Membership/Registration/support-registration-form', $data);
+        } else {
+
+            $i = 0;
+            $support_items_and_their_quantities = array();
+            while ($i < count($support)) {
+                array_push($support_items_and_their_quantities, $support[$i] . ' (' . $support_quantities[$i] . ')');
+
+                $i++;
+            }
+
+            $supported_with = implode(', ', $support_items_and_their_quantities);
+
+            $field_data = array(
+                'DATE_OF_SUPPORT' => $date,
+                'BENEFICIARY' => $group_supported,
+                'CATEGORY' => 'Member',
+                'SUPPORT' => $supported_with,
+            );
+            $this->grouping_model->insert_support_record($field_data);
+
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+
+    }
+
     public function generate_detailed_pdf(){
 
     }

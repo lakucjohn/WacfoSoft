@@ -121,12 +121,23 @@ class Query extends AuthContentController
 //        print_r($tableslist);
 //
         $result_set = $this->query_model->execute_query($generated_sql);
-////        echo $generated_sql;
-//////        print_r($result_set);
-////
-////        print_r($result_set->result());
-////
-        $output = '<table class="table table-bordered">';
+
+        $output = '
+                <head>
+                 <style>
+
+                    #innertable td{
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                    }
+
+                    #innertable-2 td, th{
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                    }
+                </style>
+                </head>';
+        $output .= '<table class="table table-bordered" id="innertable-2" style="border-collapse: collapse;">';
         $output .= '<tr>';
         $output .= '<th>#</th>';
 
@@ -158,7 +169,11 @@ class Query extends AuthContentController
         #$colspan = count($result_set->list_fields())+1;
         #$output .= '<td style="text-align:right;" colspan='.$colspan.'>&nbsp;</td>';
         #$output .= '<td style="text-align:right;" colspan='.$colspan.'>'.$result_set->num_rows().' Results Found</td>';
-        $output .= '</table>';
+        $output .= '</table><br><br>';
+
+
+        $currentDateTime = date('Y-m-d H:i:s');
+        $output .= $currentDateTime;
 
         echo $output;
 

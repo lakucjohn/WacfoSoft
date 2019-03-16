@@ -142,6 +142,7 @@ echo form_open('course-details/edit/' . $row_id);
                                         class="btn btn-danger btn-sm" type="button"><i class="fa fa-remove"
                                                                                        onclick="deleteRow(<?php echo $id; ?>);">
                                         Delete</i></button>
+                            </td>
                         </tr>
 
                         <?php

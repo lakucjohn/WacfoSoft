@@ -68,6 +68,7 @@ $route['dashboard'] = 'Dashboard/dashboard';
 //$route['groupings'];
 $route['membership'] = 'People/Membership/membership';
 $route['membership/register-new-member'] = 'People/Membership/membership/create';
+$route['member-support/create'] = 'People/Membership/membership/create_support';
 $route['member-details/(:any)'] = 'People/Membership/membership/details';
 $route['member-details/edit/(:any)'] = 'People/Membership/membership/edit';
 $route['member-info/generate-pdf/(:any)'] = 'People/Membership/membership/generate_detailed_pdf';
