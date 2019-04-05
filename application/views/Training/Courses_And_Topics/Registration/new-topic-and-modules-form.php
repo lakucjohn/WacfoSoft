@@ -57,13 +57,13 @@
                         <th colspan="6">Select The Target Categories</th>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <div class="col-md-12">
-                                <input type="checkbox" name="all_groups" id="all_groups" value="all" />All Groups
-                            </div>
-                        </td>
-                    </tr>
+                    <!--                    <tr>-->
+                    <!--                        <td>-->
+                    <!--                            <div class="col-md-12">-->
+                    <!--                                <input type="checkbox" name="all_groups" id="all_groups" value="all" />All Groups-->
+                    <!--                            </div>-->
+                    <!--                        </td>-->
+                    <!--                    </tr>-->
 
                     <tr>
                         <td colspan="2">
