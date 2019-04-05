@@ -392,6 +392,7 @@
                                             <th>Disability Name</th>
                                             <th>Description</th>
                                             <th>Disability Prefix</th>
+                                            <th>ID</th>
                                             <th>Options</th>
                                         </tr>
                                         </thead>
@@ -404,6 +405,7 @@
                                                     <td>' . $row->DISABILITY_NAME . '</td>
                                                     <td>' . $row->DISABILITY_DESCRIPTION . '</td>
                                                     <td>' . $row->DISABILITY_PREFIX . '</td>
+                                                    <td>' . $row->DISABILITY_ID . '</td>
                                                     <td>
                                                         <a href="' . site_url("disability-details/edit/1") . '" class="btn btn-link" title="Edit DIsability Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                                         <a class="btn btn-link" title="Delete This Disability" href="' . base_url('delete_data/delete_row/DISABILITIES/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>

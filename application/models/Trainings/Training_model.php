@@ -622,6 +622,20 @@ class Training_model extends CI_Model{
         return $output;
     }
 
+    function check_if_member_attended_a_training($membership_id, $row_id)
+    {
+        $this->db->where('ATTENDANT', $membership_id);
+        $this->db->where('TRAINING_ID', $row_id);
+        $this->db->where('STATUS', TRUE);
+        $attendants = $this->db->get('TRAINING_ATTENDANCE');
+
+        if ($attendants->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function fetch_training_information_for_this_member($member_id)
     {
         $this->db->where('STATUS', TRUE);

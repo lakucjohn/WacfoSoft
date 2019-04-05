@@ -17,6 +17,7 @@ class Children extends AuthContentController {
 
         // Load the models for this controller
         $this->load->model('People/Children/children_model');
+        $this->load->model('People/Groupings/grouping_model');
         $this->load->model('People/disability_model');
         $this->load->model('Settings/location_model');
     }
@@ -190,7 +191,7 @@ class Children extends AuthContentController {
         if ($this->uri->segment(3)) {
 
             $row_id = $this->uri->segment(3);
-            $page_data = $this->children_model->fetch_single_record($row_id);
+            $page_data = $this->children_model->fetch_single_record_and_print($row_id);
 
             $html_content = '<h3>About ' . $row_id . '</h3>';
             $html_content .= $page_data;
@@ -215,6 +216,49 @@ class Children extends AuthContentController {
 
             echo $this->children_model->get_child_name_from_db($child_id);
         }
+    }
+
+    public function create_support()
+    {
+        $data = array();
+        $data['title'] = 'Support this Entity';
+        $child_id = $this->uri->segment(5) . '/' . $this->uri->segment(6);
+
+        $data['child_id'] = $child_id;
+        $support = $this->input->post('support_item');
+        $date = $this->input->post('date_of_support');
+        $entity_supported = $this->input->post('child_id');
+        $support_description = $this->input->post('support_description');
+
+        # Performing Validation Checks
+        $this->form_validation->set_rules('date_of_support', 'Date', 'required');
+        $this->form_validation->set_rules('support_item[]', 'Support Items', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->template->load('default', 'People/Children/Registration/child-support-registration-form', $data);
+        } else {
+
+            $i = 0;
+            $support_items_and_their_quantities = array();
+            while ($i < count($support)) {
+                array_push($support_items_and_their_quantities, $support[$i] . ' (' . $support_description[$i] . ')');
+
+                $i++;
+            }
+
+            $supported_with = implode(', ', $support_items_and_their_quantities);
+
+            $field_data = array(
+                'DATE_OF_SUPPORT' => $date,
+                'BENEFICIARY' => $entity_supported,
+                'CATEGORY' => 'Child',
+                'SUPPORT' => $supported_with,
+            );
+            $this->grouping_model->insert_support_record($field_data);
+
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+
     }
 
 }

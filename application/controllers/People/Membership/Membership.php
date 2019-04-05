@@ -32,6 +32,7 @@ class Membership extends AuthContentController {
         );
 
         $data['members_list'] = $this->membership_model->fetch();
+        $data['disability_list'] = $this->disability_model->fetch();
         $this->template->load('default', 'People/Livelihood/Membership/Data/membership-data-list', $data);
 
     }

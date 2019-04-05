@@ -1477,158 +1477,158 @@
                             <tr>
                                 <td>
                                     <div class="col-md-12">
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.NAME_OF_RESPONDENT"/> NAME OF
                                         RESPONDENT <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field" value="PORTICUS_BASELINE_ASSESSMENTS.AGE"/> AGE
                                         <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field" value="PORTICUS_BASELINE_ASSESSMENTS.VILLAGE"/>
                                         VILLAGE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field" value="PORTICUS_BASELINE_ASSESSMENTS.GENDER"/>
                                         GENDER <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.NAME_OF_VULNERABLE"/> NAME OF
                                         VULNERABLE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.GENDER_OF_VULNERABLE"/> GENDER OF
                                         VULNERABLE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.AGE_OF_VULNERABLE"/> AGE OF
                                         VULNERABLE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.CATEGORY_OF_DISABILITY"/> CATEGORY
                                         OF DISABILITY <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.NAME_OF_DISABILITY"/> NAME OF
                                         DISABILITY <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.MARITAL_STATUS"/> MARITAL STATUS
                                         <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.LEVEL_OF_EDUCATION "/> LEVEL OF
                                         EDUCATION <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field" value="PORTICUS_BASELINE_ASSESSMENTS.OCCUPATION"/>
                                         OCCUPATION <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.HOUSEHOLD_MONTHLY_INCOME"/>
                                         HOUSEHOLD MONTHLY INCOME <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.DEFINITION_OF_DISABILITY"/>
                                         DEFINITION OF DISABILITY <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.LIST_OF_DISABILITIES_KNOWN"/> LIST
                                         OF DISABILITIES KNOWN <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.CAUSES_OF_DISABILITIES_KNOWN"/>
                                         CAUSES OF DISABILITIES KNOWN <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.WAYS_OF_PREVENTION"/> WAYS OF
                                         PREVENTION <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.FEELING_OF_HAVING_A_VULNERABLE"/>
                                         CATEGORY <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.FEELING_OF_THE_COMMUNITY"/> FEELING
                                         OF THE_COMMUNITY <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.VULNERABLE_SUPPORTED"/> VULNERABLE
                                         SUPPORTED <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.SUPPORT_GIVEN"/> SUPPORT GIVEN <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.WHY_NOT_SUPPORTED"/> WHY NOT
                                         SUPPORTED <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.REHABILITATION_RECEIVED"/>
                                         REHABILITATION RECEIVED <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.PLACE_OF_REHABILITATION"/> PLACE OF
                                         REHABILITATION <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.KIND_OF_TREATMENT_RECEIVED"/> KIND
                                         OF TREATMENT RECEIVED <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.COST_OF_TREATMENT"/> COST OF
                                         TREATMENT <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.DURATION_OF_THE_TREATMENT"/>
                                         DURATION OF THE TREATMENT <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.FREQUENCY_OF_ATTENDANCE"/> FREQUENCY
                                         OF ATTENDANCE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.REGULAR_ATTENDANCE"/> REGULAR
                                         ATTENDANCE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.REASON_FOR_NOT_ATTENDING_REGULARLY"/>
                                         REASON FOR NOT ATTENDING REGULARLY <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.QUALITY_OF_SERVICE"/> QUALITY OF
                                         SERVICE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.TRAINING_RECEIVED"/> TRAINING
                                         RECEIVED <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.NAME_OF_TRAINER"/> NAME OF TRAINER
                                         <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.TRAINING_WAS_ABOUT"/> TRAINING WAS
                                         ABOUT <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.HELP_OF_THE_TRAINING"/> HELP OF THE
                                         TRAINING <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.CHALLENGES_FACED_IN_CARING"/>
                                         CHALLENGES FACED IN CARING <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.STRENGTHS_OF_VULNERABLE"/> STRENGTHS
                                         OF VULNERABLE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.WEAKNESSES_OF_VULNERABLE"/>
                                         WEAKNESSES OF VULNERABLE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.HOPE_FOR_THE_VULNERABLE"/> HOPE FOR
                                         THE VULNERABLE <br>
-                                        <input type="checkbox" name="tables_field" id="livelihood_categories_field"
+                                        <input type="checkbox" name="tables_field" id="tables_field"
                                                class="porticus_field"
                                                value="PORTICUS_BASELINE_ASSESSMENTS.ORGANIZATION_HELP_NEEDED"/>
                                         ORGANIZATION HELP NEEDED <br>
@@ -4665,231 +4665,7 @@
 //
 //        }
 //
-//        if (contains.call(required_fields, 'GROUPS.LOCATION')) {
-//            var join = [];
-//            var index = required_fields.indexOf('GROUPS.LOCATION');
-//
-//            required_fields[index] = 'VILLAGE.VILLAGE';
-//
-//            query_tables.push('VILLAGE');
-//
-//            join.push('VILLAGE');
-//            join.push('VILLAGE.ID = GROUPS.LOCATION');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'CHILDREN.PARISH')) {
-//            var join = [];
-//            var index = required_fields.indexOf('CHILDREN.PARISH');
-//
-//            required_fields[index] = 'PARISH.PARISH';
-//
-//            query_tables.push('PARISH');
-//
-//            join.push('PARISH');
-//            join.push('PARISH.ID = CHILDREN.PARISH');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'CHILDREN.VILLAGE')) {
-//            var join = [];
-//            var index = required_fields.indexOf('CHILDREN.VILLAGE');
-//
-//            required_fields[index] = 'VILLAGE.VILLAGE';
-//
-//            query_tables.push('VILLAGE');
-//
-//            join.push('VILLAGE');
-//            join.push('VILLAGE.ID = CHILDREN.VILLAGE');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.COUNTY')) {
-//            var join = [];
-//            var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.COUNTY');
-//
-//            required_fields[index] = 'COUNTY.COUNTY';
-//
-//            query_tables.push('COUNTY');
-//
-//            join.push('COUNTY');
-//            join.push('COUNTY.ID = ASSESSMENT_1_RECORDS.COUNTY');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.SUBCOUNTY')) {
-//            var join = [];
-//            var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.SUBCOUNTY');
-//
-//            required_fields[index] = 'SUBCOUNTY.SUBCOUNTY';
-//
-//            query_tables.push('SUBCOUNTY');
-//
-//            join.push('SUBCOUNTY');
-//            join.push('SUBCOUNTY.ID = ASSESSMENT_1_RECORDS.SUBCOUNTY');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.PARISH')) {
-//            var join = [];
-//            var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.PARISH');
-//
-//            required_fields[index] = 'PARISH.PARISH';
-//
-//            query_tables.push('PARISH');
-//
-//            join.push('PARISH');
-//            join.push('PARISH.ID = ASSESSMENT_1_RECORDS.PARISH');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.VILLAGE')) {
-//            var join = [];
-//            var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.VILLAGE');
-//
-//            required_fields[index] = 'VILLAGE.VILLAGE';
-//
-//            query_tables.push('VILLAGE');
-//
-//            join.push('VILLAGE');
-//            join.push('VILLAGE.ID = ASSESSMENT_1_RECORDS.VILLAGE');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'CHILDREN.VULNERABILITY')) {
-//            var join = [];
-//            var index = required_fields.indexOf('CHILDREN.VULNERABILITY');
-//
-//            required_fields[index] = 'DISABILITIES.DISABILITY_NAME';
-//
-//            query_tables.push('DISABILITIES');
-//
-//            join.push('DISABILITIES');
-//            join.push('DISABILITIES.ID = CHILDREN.VULNERABILITY');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'VISIT_RECORDS.CHILD_ID_VISITED')) {
-//            var join = [];
-//            var index = required_fields.indexOf('VISIT_RECORDS.CHILD_ID_VISITED');
-//
-//            required_fields[index] = 'CHILDREN.NAME';
-//
-//            query_tables.push('CHILDREN');
-//
-//            required_fields.push('VISIT_RECORDS.CHILD_ID_VISITED');
-//
-//            join.push('CHILDREN');
-//            join.push('CHILDREN.CHILD_ID = VISIT_RECORDS.CHILD_ID_VISITED');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'VISIT_RECORDS.SUBCOUNTY')) {
-//            var join = [];
-//            var index = required_fields.indexOf('VISIT_RECORDS.SUBCOUNTY');
-//
-//            required_fields[index] = 'SUBCOUNTY.SUBCOUNTY';
-//
-//            query_tables.push('SUBCOUNTY');
-//
-//            join.push('SUBCOUNTY');
-//            join.push('SUBCOUNTY.ID = VISIT_RECORDS.SUBCOUNTY');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'VISIT_RECORDS.PARISH')) {
-//            var join = [];
-//            var index = required_fields.indexOf('VISIT_RECORDS.PARISH');
-//
-//            required_fields[index] = 'PARISH.PARISH';
-//
-//            query_tables.push('PARISH');
-//
-//            join.push('PARISH');
-//            join.push('PARISH.ID = VISIT_RECORDS.PARISH');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'VISIT_RECORDS.VILLAGE')) {
-//            var join = [];
-//            var index = required_fields.indexOf('VISIT_RECORDS.VILLAGE');
-//
-//            required_fields[index] = 'VILLAGE.VILLAGE';
-//
-//            query_tables.push('VILLAGE');
-//
-//            join.push('VILLAGE');
-//            join.push('VILLAGE.ID = VISIT_RECORDS.VILLAGE');
-//
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'ORGANIZATION_STAFF_NEW.DEPARTMENT')) {
-//            var join = [];
-//            var index = required_fields.indexOf('ORGANIZATION_STAFF_NEW.DEPARTMENT');
-////
-//            required_fields[index] = 'ORGANIZATION_DEPARTMENTS_NEW.NAME';
-////
-//            query_tables.push('ORGANIZATION_DEPARTMENTS_NEW');
-////
-//            join.push('ORGANIZATION_DEPARTMENTS_NEW');
-//            join.push('ORGANIZATION_STAFF_NEW.DEPARTMENT = ORGANIZATION_DEPARTMENTS_NEW.ID');
-////
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'COURSES_AND_TOPICS.COURSE')) {
-//            var join = [];
-//            var index = required_fields.indexOf('COURSES_AND_TOPICS.COURSE');
-////
-//            required_fields[index] = 'COURSES.COURSE';
-////
-//            query_tables.push('COURSES');
-////
-//            join.push('COURSES');
-//            join.push('COURSES_AND_TOPICS.COURSE = COURSES.CODE');
-////
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'TRAININGS.COURSE')) {
-//            var join = [];
-//            var index = required_fields.indexOf('TRAININGS.COURSE');
-////
-//            required_fields[index] = 'COURSES.COURSE';
-////
-//            query_tables.push('COURSES');
-////
-//            join.push('COURSES');
-//            join.push('TRAININGS.COURSE = COURSES.CODE');
-////
-//            joins.push(join);
-//        }
-//
-//        if (contains.call(required_fields, 'TRAININGS.TOPIC')) {
-//            var join = [];
-//            var index = required_fields.indexOf('TRAININGS.TOPIC');
-////
-//            required_fields[index] = 'COURSES_AND_TOPICS.TOPIC';
-////
-//            query_tables.push('COURSES_AND_TOPICS');
-////
-//            join.push('COURSES_AND_TOPICS');
-//            join.push('TRAININGS.TOPIC = COURSES_AND_TOPICS.ID');
-////
-//            joins.push(join);
-//        }
+
 
 //        Preparing the condition segment
         var group_name = document.getElementById('name_criterion').value;
@@ -5282,6 +5058,15 @@
                         var join = [];
 
                         join.push('ASSESSMENT_1_RECORDS');
+                        join.push('CHILDREN.CHILD_ID = ASSESSMENT_1_RECORDS.CHILD_ID');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'LIVELIHOODGROUPCATEGORIES')) {
+                        var join = [];
+
+                        join.push('LIVELIHOODGROUPCATEGORIES');
                         join.push('CHILDREN.CHILD_ID = ASSESSMENT_1_RECORDS.CHILD_ID');
 
                         joins.push(join);
@@ -8043,6 +7828,243 @@
 
                         conditions.push(record);
 
+                    }
+
+                    if (contains.call(required_fields, 'GROUPS.LOCATION')) {
+                        var join = [];
+                        var index = required_fields.indexOf('GROUPS.LOCATION');
+
+                        required_fields[index] = 'VILLAGE.VILLAGE';
+
+                        query_tables.push('VILLAGE');
+
+                        join.push('VILLAGE');
+                        join.push('VILLAGE.ID = GROUPS.LOCATION');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'CHILDREN.PARISH')) {
+                        var join = [];
+                        var index = required_fields.indexOf('CHILDREN.PARISH');
+
+                        required_fields[index] = 'PARISH.PARISH';
+
+                        query_tables.push('PARISH');
+
+                        join.push('PARISH');
+                        join.push('PARISH.ID = CHILDREN.PARISH');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'CHILDREN.VILLAGE')) {
+                        var join = [];
+                        var index = required_fields.indexOf('CHILDREN.VILLAGE');
+
+                        required_fields[index] = 'VILLAGE.VILLAGE';
+
+                        query_tables.push('VILLAGE');
+
+                        join.push('VILLAGE');
+                        join.push('VILLAGE.ID = CHILDREN.VILLAGE');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.COUNTY')) {
+                        var join = [];
+                        var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.COUNTY');
+
+                        required_fields[index] = 'COUNTY.COUNTY';
+
+                        query_tables.push('COUNTY');
+
+                        join.push('COUNTY');
+                        join.push('COUNTY.ID = ASSESSMENT_1_RECORDS.COUNTY');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.SUBCOUNTY')) {
+                        var join = [];
+                        var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.SUBCOUNTY');
+
+                        required_fields[index] = 'SUBCOUNTY.SUBCOUNTY';
+
+                        query_tables.push('SUBCOUNTY');
+
+                        join.push('SUBCOUNTY');
+                        join.push('SUBCOUNTY.ID = ASSESSMENT_1_RECORDS.SUBCOUNTY');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.PARISH')) {
+                        var join = [];
+                        var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.PARISH');
+
+                        required_fields[index] = 'PARISH.PARISH';
+
+                        query_tables.push('PARISH');
+
+                        join.push('PARISH');
+                        join.push('PARISH.ID = ASSESSMENT_1_RECORDS.PARISH');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'ASSESSMENT_1_RECORDS.VILLAGE')) {
+                        var join = [];
+                        var index = required_fields.indexOf('ASSESSMENT_1_RECORDS.VILLAGE');
+
+                        required_fields[index] = 'VILLAGE.VILLAGE';
+
+                        query_tables.push('VILLAGE');
+
+                        join.push('VILLAGE');
+                        join.push('VILLAGE.ID = ASSESSMENT_1_RECORDS.VILLAGE');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'CHILDREN.VULNERABILITY')) {
+                        var join = [];
+                        var index = required_fields.indexOf('CHILDREN.VULNERABILITY');
+
+                        required_fields[index] = 'DISABILITIES.DISABILITY_NAME';
+
+                        query_tables.push('DISABILITIES');
+
+                        join.push('DISABILITIES');
+                        join.push('DISABILITIES.ID = CHILDREN.VULNERABILITY');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'VISIT_RECORDS.CHILD_ID_VISITED')) {
+                        var join = [];
+                        var index = required_fields.indexOf('VISIT_RECORDS.CHILD_ID_VISITED');
+
+                        required_fields[index] = 'CHILDREN.NAME';
+
+                        query_tables.push('CHILDREN');
+
+                        required_fields.push('VISIT_RECORDS.CHILD_ID_VISITED');
+
+                        join.push('CHILDREN');
+                        join.push('CHILDREN.CHILD_ID = VISIT_RECORDS.CHILD_ID_VISITED');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'VISIT_RECORDS.SUBCOUNTY')) {
+                        var join = [];
+                        var index = required_fields.indexOf('VISIT_RECORDS.SUBCOUNTY');
+
+                        required_fields[index] = 'SUBCOUNTY.SUBCOUNTY';
+
+                        query_tables.push('SUBCOUNTY');
+
+                        join.push('SUBCOUNTY');
+                        join.push('SUBCOUNTY.ID = VISIT_RECORDS.SUBCOUNTY');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'VISIT_RECORDS.PARISH')) {
+                        var join = [];
+                        var index = required_fields.indexOf('VISIT_RECORDS.PARISH');
+
+                        required_fields[index] = 'PARISH.PARISH';
+
+                        query_tables.push('PARISH');
+
+                        join.push('PARISH');
+                        join.push('PARISH.ID = VISIT_RECORDS.PARISH');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'VISIT_RECORDS.VILLAGE')) {
+                        var join = [];
+                        var index = required_fields.indexOf('VISIT_RECORDS.VILLAGE');
+
+                        required_fields[index] = 'VILLAGE.VILLAGE';
+
+                        query_tables.push('VILLAGE');
+
+                        join.push('VILLAGE');
+                        join.push('VILLAGE.ID = VISIT_RECORDS.VILLAGE');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'ORGANIZATION_STAFF_NEW.DEPARTMENT')) {
+                        var join = [];
+                        var index = required_fields.indexOf('ORGANIZATION_STAFF_NEW.DEPARTMENT');
+                        //
+                        required_fields[index] = 'ORGANIZATION_DEPARTMENTS_NEW.NAME';
+                        //
+                        query_tables.push('ORGANIZATION_DEPARTMENTS_NEW');
+                        //
+                        join.push('ORGANIZATION_DEPARTMENTS_NEW');
+                        join.push('ORGANIZATION_STAFF_NEW.DEPARTMENT = ORGANIZATION_DEPARTMENTS_NEW.ID');
+                        //
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'COURSES_AND_TOPICS.COURSE')) {
+                        var join = [];
+                        var index = required_fields.indexOf('COURSES_AND_TOPICS.COURSE');
+                        //
+                        required_fields[index] = 'COURSES.COURSE';
+                        //
+                        query_tables.push('COURSES');
+                        //
+                        join.push('COURSES');
+                        join.push('COURSES_AND_TOPICS.COURSE = COURSES.CODE');
+                        //
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'TRAININGS.COURSE')) {
+                        var join = [];
+                        var index = required_fields.indexOf('TRAININGS.COURSE');
+                        //
+                        required_fields[index] = 'COURSES.COURSE';
+                        //
+                        query_tables.push('COURSES');
+                        //
+                        join.push('COURSES');
+                        join.push('TRAININGS.COURSE = COURSES.CODE');
+                        //
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'TRAININGS.TOPIC')) {
+                        var join = [];
+                        var index = required_fields.indexOf('TRAININGS.TOPIC');
+                        //
+                        required_fields[index] = 'COURSES_AND_TOPICS.TOPIC';
+                        //
+                        query_tables.push('COURSES_AND_TOPICS');
+                        //
+                        join.push('COURSES_AND_TOPICS');
+                        join.push('TRAININGS.TOPIC = COURSES_AND_TOPICS.ID');
+                        //
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'LIVELIHOODGROUPCATEGORIES.CATEGORYNAME') & contains.call(query_tables, 'GROUPS')) {
+                        var join = [];
+
+                        query_tables.push('LIVELIHOODGROUPCATEGORIES');
+                        //
+                        join.push('LIVELIHOODGROUPCATEGORIES');
+                        join.push('LIVELIHOODGROUPCATEGORIES.ID = GROUPS.TYPE');
+                        //
+                        joins.push(join);
                     }
 
                     $.ajax({

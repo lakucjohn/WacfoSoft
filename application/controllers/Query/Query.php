@@ -15,6 +15,12 @@ class Query extends AuthContentController
     {
         parent::__construct();
         $this->load->model('Query/query_model');
+        $this->load->model('People/Groupings/grouping_model');
+        $this->load->model('Settings/location_model');
+        $this->load->model('People/Membership/membership_model');
+        $this->load->model('People/disability_model');
+        $this->load->model('People/Children/children_model');
+        $this->load->model('Trainings/courses_model');
     }
 
     public function index()
@@ -71,8 +77,14 @@ class Query extends AuthContentController
 //                            array_push($final_or_conditions_array, $conditionsegment);
 //                        }
                     } else {
-                        $condition_segment = $condition[0] . " LIKE '%" . $condition[1] . "%'";
-//                        echo $condition_segment;
+                        if (preg_match('/[>,<]/', $condition[1])) {
+                            $condition_segment = $condition[0] . $condition[1];
+//                          echo $condition_segment;
+                        } else {
+                            $condition_segment = $condition[0] . " LIKE '%" . $condition[1] . "%'";
+//                          echo $condition_segment;
+                        }
+
                         array_push($final_and_conditions_array, $condition_segment);
                     }
                 } else {
@@ -113,13 +125,14 @@ class Query extends AuthContentController
 //        print_r($fieldslist);
 
         $generated_sql = $this->build_query($table = $tableslist, $fields = $fieldslist, $joins = $joinslist, $conditions = $final_conditions);
-
-//        # Format of a query builder input pattern
-////        $generated_sql = $this->build_query($table = array(), $fields = array(), $joins = array(), $cosnditions = array());
-///
-//            echo $generated_sql;
-//        print_r($tableslist);
+//        echo $generated_sql;
 //
+////        # Format of a query builder input pattern
+//////        $generated_sql = $this->build_query($table = array(), $fields = array(), $joins = array(), $cosnditions = array());
+/////
+////            echo $generated_sql;
+////        print_r($tableslist);
+////
         $result_set = $this->query_model->execute_query($generated_sql);
 
         $output = '
@@ -284,6 +297,101 @@ class Query extends AuthContentController
         return $sql;
 //        $query_result_set = $this->query_model->execute_query($sql);
 
+    }
+
+    public function search_specific_content()
+    {
+        $data = array(
+            'title' => 'Filtering Data from WacfoSoft',
+        );
+        if (isset($_POST['search_this_content'])) {
+            $content_to_search = $_POST['search_this_content'];
+            $data['search_content'] = $content_to_search;
+
+            if ($this->query_model->search_groups($content_to_search)) {
+                $data['group_search'] = $this->query_model->search_groups($content_to_search);
+                $data['livelihood_categories'] = $this->grouping_model->fetch_all_categories();
+                $data['villages'] = $this->location_model->fetch_all_villages();
+            }
+
+            if ($this->query_model->search_membership($content_to_search)) {
+                $data['membership_search'] = $this->query_model->search_membership($content_to_search);
+                $data['disability_list'] = $this->disability_model->fetch();
+            }
+
+            if ($this->query_model->search_children($content_to_search)) {
+                $data['children_search'] = $this->query_model->search_children($content_to_search);
+                $data['disability_list'] = $this->disability_model->fetch();
+            }
+
+            if ($this->query_model->search_staff($content_to_search)) {
+                $data['staff_search'] = $this->query_model->search_staff($content_to_search);
+            }
+
+//            if($this->query_model->search_department($content_to_search)){
+//                $data['department_search'] = $this->query_model->search_department($content_to_search);
+//            }
+
+            if ($this->query_model->search_livelihood_survey($content_to_search)) {
+                $data['livelihood_survey_search'] = $this->query_model->search_livelihood_survey($content_to_search);
+            }
+
+            if ($this->query_model->search_porticus($content_to_search)) {
+                $data['porticus_search'] = $this->query_model->search_porticus($content_to_search);
+            }
+
+            if ($this->query_model->search_production($content_to_search)) {
+                $data['production_search'] = $this->query_model->search_production($content_to_search);
+            }
+
+            if ($this->query_model->search_challenges($content_to_search)) {
+                $data['challenges_search'] = $this->query_model->search_challenges($content_to_search);
+            }
+
+            if ($this->query_model->search_monitoring($content_to_search)) {
+                $data['monitoring_search'] = $this->query_model->search_monitoring($content_to_search);
+            }
+
+//            if($this->query_model->search_field_support_visits($content_to_search)){
+//                $data['field_support_visits_search'] = $this->query_model->search_field_support_visits($content_to_search);
+//            }
+//
+//            if($this->query_model->search_savings_tracking_visits($content_to_search)){
+//                $data['savings_tracking_visits_search'] = $this->query_model->search_savings_tracking_visits($content_to_search);
+//            }
+
+            if ($this->query_model->search_hygiene_and_nutrition_checklist($content_to_search)) {
+                $data['hygiene_and_nutrition_checklist_search'] = $this->query_model->search_hygiene_and_nutrition_checklist($content_to_search);
+            }
+
+            if ($this->query_model->search_assessment_1_records($content_to_search)) {
+                $data['assessment_1_records_search'] = $this->query_model->search_assessment_1_records($content_to_search);
+                $data['children_list'] = $this->children_model->fetch();
+            }
+
+            if ($this->query_model->search_assessment_2_records($content_to_search)) {
+                $data['assessment_2_records_search'] = $this->query_model->search_assessment_2_records($content_to_search);
+                $data['children_list'] = $this->children_model->fetch();
+            }
+
+            if ($this->query_model->search_visit_records($content_to_search)) {
+                $data['visit_records_search'] = $this->query_model->search_visit_records($content_to_search);
+            }
+
+            if ($this->query_model->search_marketing_places($content_to_search)) {
+                $data['marketing_places_search'] = $this->query_model->search_marketing_places($content_to_search);
+            }
+
+            if ($this->query_model->search_courses($content_to_search)) {
+                $data['courses_search'] = $this->query_model->search_courses($content_to_search);
+                $data['livelihood_categories'] = $this->grouping_model->fetch_all_categories();
+            }
+
+//            if($this->query_model->search_topics($content_to_search)){
+//                $data['topics_search'] = $this->query_model->search_topics($content_to_search);
+//            }
+            $this->template->load('default', 'Query/search-wacfosoft', $data);
+        }
     }
 
     public function test()

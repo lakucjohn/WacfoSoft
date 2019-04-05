@@ -50,6 +50,35 @@ class Disability_model extends CI_Model
             return false;
         }
     }
+
+    function generate_disability_id()
+    {
+        $query = $this->db->get('DISABILITIES');
+
+        $current_id = $query->num_rows();
+        $final_return = '';
+        //Checking if the id has been used
+        while (true) {
+            $this->db->where('DISABILITY_ID', $current_id);
+            $query_result = $this->db->get('DISABILITIES');
+
+            if ($query_result->num_rows() > 0) {
+                $current_id++;
+            } else {
+                $final_id = $current_id;
+                break;
+            }
+        }
+
+        if (strlen($final_id) == 1) {
+            $final_return .= '00' . $final_id;
+        } else if (strlen($final_id) == 2) {
+            $final_return .= '0' . $final_id;
+        } else if (strlen($final_id) == 3) {
+            $final_return .= $final_id;
+        }
+        return $final_return;
+    }
 }
 
 ?>

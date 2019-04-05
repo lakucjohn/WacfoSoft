@@ -236,14 +236,24 @@
                 </div>
             </li>
             <li class="nav-item">
-                <form class="form-inline my-2 my-lg-0 mr-lg-2">
+                <?php
+                if (isset($search_content)) {
+                    $content_to_search = $search_content;
+                } else {
+                    $content_to_search = '';
+                }
+                ?>
+                <form class="form-inline my-2 my-lg-0 mr-lg-2"
+                      action="<?php echo site_url('search_results?q=' . urlencode($content_to_search)); ?>"
+                      method="post">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search for...">
+                        <input class="form-control" type="text" name="search_this_content" placeholder="Search for..."
+                               value="<?php echo $content_to_search; ?>" required>
                         <span class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
+                        <button class="btn btn-primary" type="submit">
+                          <i class="fa fa-search"></i>
+                        </button>
+                        </span>
                     </div>
                 </form>
             </li>

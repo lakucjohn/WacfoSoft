@@ -93,6 +93,10 @@ class Membership_model extends CI_Model{
                                 <td style="width: 75%">'.$row->SEX.'</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
+                                <td style="width:20%; text-align: right;">Group :</td>
+                                <td style="width: 75%">' . $this->get_group_name_from_db($row->GROUPS) . '</td>
+                            </tr>
+                            <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Date of birth :</td>
                                 <td style="width: 75%">'.$row->DATE_OF_BIRTH.'</td>
                             </tr>
@@ -209,6 +213,24 @@ class Membership_model extends CI_Model{
 
         return $output;
 
+
+    }
+
+    function get_group_name_from_db($group_id)
+    {
+
+        #Obtaining the group name
+        $this->db->select('NAME');
+        $this->db->where('GROUP_ID', $group_id);
+        $this->db->limit(1);
+
+        $child_data = $this->db->get('GROUPS');
+
+        foreach ($child_data->result() as $row) {
+            $group_name = $row->NAME;
+        }
+
+        return $group_name;
 
     }
 
@@ -376,6 +398,10 @@ class Membership_model extends CI_Model{
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Member\'s Name :</td>
                                 <td style="width: 75%">'.$row->NAME.'</td>
+                            </tr>
+                            <tr style="white-space: nowrap; height: 40px;">
+                                <td style="width:20%; text-align: right;">Group :</td>
+                                <td style="width: 75%">' . $this->get_group_name_from_db($row->GROUPS) . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Gender :</td>

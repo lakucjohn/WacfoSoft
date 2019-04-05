@@ -85,6 +85,7 @@ $route['children%20list'] = 'People/Children/children';
 $route['children%20list/register-new-child'] = 'People/Children/children/create';
 $route['child-details/(:any)'] = 'People/Children/children/details';
 $route['child-details/edit/(:any)'] = 'People/Children/children/edit';
+$route['child-support/create'] = 'People/Children/children/create_support';
 $route['child-info/generate-pdf/(:any)'] = 'People/Children/children/generate_pdf_document';
 
 $route['staff'] = 'People/Staff/staff';
@@ -212,3 +213,4 @@ $route['settings/new_department'] = 'Settings/Department/department/create';
 
 #Urls for querying data
 $route['search'] = 'Query/query';
+$route['search_results?(:any)'] = 'Query/query/search_specific_content';

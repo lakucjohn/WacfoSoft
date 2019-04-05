@@ -50,9 +50,18 @@
                         <tr title="'.$row -> MEMBERSHIP_ID.'" style="white-space: nowrap;">
                             <td>'.$row -> MEMBERSHIP_ID.'</td>
                             <td>'.$row -> NAME.'</td>
-                            <td>'.$row -> SEX.'</td>
-                            <td>'.$row -> VULNERABILITY.'</td>
-                            <td>'.$row -> GROUPS.'</td>
+                            <td>' . $row->SEX . '</td>';
+                    echo '<td>';
+
+                    foreach ($disability_list->result() as $disability) {
+                        if ($disability->DISABILITY_ID == $row->VULNERABILITY) {
+                            echo $disability->DISABILITY_NAME;
+                        }
+                    }
+                    echo '</td>';
+
+
+                    echo '<td>' . $row->GROUPS . '</td>
                             <td>'.$row -> TELEPHONE.'</td>
                             <td>
                                 <a href="'.site_url("member-details/edit/$row->ID").'" class="btn btn-link" title="Edit Member Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>

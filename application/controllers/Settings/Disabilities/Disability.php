@@ -23,7 +23,7 @@ class Disability extends AuthContentController
     {
 
         $data = array(
-            'title' => 'Create New Department in the Organization',
+            'title' => 'Create New Disability',
         );
 
 
@@ -36,11 +36,13 @@ class Disability extends AuthContentController
             $disability = $this->input->post('disability_name');
             $description = $this->input->post('disability_description');
             $prefix = $this->input->post('disability_prefix');
+            $disability_id = $this->disability_model->generate_disability_id();
 
             $field_data = array(
                 'DISABILITY_NAME' => $disability,
                 'DISABILITY_DESCRIPTION' => $description,
                 'DISABILITY_PREFIX' => $prefix,
+                'DISABILITY_ID' => $disability_id,
             );
 
             $this->disability_model->insert($field_data);
