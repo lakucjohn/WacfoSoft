@@ -265,19 +265,6 @@ class CI_DB_mysqli_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set client character set
-	 *
-	 * @param	string	$charset
-	 * @return	bool
-	 */
-	protected function _db_set_charset($charset)
-	{
-		return $this->conn_id->set_charset($charset);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Database version number
 	 *
 	 * @return	string
@@ -293,6 +280,97 @@ class CI_DB_mysqli_driver extends CI_DB {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Affected Rows
+     *
+     * @return    int
+     */
+    public function affected_rows()
+    {
+        return $this->conn_id->affected_rows;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Insert ID
+     *
+     * @return    int
+     */
+    public function insert_id()
+    {
+        return $this->conn_id->insert_id;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Returns an object with field data
+     *
+     * @param    string $table
+     * @return    array
+     */
+    public function field_data($table)
+    {
+        if (($query = $this->query('SHOW COLUMNS FROM ' . $this->protect_identifiers($table, TRUE, NULL, FALSE))) === FALSE) {
+            return FALSE;
+        }
+        $query = $query->result_object();
+
+        $retval = array();
+        for ($i = 0, $c = count($query); $i < $c; $i++) {
+            $retval[$i] = new stdClass();
+            $retval[$i]->name = $query[$i]->Field;
+
+            sscanf($query[$i]->Type, '%[a-z](%d)',
+                $retval[$i]->type,
+                $retval[$i]->max_length
+            );
+
+            $retval[$i]->default = $query[$i]->Default;
+            $retval[$i]->primary_key = (int)($query[$i]->Key === 'PRI');
+        }
+
+        return $retval;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Error
+     *
+     * Returns an array containing code and message of the last
+     * database error that has occurred.
+     *
+     * @return    array
+     */
+    public function error()
+    {
+        if (!empty($this->_mysqli->connect_errno)) {
+            return array(
+                'code' => $this->_mysqli->connect_errno,
+                'message' => $this->_mysqli->connect_error
+            );
+        }
+
+        return array('code' => $this->conn_id->errno, 'message' => $this->conn_id->error);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set client character set
+     *
+     * @param    string $charset
+     * @return    bool
+     */
+    protected function _db_set_charset($charset)
+    {
+        return $this->conn_id->set_charset($charset);
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Execute the query
@@ -394,30 +472,6 @@ class CI_DB_mysqli_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Affected Rows
-	 *
-	 * @return	int
-	 */
-	public function affected_rows()
-	{
-		return $this->conn_id->affected_rows;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Insert ID
-	 *
-	 * @return	int
-	 */
-	public function insert_id()
-	{
-		return $this->conn_id->insert_id;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * List table query
 	 *
 	 * Generates a platform-specific query string so that the table names can be fetched
@@ -450,63 +504,6 @@ class CI_DB_mysqli_driver extends CI_DB {
 	protected function _list_columns($table = '')
 	{
 		return 'SHOW COLUMNS FROM '.$this->protect_identifiers($table, TRUE, NULL, FALSE);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Returns an object with field data
-	 *
-	 * @param	string	$table
-	 * @return	array
-	 */
-	public function field_data($table)
-	{
-		if (($query = $this->query('SHOW COLUMNS FROM '.$this->protect_identifiers($table, TRUE, NULL, FALSE))) === FALSE)
-		{
-			return FALSE;
-		}
-		$query = $query->result_object();
-
-		$retval = array();
-		for ($i = 0, $c = count($query); $i < $c; $i++)
-		{
-			$retval[$i]			= new stdClass();
-			$retval[$i]->name		= $query[$i]->Field;
-
-			sscanf($query[$i]->Type, '%[a-z](%d)',
-				$retval[$i]->type,
-				$retval[$i]->max_length
-			);
-
-			$retval[$i]->default		= $query[$i]->Default;
-			$retval[$i]->primary_key	= (int) ($query[$i]->Key === 'PRI');
-		}
-
-		return $retval;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Error
-	 *
-	 * Returns an array containing code and message of the last
-	 * database error that has occurred.
-	 *
-	 * @return	array
-	 */
-	public function error()
-	{
-		if ( ! empty($this->_mysqli->connect_errno))
-		{
-			return array(
-				'code'    => $this->_mysqli->connect_errno,
-				'message' => $this->_mysqli->connect_error
-			);
-		}
-
-		return array('code' => $this->conn_id->errno, 'message' => $this->conn_id->error);
 	}
 
 	// --------------------------------------------------------------------

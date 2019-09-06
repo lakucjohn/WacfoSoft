@@ -111,7 +111,6 @@ class Visit extends AuthContentController {
             $date_of_visit = $this->input->post('date_of_visit');
             $visit_type = $this->input->post('visit_type');
             $child_id_visited = $this->input->post('child_id_visited');
-            $project_visit_type = $this->input->post('project_visit_type');
             $subcounty = $this->input->post('subcounty');
             $parish = $this->input->post('parish');
             $village = $this->input->post('village');
@@ -125,7 +124,6 @@ class Visit extends AuthContentController {
                 'DATE_OF_VISIT' => $date_of_visit,
                 'KIND_OF_VISIT' => $visit_type,
                 'CHILD_ID_VISITED' => $child_id_visited,
-                'PROJECT' => $project_visit_type,
                 'VILLAGE' => $village,
                 'PARISH	' => $parish,
                 'SUBCOUNTY' => $subcounty,

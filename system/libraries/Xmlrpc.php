@@ -430,19 +430,6 @@ class CI_Xmlrpc {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set Debug
-	 *
-	 * @param	bool	$flag
-	 * @return	void
-	 */
-	public function set_debug($flag = TRUE)
-	{
-		$this->debug = ($flag === TRUE);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Values Parsing
 	 *
 	 * @param	mixed	$value
@@ -478,6 +465,19 @@ class CI_Xmlrpc {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Set Debug
+     *
+     * @param    bool $flag
+     * @return    void
+     */
+    public function set_debug($flag = TRUE)
+    {
+        $this->debug = ($flag === TRUE);
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Sends XML-RPC Request
@@ -1769,6 +1769,27 @@ class XML_RPC_Values extends CI_Xmlrpc
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Get value type
+     *
+     * @return    string
+     */
+    public function kindOf()
+    {
+        switch ($this->mytype) {
+            case 3:
+                return 'struct';
+            case 2:
+                return 'array';
+            case 1:
+                return 'scalar';
+            default:
+                return 'undef';
+        }
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Add struct value
 	 *
@@ -1785,24 +1806,6 @@ class XML_RPC_Values extends CI_Xmlrpc
 		$this->mytype = $this->xmlrpcTypes['struct'];
 		$this->me['struct'] = $vals;
 		return 1;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get value type
-	 *
-	 * @return	string
-	 */
-	public function kindOf()
-	{
-		switch ($this->mytype)
-		{
-			case 3: return 'struct';
-			case 2: return 'array';
-			case 1: return 'scalar';
-			default: return 'undef';
-		}
 	}
 
 	// --------------------------------------------------------------------
@@ -1866,18 +1869,6 @@ class XML_RPC_Values extends CI_Xmlrpc
 	// --------------------------------------------------------------------
 
 	/**
-	 * Serialize class
-	 *
-	 * @return	string
-	 */
-	public function serialize_class()
-	{
-		return $this->serializeval($this);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Serialize value
 	 *
 	 * @param	object
@@ -1889,6 +1880,18 @@ class XML_RPC_Values extends CI_Xmlrpc
 		list($value, $type) = array(reset($array), key($array));
 		return "<value>\n".$this->serializedata($type, $value)."</value>\n";
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Serialize class
+     *
+     * @return    string
+     */
+    public function serialize_class()
+    {
+        return $this->serializeval($this);
+    }
 
 	// --------------------------------------------------------------------
 

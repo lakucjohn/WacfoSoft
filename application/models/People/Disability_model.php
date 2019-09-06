@@ -13,6 +13,7 @@ class Disability_model extends CI_Model
     function fetch()
     {
         $this->db->order_by('DISABILITY_NAME', 'ASC');
+        $this->db->where('STATUS', TRUE);
 
         return $this->db->get('DISABILITIES');
     }

@@ -10,6 +10,7 @@ class Form_1_model extends CI_Model{
 
     function fetch(){
         $this->db->order_by('ID','DESC');
+        $this->db->where('STATUS', TRUE);
 
         return $this->db->get('ASSESSMENT_1_RECORDS');
     }

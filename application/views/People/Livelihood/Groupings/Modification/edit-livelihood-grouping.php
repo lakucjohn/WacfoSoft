@@ -31,7 +31,7 @@ foreach ($default_value_array->result() as $default) {
             <div class="col-md-8">
                 <p>
                     <label for="group_name">Name of the Group: </label>
-                    <input value="<?php echo $default->NAME; ?>" type="text" name="group_name" id="group_name"
+                    <input value="<?php echo $default->GROUP_NAME; ?>" type="text" name="group_name" id="group_name"
                            class="form-control"/>
                 </p>
 

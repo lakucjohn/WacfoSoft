@@ -177,6 +177,59 @@ class CI_Session_memcached_driver extends CI_Session_driver implements SessionHa
 
 	// ------------------------------------------------------------------------
 
+    /**
+     * Get lock
+     *
+     * Acquires an (emulated) lock.
+     *
+     * @param    string $session_id Session ID
+     * @return    bool
+     */
+    protected function _get_lock($session_id)
+    {
+        // PHP 7 reuses the SessionHandler object on regeneration,
+        // so we need to check here if the lock key is for the
+        // correct session ID.
+        if ($this->_lock_key === $this->_key_prefix . $session_id . ':lock') {
+            if (!$this->_memcached->replace($this->_lock_key, time(), 300)) {
+                return ($this->_memcached->getResultCode() === Memcached::RES_NOTFOUND)
+                    ? $this->_memcached->add($this->_lock_key, time(), 300)
+                    : FALSE;
+            }
+
+            return TRUE;
+        }
+
+        // 30 attempts to obtain a lock, in case another request already has it
+        $lock_key = $this->_key_prefix . $session_id . ':lock';
+        $attempt = 0;
+        do {
+            if ($this->_memcached->get($lock_key)) {
+                sleep(1);
+                continue;
+            }
+
+            $method = ($this->_memcached->getResultCode() === Memcached::RES_NOTFOUND) ? 'add' : 'set';
+            if (!$this->_memcached->$method($lock_key, time(), 300)) {
+                log_message('error', 'Session: Error while trying to obtain lock for ' . $this->_key_prefix . $session_id);
+                return FALSE;
+            }
+
+            $this->_lock_key = $lock_key;
+            break;
+        } while (++$attempt < 30);
+
+        if ($attempt === 30) {
+            log_message('error', 'Session: Unable to obtain lock for ' . $this->_key_prefix . $session_id . ' after 30 attempts, aborting.');
+            return FALSE;
+        }
+
+        $this->_lock = TRUE;
+        return TRUE;
+    }
+
+    // ------------------------------------------------------------------------
+
 	/**
 	 * Write
 	 *
@@ -230,6 +283,30 @@ class CI_Session_memcached_driver extends CI_Session_driver implements SessionHa
 
 	// ------------------------------------------------------------------------
 
+    /**
+     * Release lock
+     *
+     * Releases a previously acquired lock
+     *
+     * @return    bool
+     */
+    protected function _release_lock()
+    {
+        if (isset($this->_memcached, $this->_lock_key) && $this->_lock) {
+            if (!$this->_memcached->delete($this->_lock_key) && $this->_memcached->getResultCode() !== Memcached::RES_NOTFOUND) {
+                log_message('error', 'Session: Error while trying to free lock for ' . $this->_lock_key);
+                return FALSE;
+            }
+
+            $this->_lock_key = NULL;
+            $this->_lock = FALSE;
+        }
+
+        return TRUE;
+    }
+
+    // ------------------------------------------------------------------------
+
 	/**
 	 * Close
 	 *
@@ -254,7 +331,7 @@ class CI_Session_memcached_driver extends CI_Session_driver implements SessionHa
 		return $this->_fail();
 	}
 
-	// ------------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
 	/**
 	 * Destroy
@@ -292,7 +369,7 @@ class CI_Session_memcached_driver extends CI_Session_driver implements SessionHa
 		return $this->_success;
 	}
 
-	// --------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
 	/**
 	 * Validate ID
@@ -307,91 +384,5 @@ class CI_Session_memcached_driver extends CI_Session_driver implements SessionHa
 	{
 		$this->_memcached-get($this->_key_prefix.$id);
 		return ($this->_memcached->getResultCode() === Memcached::RES_SUCCESS);
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Get lock
-	 *
-	 * Acquires an (emulated) lock.
-	 *
-	 * @param	string	$session_id	Session ID
-	 * @return	bool
-	 */
-	protected function _get_lock($session_id)
-	{
-		// PHP 7 reuses the SessionHandler object on regeneration,
-		// so we need to check here if the lock key is for the
-		// correct session ID.
-		if ($this->_lock_key === $this->_key_prefix.$session_id.':lock')
-		{
-			if ( ! $this->_memcached->replace($this->_lock_key, time(), 300))
-			{
-				return ($this->_memcached->getResultCode() === Memcached::RES_NOTFOUND)
-					? $this->_memcached->add($this->_lock_key, time(), 300)
-					: FALSE;
-			}
-
-			return TRUE;
-		}
-
-		// 30 attempts to obtain a lock, in case another request already has it
-		$lock_key = $this->_key_prefix.$session_id.':lock';
-		$attempt = 0;
-		do
-		{
-			if ($this->_memcached->get($lock_key))
-			{
-				sleep(1);
-				continue;
-			}
-
-			$method = ($this->_memcached->getResultCode() === Memcached::RES_NOTFOUND) ? 'add' : 'set';
-			if ( ! $this->_memcached->$method($lock_key, time(), 300))
-			{
-				log_message('error', 'Session: Error while trying to obtain lock for '.$this->_key_prefix.$session_id);
-				return FALSE;
-			}
-
-			$this->_lock_key = $lock_key;
-			break;
-		}
-		while (++$attempt < 30);
-
-		if ($attempt === 30)
-		{
-			log_message('error', 'Session: Unable to obtain lock for '.$this->_key_prefix.$session_id.' after 30 attempts, aborting.');
-			return FALSE;
-		}
-
-		$this->_lock = TRUE;
-		return TRUE;
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Release lock
-	 *
-	 * Releases a previously acquired lock
-	 *
-	 * @return	bool
-	 */
-	protected function _release_lock()
-	{
-		if (isset($this->_memcached, $this->_lock_key) && $this->_lock)
-		{
-			if ( ! $this->_memcached->delete($this->_lock_key) && $this->_memcached->getResultCode() !== Memcached::RES_NOTFOUND)
-			{
-				log_message('error', 'Session: Error while trying to free lock for '.$this->_lock_key);
-				return FALSE;
-			}
-
-			$this->_lock_key = NULL;
-			$this->_lock = FALSE;
-		}
-
-		return TRUE;
 	}
 }

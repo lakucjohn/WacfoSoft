@@ -48,6 +48,7 @@ class Location_model extends CI_Model
     function fetch_villages_in_parish($parish_id)
     {
         $this->db->where('PARISH', $parish_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('VILLAGE', 'ASC');
 
         $query = $this->db->get('VILLAGE');
@@ -68,6 +69,7 @@ class Location_model extends CI_Model
     function fetch_villages_in_parish_for_group($parish_id)
     {
         $this->db->where('PARISH', $parish_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('VILLAGE', 'ASC');
 
         $query = $this->db->get('VILLAGE');
@@ -89,6 +91,7 @@ class Location_model extends CI_Model
     public function fetch_villages_in_parish_for_member($parish_id)
     {
         $this->db->where('PARISH', $parish_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('VILLAGE', 'ASC');
 
         $query = $this->db->get('VILLAGE');
@@ -110,6 +113,7 @@ class Location_model extends CI_Model
     public function fetch_villages_in_parish_for_assessment($parish_id)
     {
         $this->db->where('PARISH', $parish_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('VILLAGE', 'ASC');
 
         $query = $this->db->get('VILLAGE');
@@ -131,6 +135,7 @@ class Location_model extends CI_Model
     public function fetch_parishes_in_subcounty_for_assessment($subcounty_id)
     {
         $this->db->where('SUBCOUNTY', $subcounty_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('PARISH', 'ASC');
 
         $query = $this->db->get('PARISH');
@@ -152,6 +157,7 @@ class Location_model extends CI_Model
     public function fetch_subcounties_in_county_for_assessment($county_id)
     {
         $this->db->where('COUNTY', $county_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('SUBCOUNTY', 'ASC');
 
         $query = $this->db->get('SUBCOUNTY');
@@ -173,6 +179,7 @@ class Location_model extends CI_Model
     function fetch_associated_subcounty_for_parish($county_id)
     {
         $this->db->where('COUNTY', $county_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('SUBCOUNTY', 'ASC');
 
         $query = $this->db->get('SUBCOUNTY');
@@ -194,6 +201,7 @@ class Location_model extends CI_Model
     function fetch_associated_subcounty_for_village($county_id)
     {
         $this->db->where('COUNTY', $county_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('SUBCOUNTY', 'ASC');
 
         $query = $this->db->get('SUBCOUNTY');
@@ -215,6 +223,7 @@ class Location_model extends CI_Model
     function fetch_associated_parish_for_village($subcounty_id)
     {
         $this->db->where('SUBCOUNTY', $subcounty_id);
+        $this->db->where('STATUS', TRUE);
         $this->db->order_by('PARISH', 'ASC');
 
         $query = $this->db->get('PARISH');

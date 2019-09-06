@@ -30,6 +30,9 @@ class Form_1 extends AuthContentController {
         );
         $data['data_set'] = $this->form_1_model->fetch();
         $data['children_list'] = $this->children_model->fetch();
+        $data['county_settings'] = $this->location_model->fetch_all_counties();
+        $data['parish_settings'] = $this->location_model->fetch_all_parishes();
+        $data['village_settings'] = $this->location_model->fetch_all_villages();
 
         $this->template->load('default', 'People/Other/Assessments/Data/assessment-1-data-list', $data);
 
@@ -138,6 +141,7 @@ class Form_1 extends AuthContentController {
             $this->form_1_model->insert_record($field_data);
 
             redirect('assessments/form-1');
+            //echo $village
         }
 
 
@@ -255,6 +259,22 @@ class Form_1 extends AuthContentController {
             redirect('assessments/form-1');
         }
 
+    }
+
+    public function show_create_for_specific_child()
+    {
+        $data['county_list'] = $this->location_model->fetch_all_counties();
+        $child_row_id = $this->uri->segment(4);
+        $child_data = $this->children_model->fetch_child_by_row($child_row_id);
+        foreach ($child_data->result() as $row) {
+            $child_id = $row->CHILD_ID;
+            $child_name = $row->NAME;
+        }
+        $data['selected_child_id'] = $child_id;
+        $data['child_name'] = $child_name;
+        $data['title'] = 'Assessment Form 1 for particular child';
+
+        $this->template->load('default', 'People/Other/Assessments/Registration/new-assessment-1-record-form', $data);
     }
 
     public function details()

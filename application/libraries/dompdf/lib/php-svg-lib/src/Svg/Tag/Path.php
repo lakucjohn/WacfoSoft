@@ -2,7 +2,7 @@
 /**
  * @package php-svg-lib
  * @link    http://github.com/PhenX/php-svg-lib
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
  * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -492,6 +492,17 @@ class Path extends Shape
         return $result;
     }
 
+    function calcVectorAngle($ux, $uy, $vx, $vy)
+    {
+        $ta = atan2($uy, $ux);
+        $tb = atan2($vy, $vx);
+        if ($tb >= $ta) {
+            return $tb - $ta;
+        } else {
+            return 2 * M_PI - ($ta - $tb);
+        }
+    }
+
     function segmentToBezier($th2, $th3, $cosTh, $sinTh, $rx, $ry, $cx1, $cy1, $mT, $fromX, $fromY)
     {
         $costh2 = cos($th2);
@@ -513,16 +524,5 @@ class Path extends Shape
             $toX,
             $toY
         );
-    }
-
-    function calcVectorAngle($ux, $uy, $vx, $vy)
-    {
-        $ta = atan2($uy, $ux);
-        $tb = atan2($vy, $vx);
-        if ($tb >= $ta) {
-            return $tb - $ta;
-        } else {
-            return 2 * M_PI - ($ta - $tb);
-        }
     }
 } 

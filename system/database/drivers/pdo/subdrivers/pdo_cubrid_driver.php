@@ -100,43 +100,6 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Show table query
-	 *
-	 * Generates a platform-specific query string so that the table names can be fetched
-	 *
-	 * @param	bool	$prefix_limit
-	 * @return	string
-	 */
-	protected function _list_tables($prefix_limit = FALSE)
-	{
-		$sql = 'SHOW TABLES';
-
-		if ($prefix_limit === TRUE && $this->dbprefix !== '')
-		{
-			return $sql." LIKE '".$this->escape_like_str($this->dbprefix)."%'";
-		}
-
-		return $sql;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Show column query
-	 *
-	 * Generates a platform-specific query string so that the column names can be fetched
-	 *
-	 * @param	string	$table
-	 * @return	string
-	 */
-	protected function _list_columns($table = '')
-	{
-		return 'SHOW COLUMNS FROM '.$this->protect_identifiers($table, TRUE, NULL, FALSE);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Returns an object with field data
 	 *
 	 * @param	string	$table
@@ -167,6 +130,42 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 
 		return $retval;
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Show table query
+     *
+     * Generates a platform-specific query string so that the table names can be fetched
+     *
+     * @param    bool $prefix_limit
+     * @return    string
+     */
+    protected function _list_tables($prefix_limit = FALSE)
+    {
+        $sql = 'SHOW TABLES';
+
+        if ($prefix_limit === TRUE && $this->dbprefix !== '') {
+            return $sql . " LIKE '" . $this->escape_like_str($this->dbprefix) . "%'";
+        }
+
+        return $sql;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Show column query
+     *
+     * Generates a platform-specific query string so that the column names can be fetched
+     *
+     * @param    string $table
+     * @return    string
+     */
+    protected function _list_columns($table = '')
+    {
+        return 'SHOW COLUMNS FROM ' . $this->protect_identifiers($table, TRUE, NULL, FALSE);
+    }
 
 	// --------------------------------------------------------------------
 

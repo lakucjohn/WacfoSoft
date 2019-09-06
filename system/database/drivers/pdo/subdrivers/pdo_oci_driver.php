@@ -130,78 +130,6 @@ class CI_DB_pdo_oci_driver extends CI_DB_pdo_driver {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Database version number
-	 *
-	 * @return	string
-	 */
-	public function version()
-	{
-		if (isset($this->data_cache['version']))
-		{
-			return $this->data_cache['version'];
-		}
-
-		$version_string = parent::version();
-		if (preg_match('#Release\s(?<version>\d+(?:\.\d+)+)#', $version_string, $match))
-		{
-			return $this->data_cache['version'] = $match[1];
-		}
-
-		return FALSE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Show table query
-	 *
-	 * Generates a platform-specific query string so that the table names can be fetched
-	 *
-	 * @param	bool	$prefix_limit
-	 * @return	string
-	 */
-	protected function _list_tables($prefix_limit = FALSE)
-	{
-		$sql = 'SELECT "TABLE_NAME" FROM "ALL_TABLES"';
-
-		if ($prefix_limit === TRUE && $this->dbprefix !== '')
-		{
-			return $sql.' WHERE "TABLE_NAME" LIKE \''.$this->escape_like_str($this->dbprefix)."%' "
-				.sprintf($this->_like_escape_str, $this->_like_escape_chr);
-		}
-
-		return $sql;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Show column query
-	 *
-	 * Generates a platform-specific query string so that the column names can be fetched
-	 *
-	 * @param	string	$table
-	 * @return	string
-	 */
-	protected function _list_columns($table = '')
-	{
-		if (strpos($table, '.') !== FALSE)
-		{
-			sscanf($table, '%[^.].%s', $owner, $table);
-		}
-		else
-		{
-			$owner = $this->username;
-		}
-
-		return 'SELECT COLUMN_NAME FROM ALL_TAB_COLUMNS
-			WHERE UPPER(OWNER) = '.$this->escape(strtoupper($owner)).'
-				AND UPPER(TABLE_NAME) = '.$this->escape(strtoupper($table));
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Returns an object with field data
 	 *
 	 * @param	string	$table
@@ -256,6 +184,51 @@ class CI_DB_pdo_oci_driver extends CI_DB_pdo_driver {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Show table query
+     *
+     * Generates a platform-specific query string so that the table names can be fetched
+     *
+     * @param    bool $prefix_limit
+     * @return    string
+     */
+    protected function _list_tables($prefix_limit = FALSE)
+    {
+        $sql = 'SELECT "TABLE_NAME" FROM "ALL_TABLES"';
+
+        if ($prefix_limit === TRUE && $this->dbprefix !== '') {
+            return $sql . ' WHERE "TABLE_NAME" LIKE \'' . $this->escape_like_str($this->dbprefix) . "%' "
+                . sprintf($this->_like_escape_str, $this->_like_escape_chr);
+        }
+
+        return $sql;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Show column query
+     *
+     * Generates a platform-specific query string so that the column names can be fetched
+     *
+     * @param    string $table
+     * @return    string
+     */
+    protected function _list_columns($table = '')
+    {
+        if (strpos($table, '.') !== FALSE) {
+            sscanf($table, '%[^.].%s', $owner, $table);
+        } else {
+            $owner = $this->username;
+        }
+
+        return 'SELECT COLUMN_NAME FROM ALL_TAB_COLUMNS
+			WHERE UPPER(OWNER) = ' . $this->escape(strtoupper($owner)) . '
+				AND UPPER(TABLE_NAME) = ' . $this->escape(strtoupper($table));
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Insert batch statement
@@ -322,5 +295,26 @@ class CI_DB_pdo_oci_driver extends CI_DB_pdo_driver {
 		return 'SELECT * FROM (SELECT inner_query.*, rownum rnum FROM ('.$sql.') inner_query WHERE rownum < '.($this->qb_offset + $this->qb_limit + 1).')'
 			.($this->qb_offset ? ' WHERE rnum >= '.($this->qb_offset + 1): '');
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Database version number
+     *
+     * @return    string
+     */
+    public function version()
+    {
+        if (isset($this->data_cache['version'])) {
+            return $this->data_cache['version'];
+        }
+
+        $version_string = parent::version();
+        if (preg_match('#Release\s(?<version>\d+(?:\.\d+)+)#', $version_string, $match)) {
+            return $this->data_cache['version'] = $match[1];
+        }
+
+        return FALSE;
+    }
 
 }

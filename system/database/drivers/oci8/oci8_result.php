@@ -98,21 +98,6 @@ class CI_DB_oci8_result extends CI_DB_result {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Number of fields in the result set
-	 *
-	 * @return	int
-	 */
-	public function num_fields()
-	{
-		$count = oci_num_fields($this->stmt_id);
-
-		// if we used a limit we subtract it
-		return ($this->limit_used) ? $count - 1 : $count;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Fetch Field Names
 	 *
 	 * Generates an array of column names
@@ -128,6 +113,21 @@ class CI_DB_oci8_result extends CI_DB_result {
 		}
 		return $field_names;
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Number of fields in the result set
+     *
+     * @return    int
+     */
+    public function num_fields()
+    {
+        $count = oci_num_fields($this->stmt_id);
+
+        // if we used a limit we subtract it
+        return ($this->limit_used) ? $count - 1 : $count;
+    }
 
 	// --------------------------------------------------------------------
 

@@ -142,6 +142,34 @@ class CI_Profiler {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Run the Profiler
+     *
+     * @return    string
+     */
+    public function run()
+    {
+        $output = '<div id="codeigniter_profiler" style="clear:both;background-color:#fff;padding:10px;">';
+        $fields_displayed = 0;
+
+        foreach ($this->_available_sections as $section) {
+            if ($this->_compile_{$section} !== FALSE) {
+                $func = '_compile_' . $section;
+                $output .= $this->{$func}();
+                $fields_displayed++;
+            }
+        }
+
+        if ($fields_displayed === 0) {
+            $output .= '<p style="border:1px solid #5a0099;padding:10px;margin:20px 0;background-color:#eee;">'
+                . $this->CI->lang->line('profiler_no_profiles') . '</p>';
+        }
+
+        return $output . '</div>';
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Auto Profiler
 	 *
@@ -486,12 +514,12 @@ class CI_Profiler {
 		{
 			$pre       = '';
 			$pre_close = '';
-                        
-			if (is_array($val) OR is_object($val))
+
+            if (is_array($val) OR is_object($val))
 			{
 				$val = print_r($val, TRUE);
-                                
-				$pre       = '<pre>' ;
+
+                $pre       = '<pre>' ;
  				$pre_close = '</pre>';
 			}
 
@@ -524,12 +552,12 @@ class CI_Profiler {
 		{
 			$pre       = '';
 			$pre_close = '';
-                        
-			if (is_array($val) OR is_object($val))
+
+            if (is_array($val) OR is_object($val))
 			{
 				$val = print_r($val, TRUE);
-                                
-				$pre       = '<pre>' ;
+
+                $pre       = '<pre>' ;
  				$pre_close = '</pre>';
 			}
 
@@ -538,37 +566,6 @@ class CI_Profiler {
 		}
 
 		return $output."</table>\n</fieldset>";
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Run the Profiler
-	 *
-	 * @return	string
-	 */
-	public function run()
-	{
-		$output = '<div id="codeigniter_profiler" style="clear:both;background-color:#fff;padding:10px;">';
-		$fields_displayed = 0;
-
-		foreach ($this->_available_sections as $section)
-		{
-			if ($this->_compile_{$section} !== FALSE)
-			{
-				$func = '_compile_'.$section;
-				$output .= $this->{$func}();
-				$fields_displayed++;
-			}
-		}
-
-		if ($fields_displayed === 0)
-		{
-			$output .= '<p style="border:1px solid #5a0099;padding:10px;margin:20px 0;background-color:#eee;">'
-				.$this->CI->lang->line('profiler_no_profiles').'</p>';
-		}
-
-		return $output.'</div>';
 	}
 
 }

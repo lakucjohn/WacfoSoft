@@ -167,6 +167,95 @@ class CI_DB_mssql_driver extends CI_DB {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Affected Rows
+     *
+     * @return    int
+     */
+    public function affected_rows()
+    {
+        return mssql_rows_affected($this->conn_id);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Insert ID
+     *
+     * Returns the last id created in the Identity column.
+     *
+     * @return    string
+     */
+    public function insert_id()
+    {
+        $query = version_compare($this->version(), '8', '>=')
+            ? 'SELECT SCOPE_IDENTITY() AS last_id'
+            : 'SELECT @@IDENTITY AS last_id';
+
+        $query = $this->query($query);
+        $query = $query->row();
+        return $query->last_id;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Returns an object with field data
+     *
+     * @param    string $table
+     * @return    array
+     */
+    public function field_data($table)
+    {
+        $sql = 'SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, COLUMN_DEFAULT
+			FROM INFORMATION_SCHEMA.Columns
+			WHERE UPPER(TABLE_NAME) = ' . $this->escape(strtoupper($table));
+
+        if (($query = $this->query($sql)) === FALSE) {
+            return FALSE;
+        }
+        $query = $query->result_object();
+
+        $retval = array();
+        for ($i = 0, $c = count($query); $i < $c; $i++) {
+            $retval[$i] = new stdClass();
+            $retval[$i]->name = $query[$i]->COLUMN_NAME;
+            $retval[$i]->type = $query[$i]->DATA_TYPE;
+            $retval[$i]->max_length = ($query[$i]->CHARACTER_MAXIMUM_LENGTH > 0) ? $query[$i]->CHARACTER_MAXIMUM_LENGTH : $query[$i]->NUMERIC_PRECISION;
+            $retval[$i]->default = $query[$i]->COLUMN_DEFAULT;
+        }
+
+        return $retval;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Error
+     *
+     * Returns an array containing code and message of the last
+     * database error that has occurred.
+     *
+     * @return    array
+     */
+    public function error()
+    {
+        // We need this because the error info is discarded by the
+        // server the first time you request it, and query() already
+        // calls error() once for logging purposes when a query fails.
+        static $error = array('code' => 0, 'message' => NULL);
+
+        $message = mssql_get_last_message();
+        if (!empty($message)) {
+            $error['code'] = $this->query('SELECT @@ERROR AS code')->row()->code;
+            $error['message'] = $message;
+        }
+
+        return $error;
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Execute the query
 	 *
@@ -212,38 +301,6 @@ class CI_DB_mssql_driver extends CI_DB {
 	protected function _trans_rollback()
 	{
 		return $this->simple_query('ROLLBACK TRAN');
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Affected Rows
-	 *
-	 * @return	int
-	 */
-	public function affected_rows()
-	{
-		return mssql_rows_affected($this->conn_id);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Insert ID
-	 *
-	 * Returns the last id created in the Identity column.
-	 *
-	 * @return	string
-	 */
-	public function insert_id()
-	{
-		$query = version_compare($this->version(), '8', '>=')
-			? 'SELECT SCOPE_IDENTITY() AS last_id'
-			: 'SELECT @@IDENTITY AS last_id';
-
-		$query = $this->query($query);
-		$query = $query->row();
-		return $query->last_id;
 	}
 
 	// --------------------------------------------------------------------
@@ -311,66 +368,6 @@ class CI_DB_mssql_driver extends CI_DB {
 		return 'SELECT COLUMN_NAME
 			FROM INFORMATION_SCHEMA.Columns
 			WHERE UPPER(TABLE_NAME) = '.$this->escape(strtoupper($table));
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Returns an object with field data
-	 *
-	 * @param	string	$table
-	 * @return	array
-	 */
-	public function field_data($table)
-	{
-		$sql = 'SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, COLUMN_DEFAULT
-			FROM INFORMATION_SCHEMA.Columns
-			WHERE UPPER(TABLE_NAME) = '.$this->escape(strtoupper($table));
-
-		if (($query = $this->query($sql)) === FALSE)
-		{
-			return FALSE;
-		}
-		$query = $query->result_object();
-
-		$retval = array();
-		for ($i = 0, $c = count($query); $i < $c; $i++)
-		{
-			$retval[$i]			= new stdClass();
-			$retval[$i]->name		= $query[$i]->COLUMN_NAME;
-			$retval[$i]->type		= $query[$i]->DATA_TYPE;
-			$retval[$i]->max_length		= ($query[$i]->CHARACTER_MAXIMUM_LENGTH > 0) ? $query[$i]->CHARACTER_MAXIMUM_LENGTH : $query[$i]->NUMERIC_PRECISION;
-			$retval[$i]->default		= $query[$i]->COLUMN_DEFAULT;
-		}
-
-		return $retval;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Error
-	 *
-	 * Returns an array containing code and message of the last
-	 * database error that has occurred.
-	 *
-	 * @return	array
-	 */
-	public function error()
-	{
-		// We need this because the error info is discarded by the
-		// server the first time you request it, and query() already
-		// calls error() once for logging purposes when a query fails.
-		static $error = array('code' => 0, 'message' => NULL);
-
-		$message = mssql_get_last_message();
-		if ( ! empty($message))
-		{
-			$error['code']    = $this->query('SELECT @@ERROR AS code')->row()->code;
-			$error['message'] = $message;
-		}
-
-		return $error;
 	}
 
 	// --------------------------------------------------------------------

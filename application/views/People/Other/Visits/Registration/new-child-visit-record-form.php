@@ -30,15 +30,6 @@
                 <input type="date" name="date_of_visit" id="date_of_visit" class="form-control" />
             </p>
             <p>
-                <label for="visit_type">Type of visit: </label>
-                <select name="visit_type" id="visit_type" class="form-control">
-                    <option value="">Select a visit type</option>
-                    <option value="Follow Up">Follow Up</option>
-                    <option value="Home">Home</option>
-                    <option value="School">School</option>
-                </select>
-            </p>
-            <p>
                 <label for="child_id_visited">Child ID: </label>
                 <select name="child_id_visited" id="child_id_visited" class="form-control"
                         onchange="show_child_details(this.value)">
@@ -53,12 +44,12 @@
                 <input type="text" class="form-control" name="child_name_visited" id="child_name_visited" value="The Details of the selected child will appear here" disabled>
             </p>
             <p>
-                <label for="project_visit_type">Project: </label>
-                <select name="project_visit_type" id="project_visit_type" class="form-control">
-                    <option value="">Select a project</option>
-                    <option value="DSP">DSP</option>
-                    <option value="Porticus">Porticus</option>
-                    <option value="Victorbraun">Victorbraun</option>
+                <label for="visit_type">Type of visit: </label>
+                <select name="visit_type" id="visit_type" class="form-control">
+                    <option value="">Select a visit type</option>
+                    <option value="Follow Up">Follow Up</option>
+                    <option value="Home">Home</option>
+                    <option value="School">School</option>
                 </select>
             </p>
             <p>

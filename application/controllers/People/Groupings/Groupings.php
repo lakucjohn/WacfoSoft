@@ -77,7 +77,7 @@ class Groupings extends AuthContentController {
             $group_id = $this->grouping_model->generate_group_id($group_village);
 
             $field_data = array(
-                'NAME' => $group_name,
+                'GROUP_NAME' => $group_name,
                 'LOCATION' => $group_village,
                 'DATE_OF_REGISTRATION' => $date_of_registration,
                 'GROUP_ID' => $group_id,
@@ -132,7 +132,7 @@ class Groupings extends AuthContentController {
             $date_of_registration = $this->input->post('date_of_registration');
 
             $field_data = array(
-                'NAME' => $group_name,
+                'GROUP_NAME' => $group_name,
                 'LOCATION' => $group_village,
                 'DATE_OF_REGISTRATION' => $date_of_registration,
                 'TYPE' => $group_type,
@@ -168,6 +168,7 @@ class Groupings extends AuthContentController {
         $data = array();
         $data['title'] = 'Support this Entity';
         $group_id = $this->uri->segment(5) . '/' . $this->uri->segment(6) . '/' . $this->uri->segment(7);
+        $track_id = $this->grouping_model->generate_track_id();
 
         $data['group_id'] = $group_id;
         $support = $this->input->post('support_item');
@@ -198,6 +199,7 @@ class Groupings extends AuthContentController {
                 'BENEFICIARY' => $group_supported,
                 'CATEGORY' => 'Group',
                 'SUPPORT' => $supported_with,
+                'TRACK_ID' => $track_id,
             );
             $this->grouping_model->insert_support_record($field_data);
 

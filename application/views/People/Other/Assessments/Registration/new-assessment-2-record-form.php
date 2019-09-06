@@ -27,7 +27,25 @@
     <div class="col-md-10">
         <p>
             <label for="child_id">Child ID: </label>
-            <select name="child_id" id="child_id" class="form-control" onchange="show_child_details(this.value);">
+            <?php
+            if (isset($selected_child_id)){
+            ?>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" name="child_id" id="child_id" value="<?php echo $selected_child_id; ?>"
+                       class="form-control"/>
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="child_name" id="child_name" value="<?php echo $child_name; ?>"
+                       class="form-control"/>
+            </div>
+
+        </div>
+        <?php
+        } else if (isset($children_list)) {
+            ?>
+            <select name="child_id" id="child_id" class="form-control"
+                    onchange="show_child_details(this.value);">
                 <option value="">Select a child</option>
                 <?php
                 foreach ($children_list->result() as $row) {
@@ -35,7 +53,12 @@
                 }
                 ?>
             </select><br>
-            <input type="text" name="child_name" id="child_name" value="The details of the selected child will appear here" class="form-control" disabled />
+            <input type="text" name="child_name" id="child_name"
+                   value="The details of the selected child will appear here" class="form-control" disabled/>
+
+            <?php
+        }
+        ?>
         </p>
 
         <p>

@@ -248,7 +248,8 @@
                             <tr>
                                 <td>
                                     <input type="checkbox" name="tables_field" id="tables_field"
-                                           class="livelihood_group_field" value="GROUPS.NAME"/> Name of the Group<br>
+                                           class="livelihood_group_field" value="GROUPS.GROUP_NAME"/> Name of the
+                                    Group<br>
                                     <input type="checkbox" name="tables_field" id="tables_field"
                                            class="livelihood_group_field" value="GROUPS.LOCATION"/> Location<br>
                                     <input type="checkbox" name="tables_field" id="tables_field"
@@ -367,6 +368,8 @@
                                     <input type="checkbox" name="tables_field" id="tables_field" class="children_field"
                                            value="CHILDREN.VILLAGE" onchange="turn_on_checkbox('village');"/>
                                     VILLAGE<br>
+                                    <input type="checkbox" name="tables_field" id="tables_field"
+                                           class="children_field" value="CHILDREN.PROJECT"/> PROJECT <br>
                                     <input type="checkbox" name="tables_field" id="tables_field" class="children_field"
                                            value="CHILDREN.DATE_OF_JOINING"/> DATE OF JOINING<br>
                                     <input type="checkbox" name="tables_field" id="tables_field" class="children_field"
@@ -600,8 +603,6 @@
                                         <input type="checkbox" name="tables_field" id="tables_field"
                                                class="visitation_field" value="VISIT_RECORDS.KIND_OF_VISIT"/> KIND OF
                                         VISIT <br>
-                                        <input type="checkbox" name="tables_field" id="tables_field"
-                                               class="visitation_field" value="VISIT_RECORDS.PROJECT"/> PROJECT <br>
                                         <input type="checkbox" name="tables_field" id="tables_field"
                                                class="visitation_field" value="VISIT_RECORDS.VILLAGE"/> VILLAGE <br>
                                         <input type="checkbox" name="tables_field" id="tables_field"
@@ -2053,6 +2054,11 @@
                                        class="form-control"/></td>
                         </tr>
                         <tr>
+                            <td>PROJECT</td>
+                            <td><input type="text" name="children_project_criterion" id="children_project_criterion"
+                                       class="form-control"/></td>
+                        </tr>
+                        <tr>
                             <td>DATE OF JOINING</td>
                             <td><input type="text" name="childdateofjoining_criterion" id="childdateofjoining_criterion"
                                        class="form-control"/></td>
@@ -2394,11 +2400,6 @@
                             <td>CHILD ID VISITED</td>
                             <td><input type="text" name="visitation_childidvisited_criterion"
                                        id="visitation_childidvisited_criterion" class="form-control"/></td>
-                        </tr>
-                        <tr>
-                            <td>PROJECT</td>
-                            <td><input type="text" name="visitation_project_criterion" id="visitation_project_criterion"
-                                       class="form-control"/></td>
                         </tr>
                         <tr>
                             <td>VILLAGE</td>
@@ -3856,6 +3857,7 @@
             <div id="preview_query_results" style="overflow-x:scroll;">
                 Query Results
             </div>
+            <div id="preview_query_results_num" style="display:none;"></div>
         </div>
     </div>
     <hr>
@@ -3870,6 +3872,8 @@
         <div class="col-md-4" style="white-space: nowrap;">
             <button class="btn btn-md-5 btn-danger" onclick="print_results();"><i class="fa fa-print"></i> Print Query
                 Results <i class="fa fa-angle-double-right"></i></button>
+            <button class="btn btn-md-5 btn-warning" onclick="print_num_results();"><i class="fa fa-print"></i> Print
+                Number of Results for this Query <i class="fa fa-angle-double-right"></i></button>
             <button class="btn btn-md btn-link" id="show_criteria_button" onclick="show_criteria();"
                     style="display: none;">Show Criteria<i class="fa fa-angle-double-down"></i></button>
         </div>
@@ -3920,6 +3924,20 @@
         var data = frame.innerHTML;
         var win = window.open('', '', 'height=500,width=900');
         win.document.write('<style>@page{size:landscape;}</style><html><head><title></title>');
+        win.document.write('</head><body >');
+        win.document.write(data);
+        win.document.write('</body></html>');
+        win.print();
+        win.close();
+        return true;
+
+    }
+    function print_num_results() {
+        document.getElementById('query-criteria').style.display = 'none';
+        var frame = document.getElementById('preview_query_results_num');
+        var data = frame.innerHTML;
+        var win = window.open('', '', 'height=500,width=900');
+        win.document.write('<style>@page{size:portrait;}</style><html><head><title></title>');
         win.document.write('</head><body >');
         win.document.write(data);
         win.document.write('</body></html>');
@@ -4762,7 +4780,7 @@
         var visitation_dateofvisit_criterion = document.getElementById('assessment_2_title_criterion').value;
         var visitation_kindofvisit_criterion = document.getElementById('assessment_2_title_criterion').value;
         var visitation_childidvisited_criterion = document.getElementById('assessment_2_title_criterion').value;
-        var visitation_project_criterion = document.getElementById('assessment_2_title_criterion').value;
+        var children_project_criterion = document.getElementById('assessment_2_title_criterion').value;
         var visitation_village_criterion = document.getElementById('assessment_2_title_criterion').value;
         var visitation_parish_criterion = document.getElementById('assessment_2_title_criterion').value;
         var visitation_subcounty_criterion = document.getElementById('assessment_2_title_criterion').value;
@@ -5072,23 +5090,71 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'TRAINING_ATTENDANCE') & contains.call(query_tables, 'MEMBERSHIP')) {
-                        var join = [];
 
-                        join.push('TRAINING_ATTENDANCE');
-                        join.push('TRAINING_ATTENDANCE.ATTENDANT = MEMBERSHIP.MEMBERSHIP_ID');
+                    if (contains.call(required_fields, 'MEMBERSHIP.VULNERABILITY') & contains.call(query_tables, 'MEMBERSHIP')) {
 
-                        joins.push(join);
+                        if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_ATTENDANCE') & contains.call(query_tables, 'MEMBERSHIP')) {
+                            var join_1 = [];
+                            var join_2 = [];
+
+                            var index = query_tables.indexOf('MEMBERSHIP');
+
+                            query_tables[index] = 'TRAININGS';
+
+                            join_1.push('TRAINING_ATTENDANCE');
+                            join_1.push('TRAINING_ATTENDANCE.TRAINING_ID = TRAININGS.ID');
+
+                            joins.push(join_1);
+
+                            join_2.push('MEMBERSHIP');
+                            join_2.push('TRAINING_ATTENDANCE.ATTENDANT = MEMBERSHIP.MEMBERSHIP_ID');
+
+                            joins.push(join_2);
+
+
+                        }
+
+                        else if (contains.call(query_tables, 'TRAINING_ATTENDANCE') & contains.call(query_tables, 'MEMBERSHIP')) {
+                            var join = [];
+
+                            join.push('TRAINING_ATTENDANCE');
+                            join.push('TRAINING_ATTENDANCE.ATTENDANT = MEMBERSHIP.MEMBERSHIP_ID');
+
+                            joins.push(join);
+                        }
+
+                        else if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_ATTENDANCE')) {
+                            var join = [];
+
+                            join.push('TRAINING_ATTENDANCE');
+                            join.push('TRAININGS.ID = TRAINING_ATTENDANCE.TRAINING_ID');
+
+                            joins.push(join);
+                        }
+
+                        var join_a = [];
+                        var index = required_fields.indexOf('MEMBERSHIP.VULNERABILITY');
+                        //
+                        required_fields[index] = 'DISABILITIES.DISABILITY_NAME';
+                        //
+                        query_tables.push('DISABILITIES');
+                        //
+                        join_a.push('DISABILITIES');
+                        join_a.push('DISABILITIES.DISABILITY_ID = MEMBERSHIP.VULNERABILITY');
+                        //
+                        joins.push(join_a);
+                    } else {
+
+                        if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_ATTENDANCE')) {
+                            var join = [];
+
+                            join.push('TRAINING_ATTENDANCE');
+                            join.push('TRAININGS.ID = TRAINING_ATTENDANCE.TRAINING_ID');
+
+                            joins.push(join);
+                        }
                     }
 
-                    if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_ATTENDANCE')) {
-                        var join = [];
-
-                        join.push('TRAININGS');
-                        join.push('TRAININGS.ID = TRAINING_ATTENDANCE.TRAINING_ID');
-
-                        joins.push(join);
-                    }
 
                     if (contains.call(query_tables, 'GROUPS') & contains.call(query_tables, 'MEMBERSHIP')) {
                         var join = [];
@@ -5099,6 +5165,20 @@
                         joins.push(join);
                     }
 
+                    /*                    if (contains.call(query_tables, 'GROUPS') & contains.call(query_tables, 'MEMBERSHIP')) {
+                     var join = [];
+                     var index = required_fields.indexOf('GROUPS.LOCATION');
+
+                     required_fields[index] = 'VILLAGE.VILLAGE';
+
+                     query_tables.push('VILLAGE');
+
+                     join.push('VILLAGE');
+                     join.push('VILLAGE.ID = GROUPS.LOCATION');
+
+                     joins.push(join);
+                     }
+                     */
                     if (contains.call(query_tables, 'ORGANIZATION_STAFF_NEW') & contains.call(query_tables, 'ORGANIZATION_DEPARTMENTS_NEW')) {
                         var join = [];
 
@@ -5138,7 +5218,7 @@
                     if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'COURSES_AND_TOPICS')) {
                         var join = [];
 
-                        join.push('TRAININGS');
+                        join.push('COURSES_AND_TOPICS');
                         join.push('TRAININGS.TOPIC = COURSES_AND_TOPICS.ID');
 
                         joins.push(join);
@@ -5204,7 +5284,7 @@
                     //Setting the values for the condition clause
                     if (group_name !== '') {
                         var record = [];
-                        record.push('GROUPS.NAME');
+                        record.push('GROUPS.GROUP_NAME');
                         record.push(group_name);
 
                         conditions.push(record);
@@ -5235,7 +5315,7 @@
                     }
                     if (group_type !== '') {
                         var record = [];
-                        record.push('GROUPS.TYPE');
+                        record.push('LIVELIHOODGROUPCATEGORIES.CATEGORYNAME');
                         record.push(group_type);
 
                         conditions.push(record);
@@ -5259,7 +5339,7 @@
                     }
                     if (membervulnerability_criterion !== '') {
                         var record = [];
-                        record.push('MEMBERSHIP.VULNERABILITY');
+                        record.push('DISABILITIES.DISABILITY_NAME');
                         record.push(membervulnerability_criterion);
 
                         conditions.push(record);
@@ -5291,7 +5371,7 @@
                     }
                     if (memberparish_criterion !== '') {
                         var record = [];
-                        record.push('MEMBERSHIP.PARISH');
+                        record.push('PARISH.PARISH');
                         record.push(memberparish_criterion);
 
                         conditions.push(record);
@@ -5299,7 +5379,7 @@
                     }
                     if (membervillage_criterion !== '') {
                         var record = [];
-                        record.push('MEMBERSHIP.VILLAGE');
+                        record.push('VILLAGE.VILLAGE');
                         record.push(membervillage_criterion);
 
                         conditions.push(record);
@@ -5351,7 +5431,7 @@
                     }
                     if (childvulnerability_criterion !== '') {
                         var record = [];
-                        record.push('CHILDREN.VULNERABILITY');
+                        record.push('DISABILITIES.DISABILITY_NAME');
                         record.push(childvulnerability_criterion);
 
                         conditions.push(record);
@@ -5367,7 +5447,7 @@
                     }
                     if (childparish_criterion !== '') {
                         var record = [];
-                        record.push('CHILDREN.PARISH');
+                        record.push('PARISH.PARISH');
                         record.push(childparish_criterion);
 
                         conditions.push(record);
@@ -5375,7 +5455,7 @@
                     }
                     if (childvillage_criterion !== '') {
                         var record = [];
-                        record.push('CHILDREN.VILLAGE');
+                        record.push('VILLAGE.VILLAGE');
                         record.push(childvillage_criterion);
 
                         conditions.push(record);
@@ -5385,6 +5465,14 @@
                         var record = [];
                         record.push('CHILDREN.DATE_OF_JOINING');
                         record.push(childdateofjoining_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (children_project_criterion !== '') {
+                        var record = [];
+                        record.push('CHILDREN.PROJECT');
+                        record.push(children_project_criterion);
 
                         conditions.push(record);
 
@@ -5423,7 +5511,7 @@
                     }
                     if (assessment_1_county_criterion !== '') {
                         var record = [];
-                        record.push('ASSESSMENT_1_RECORDS.COUNTY');
+                        record.push('COUNTY.COUNTY');
                         record.push(assessment_1_county_criterion);
 
                         conditions.push(record);
@@ -5431,7 +5519,7 @@
                     }
                     if (assessment_1_subcounty_criterion !== '') {
                         var record = [];
-                        record.push('ASSESSMENT_1_RECORDS.SUBCOUNTY');
+                        record.push('SUBCOUNTY.SUBCOUNTY');
                         record.push(assessment_1_subcounty_criterion);
 
                         conditions.push(record);
@@ -5439,7 +5527,7 @@
                     }
                     if (assessment_1_parish_criterion !== '') {
                         var record = [];
-                        record.push('ASSESSMENT_1_RECORDS.PARISH');
+                        record.push('PARISH.PARISH');
                         record.push(assessment_1_parish_criterion);
 
                         conditions.push(record);
@@ -5447,7 +5535,7 @@
                     }
                     if (assessment_1_village_criterion !== '') {
                         var record = [];
-                        record.push('ASSESSMENT_1_RECORDS.VILLAGE');
+                        record.push('VILLAGE.VILLAGE');
                         record.push(assessment_1_village_criterion);
 
                         conditions.push(record);
@@ -5877,14 +5965,6 @@
                         conditions.push(record);
 
                     }
-                    if (visitation_project_criterion !== '') {
-                        var record = [];
-                        record.push('VISIT_RECORDS.PROJECT');
-                        record.push(visitation_project_criterion);
-
-                        conditions.push(record);
-
-                    }
                     if (visitation_village_criterion !== '') {
                         var record = [];
                         record.push('VISIT_RECORDS.VILLAGE');
@@ -6039,7 +6119,7 @@
                     }
                     if (training_course_criterion !== '') {
                         var record = [];
-                        record.push('TRAININGS.COURSE');
+                        record.push('COURSES.COURSE');
                         record.push(training_course_criterion);
 
                         conditions.push(record);
@@ -6047,7 +6127,7 @@
                     }
                     if (training_topic_criterion !== '') {
                         var record = [];
-                        record.push('TRAININGS.TOPIC');
+                        record.push('COURSES_AND_TOPICS.TOPIC');
                         record.push(training_topic_criterion);
 
                         conditions.push(record);
@@ -6135,7 +6215,7 @@
                     }
                     if (monitoring_staffid_criterion !== '') {
                         var record = [];
-                        record.push('MONITORING_VISITS.STAFF_ID');
+                        record.push('ORGANIZATION_STAFF_NEW.NAME');
                         record.push(monitoring_staffid_criterion);
 
                         conditions.push(record);
@@ -6199,7 +6279,7 @@
                     }
                     if (misean_cara_county_criterion !== '') {
                         var record = [];
-                        record.push('MISEAN_CARA_BASELINE_SURVEYS.COUNTY');
+                        record.push('COUNTY.COUNTY');
                         record.push(misean_cara_county_criterion);
 
                         conditions.push(record);
@@ -6207,7 +6287,7 @@
                     }
                     if (misean_cara_subcounty_criterion !== '') {
                         var record = [];
-                        record.push('MISEAN_CARA_BASELINE_SURVEYS.SUBCOUNTY');
+                        record.push('SUBCOUNTY.SUBCOUNTY');
                         record.push(misean_cara_subcounty_criterion);
 
                         conditions.push(record);
@@ -7343,7 +7423,7 @@
                     }
                     if (porticus_village_criterion !== '') {
                         var record = [];
-                        record.push('PORTICUS_BASELINE_ASSESSMENTS.VILLAGE');
+                        record.push('VILLAGE.VILLAGE');
                         record.push(porticus_village_criterion);
 
                         conditions.push(record);
@@ -7679,7 +7759,7 @@
                     }
                     if (hygiene_subcounty_criterion !== '') {
                         var record = [];
-                        record.push('HYGIENE_AND_NUTRITION_CHECKLIST.SUBCOUNTY');
+                        record.push('SUBCOUNTY.SUBCOUNTY');
                         record.push(hygiene_subcounty_criterion);
 
                         conditions.push(record);
@@ -7687,7 +7767,7 @@
                     }
                     if (hygiene_parish_criterion !== '') {
                         var record = [];
-                        record.push('HYGIENE_AND_NUTRITION_CHECKLIST.PARISH');
+                        record.push('PARISH.PARISH');
                         record.push(hygiene_parish_criterion);
 
                         conditions.push(record);
@@ -7840,6 +7920,43 @@
 
                         join.push('VILLAGE');
                         join.push('VILLAGE.ID = GROUPS.LOCATION');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'MEMBERSHIP.VULNERABILITY') & contains.call(query_tables, 'MEMBERSHIP')) {
+
+                        var join = [];
+                        var index = required_fields.indexOf('MEMBERSHIP.VULNERABILITY');
+                        //
+                        required_fields[index] = 'DISABILITIES.DISABILITY_NAME';
+                        //
+                        query_tables.push('DISABILITIES');
+                        //
+                        join.push('DISABILITIES');
+                        join.push('DISABILITIES.DISABILITY_ID = MEMBERSHIP.VULNERABILITY');
+                        //
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'MEMBERSHIP.PARISH') & contains.call(query_tables, 'MEMBERSHIP')) {
+                        var join = [];
+
+                        query_tables.push('PARISH');
+
+                        join.push('PARISH');
+                        join.push('PARISH.ID = MEMBERSHIP.PARISH');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(required_fields, 'MEMBERSHIP.VILLAGE') & contains.call(query_tables, 'MEMBERSHIP')) {
+                        var join = [];
+
+                        query_tables.push('VILLAGE');
+
+                        join.push('VILLAGE');
+                        join.push('VILLAGE.ID = MEMBERSHIP.VILLAGE');
 
                         joins.push(join);
                     }
@@ -8087,6 +8204,28 @@
 
                             //Show the update query button
                             document.getElementById('update-query-box').style.display = 'block';
+
+                            //Get the number of results of the query
+
+                            $.ajax({
+                                url: "<?php echo base_url('Query/query/show_number_of_results');?>",
+                                method: "POST",
+                                data: {
+                                    tables: query_tables,
+                                    fields: required_fields,
+                                    joints: joins,
+                                    conditions: conditions
+                                },
+                                success: function (data) {
+
+                                    //Change the content of the query results
+                                    document.getElementById('preview_query_results_num').innerHTML = data;
+
+
+                                }
+                            });
+
+
                         }
                     });
                 }

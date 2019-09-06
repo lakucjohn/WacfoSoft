@@ -26,7 +26,8 @@
         <i class="fa fa-table"></i> Assessment Form 1 Data </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: 12px;">
+            <table class="table table-bordered js-exportable" id="dataTable" width="100%" cellspacing="0"
+                   style="font-size: 12px;">
                 <thead>
                 <tr>
                     <th>Child ID</th>
@@ -61,10 +62,26 @@
                     <?php echo
                         '<td>' . $row->SEX . '</td>
                     <td>'.$row -> HEALTH_CENTRE.'</td>
-                    <td>'.$row -> DISABILITY_TYPE.'</td>
-                    <td>'.$row -> COUNTY.'</td>
-                    <td>'.$row -> PARISH.'</td>
-                    <td>'.$row -> VILLAGE.'</td>
+                    <td>' . $row->DISABILITY_TYPE . '</td>'; ?>
+
+                    <?php
+                    foreach ($county_settings->result() as $county) {
+                        if ($county->ID == $row->COUNTY) {
+                            echo '<td>' . $county->COUNTY . '</td>';
+                        }
+                    }
+                    foreach ($parish_settings->result() as $parish) {
+                        if ($parish->ID == $row->PARISH) {
+                            echo '<td>' . $parish->PARISH . '</td>';
+                        }
+                    }
+                    foreach ($village_settings->result() as $village) {
+                        if ($village->ID == $row->VILLAGE) {
+                            echo '<td>' . $village->VILLAGE . '</td>';
+                        }
+                    }
+
+                    echo '
                     <td>'.$row -> DATE_ENTERED.'</td>
                     <td>
                         <a href="' . site_url("assessments/form-1-details/edit/$row->ID") . '" class="btn btn-link" title="Edit Assessment 1 Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>

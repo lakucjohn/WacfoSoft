@@ -13,12 +13,25 @@ class Delete_data_model extends CI_Model
         parent::__construct();
     }
 
+//    public function delete($table, $row)
+//    {
+//
+//        $this->db->where('ID', $row);
+//        $this->db->set('STATUS', 0);
+//        $this->db->update($table);
+//
+//        if ($this->db->affected_rows() > 0) {
+//            return true;
+//        } else {
+//            return $this->db->error();
+//        }
+//    }
+
     public function delete($table, $row)
     {
 
         $this->db->where('ID', $row);
-        $this->db->set('STATUS', 0);
-        $this->db->update($table);
+        $this->db->delete($table);
 
         if ($this->db->affected_rows() > 0) {
             return true;

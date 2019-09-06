@@ -19,31 +19,20 @@ use OutOfBoundsException;
  * @package php-font-lib
  */
 class Collection extends BinaryStream implements Iterator, Countable {
-  /**
-   * Current iterator position.
-   *
-   * @var integer
-   */
-  private $position = 0;
-
   protected $collectionOffsets = array();
   protected $collection = array();
   protected $version;
   protected $numFonts;
+    /**
+     * Current iterator position.
+     *
+     * @var integer
+     */
+    private $position = 0;
 
-  function parse() {
-    if (isset($this->numFonts)) {
-      return;
-    }
-
-    $this->read(4); // tag name
-
-    $this->version  = $this->readFixed();
-    $this->numFonts = $this->readUInt32();
-
-    for ($i = 0; $i < $this->numFonts; $i++) {
-      $this->collectionOffsets[] = $this->readUInt32();
-    }
+    function current()
+    {
+        return $this->getFont($this->position);
   }
 
   /**
@@ -70,8 +59,20 @@ class Collection extends BinaryStream implements Iterator, Countable {
     return $this->collection[$fontId] = $font;
   }
 
-  function current() {
-    return $this->getFont($this->position);
+    function parse()
+    {
+        if (isset($this->numFonts)) {
+            return;
+        }
+
+        $this->read(4); // tag name
+
+        $this->version = $this->readFixed();
+        $this->numFonts = $this->readUInt32();
+
+        for ($i = 0; $i < $this->numFonts; $i++) {
+            $this->collectionOffsets[] = $this->readUInt32();
+        }
   }
 
   function key() {

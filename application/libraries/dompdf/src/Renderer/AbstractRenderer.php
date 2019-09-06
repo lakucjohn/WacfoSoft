@@ -13,8 +13,8 @@ use Dompdf\Adapter\CPDF;
 use Dompdf\Css\Color;
 use Dompdf\Css\Style;
 use Dompdf\Dompdf;
-use Dompdf\Helpers;
 use Dompdf\Frame;
+use Dompdf\Helpers;
 use Dompdf\Image\Cache;
 
 /**
@@ -428,6 +428,149 @@ abstract class AbstractRenderer
     }
 
     /**
+     * @param $x
+     * @param $y
+     * @param $length
+     * @param $color
+     * @param $widths
+     * @param $side
+     * @param string $corner_style
+     * @param int $r1
+     * @param int $r2
+     */
+    protected function _border_none($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
+    {
+        return;
+    }
+
+    /**
+     * @param $x
+     * @param $y
+     * @param $length
+     * @param $color
+     * @param $widths
+     * @param $side
+     * @param string $corner_style
+     * @param int $r1
+     * @param int $r2
+     */
+    protected function _border_hidden($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
+    {
+        return;
+    }
+
+    /**
+     * @param $x
+     * @param $y
+     * @param $length
+     * @param $color
+     * @param $widths
+     * @param $side
+     * @param string $corner_style
+     * @param int $r1
+     * @param int $r2
+     */
+    protected function _border_dotted($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
+    {
+        $this->_border_line($x, $y, $length, $color, $widths, $side, $corner_style, "dotted", $r1, $r2);
+    }
+
+    // Border rendering functions
+
+    /**
+     * Draws a solid, dotted, or dashed line, observing the border radius
+     *
+     * @param $x
+     * @param $y
+     * @param $length
+     * @param $color
+     * @param $widths
+     * @param $side
+     * @param string $corner_style
+     * @param $pattern_name
+     * @param int $r1
+     * @param int $r2
+     *
+     * @var $top
+     */
+    protected function _border_line($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $pattern_name, $r1 = 0, $r2 = 0)
+    {
+        /** used by $$side */
+        list($top, $right, $bottom, $left) = $widths;
+        $width = $$side;
+
+        $pattern = $this->_get_dash_pattern($pattern_name, $width);
+
+        $half_width = $width / 2;
+        $r1 -= $half_width;
+        $r2 -= $half_width;
+        $adjust = $r1 / 80;
+        $length -= $width;
+
+        switch ($side) {
+            case "top":
+                $x += $half_width;
+                $y += $half_width;
+
+                if ($r1 > 0) {
+                    $this->_canvas->arc($x + $r1, $y + $r1, $r1, $r1, 90 - $adjust, 135 + $adjust, $color, $width, $pattern);
+                }
+
+                $this->_canvas->line($x + $r1, $y, $x + $length - $r2, $y, $color, $width, $pattern);
+
+                if ($r2 > 0) {
+                    $this->_canvas->arc($x + $length - $r2, $y + $r2, $r2, $r2, 45 - $adjust, 90 + $adjust, $color, $width, $pattern);
+                }
+                break;
+
+            case "bottom":
+                $x += $half_width;
+                $y -= $half_width;
+
+                if ($r1 > 0) {
+                    $this->_canvas->arc($x + $r1, $y - $r1, $r1, $r1, 225 - $adjust, 270 + $adjust, $color, $width, $pattern);
+                }
+
+                $this->_canvas->line($x + $r1, $y, $x + $length - $r2, $y, $color, $width, $pattern);
+
+                if ($r2 > 0) {
+                    $this->_canvas->arc($x + $length - $r2, $y - $r2, $r2, $r2, 270 - $adjust, 315 + $adjust, $color, $width, $pattern);
+                }
+                break;
+
+            case "left":
+                $y += $half_width;
+                $x += $half_width;
+
+                if ($r1 > 0) {
+                    $this->_canvas->arc($x + $r1, $y + $r1, $r1, $r1, 135 - $adjust, 180 + $adjust, $color, $width, $pattern);
+                }
+
+                $this->_canvas->line($x, $y + $r1, $x, $y + $length - $r2, $color, $width, $pattern);
+
+                if ($r2 > 0) {
+                    $this->_canvas->arc($x + $r2, $y + $length - $r2, $r2, $r2, 180 - $adjust, 225 + $adjust, $color, $width, $pattern);
+                }
+                break;
+
+            case "right":
+                $y += $half_width;
+                $x -= $half_width;
+
+                if ($r1 > 0) {
+                    $this->_canvas->arc($x - $r1, $y + $r1, $r1, $r1, 0 - $adjust, 45 + $adjust, $color, $width, $pattern);
+                }
+
+                $this->_canvas->line($x, $y + $r1, $x, $y + $length - $r2, $color, $width, $pattern);
+
+                if ($r2 > 0) {
+                    $this->_canvas->arc($x - $r2, $y + $length - $r2, $r2, $r2, 315 - $adjust, 360 + $adjust, $color, $width, $pattern);
+                }
+                break;
+        }
+    }
+
+    /**
      * @param $style
      * @param $width
      * @return array
@@ -474,62 +617,35 @@ abstract class AbstractRenderer
      * @param int $r1
      * @param int $r2
      */
-    protected function _border_none($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
-    {
-        return;
-    }
-
-    /**
-     * @param $x
-     * @param $y
-     * @param $length
-     * @param $color
-     * @param $widths
-     * @param $side
-     * @param string $corner_style
-     * @param int $r1
-     * @param int $r2
-     */
-    protected function _border_hidden($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
-    {
-        return;
-    }
-
-    // Border rendering functions
-
-    /**
-     * @param $x
-     * @param $y
-     * @param $length
-     * @param $color
-     * @param $widths
-     * @param $side
-     * @param string $corner_style
-     * @param int $r1
-     * @param int $r2
-     */
-    protected function _border_dotted($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
-    {
-        $this->_border_line($x, $y, $length, $color, $widths, $side, $corner_style, "dotted", $r1, $r2);
-    }
-
-
-    /**
-     * @param $x
-     * @param $y
-     * @param $length
-     * @param $color
-     * @param $widths
-     * @param $side
-     * @param string $corner_style
-     * @param int $r1
-     * @param int $r2
-     */
     protected function _border_dashed($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
     {
         $this->_border_line($x, $y, $length, $color, $widths, $side, $corner_style, "dashed", $r1, $r2);
     }
 
+    /**
+     * @param $x
+     * @param $y
+     * @param $length
+     * @param $color
+     * @param $widths
+     * @param $side
+     * @param string $corner_style
+     * @param int $r1
+     * @param int $r2
+     */
+    protected function _border_double($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
+    {
+        list($top, $right, $bottom, $left) = $widths;
+
+        $third_widths = array($top / 3, $right / 3, $bottom / 3, $left / 3);
+
+        // draw the outer border
+        $this->_border_solid($x, $y, $length, $color, $third_widths, $side, $corner_style, $r1, $r2);
+
+        $this->_apply_ratio($side, 2 / 3, $top, $right, $bottom, $left, $x, $y, $length, $r1, $r2);
+
+        $this->_border_solid($x, $y, $length, $color, $third_widths, $side, $corner_style, $r1, $r2);
+    }
 
     /**
      * @param $x
@@ -656,31 +772,6 @@ abstract class AbstractRenderer
      * @param int $r1
      * @param int $r2
      */
-    protected function _border_double($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
-    {
-        list($top, $right, $bottom, $left) = $widths;
-
-        $third_widths = array($top / 3, $right / 3, $bottom / 3, $left / 3);
-
-        // draw the outer border
-        $this->_border_solid($x, $y, $length, $color, $third_widths, $side, $corner_style, $r1, $r2);
-
-        $this->_apply_ratio($side, 2 / 3, $top, $right, $bottom, $left, $x, $y, $length, $r1, $r2);
-
-        $this->_border_solid($x, $y, $length, $color, $third_widths, $side, $corner_style, $r1, $r2);
-    }
-
-    /**
-     * @param $x
-     * @param $y
-     * @param $length
-     * @param $color
-     * @param $widths
-     * @param $side
-     * @param string $corner_style
-     * @param int $r1
-     * @param int $r2
-     */
     protected function _border_groove($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
     {
         list($top, $right, $bottom, $left) = $widths;
@@ -693,57 +784,6 @@ abstract class AbstractRenderer
 
         $this->_border_outset($x, $y, $length, $color, $half_widths, $side, $corner_style, $r1, $r2);
 
-    }
-
-    /**
-     * @param $x
-     * @param $y
-     * @param $length
-     * @param $color
-     * @param $widths
-     * @param $side
-     * @param string $corner_style
-     * @param int $r1
-     * @param int $r2
-     */
-    protected function _border_ridge($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
-    {
-        list($top, $right, $bottom, $left) = $widths;
-
-        $half_widths = array($top / 2, $right / 2, $bottom / 2, $left / 2);
-
-        $this->_border_outset($x, $y, $length, $color, $half_widths, $side, $corner_style, $r1, $r2);
-
-        $this->_apply_ratio($side, 0.5, $top, $right, $bottom, $left, $x, $y, $length, $r1, $r2);
-
-        $this->_border_inset($x, $y, $length, $color, $half_widths, $side, $corner_style, $r1, $r2);
-
-    }
-
-    /**
-     * @param $c
-     * @return mixed
-     */
-    protected function _tint($c)
-    {
-        if (!is_numeric($c)) {
-            return $c;
-        }
-
-        return min(1, $c + 0.16);
-    }
-
-    /**
-     * @param $c
-     * @return mixed
-     */
-    protected function _shade($c)
-    {
-        if (!is_numeric($c)) {
-            return $c;
-        }
-
-        return max(0, $c - 0.33);
     }
 
     /**
@@ -809,8 +849,6 @@ abstract class AbstractRenderer
     }
 
     /**
-     * Draws a solid, dotted, or dashed line, observing the border radius
-     *
      * @param $x
      * @param $y
      * @param $length
@@ -818,87 +856,47 @@ abstract class AbstractRenderer
      * @param $widths
      * @param $side
      * @param string $corner_style
-     * @param $pattern_name
      * @param int $r1
      * @param int $r2
-     *
-     * @var $top
      */
-    protected function _border_line($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $pattern_name, $r1 = 0, $r2 = 0)
+    protected function _border_ridge($x, $y, $length, $color, $widths, $side, $corner_style = "bevel", $r1 = 0, $r2 = 0)
     {
-        /** used by $$side */
         list($top, $right, $bottom, $left) = $widths;
-        $width = $$side;
 
-        $pattern = $this->_get_dash_pattern($pattern_name, $width);
+        $half_widths = array($top / 2, $right / 2, $bottom / 2, $left / 2);
 
-        $half_width = $width / 2;
-        $r1 -= $half_width;
-        $r2 -= $half_width;
-        $adjust = $r1 / 80;
-        $length -= $width;
+        $this->_border_outset($x, $y, $length, $color, $half_widths, $side, $corner_style, $r1, $r2);
 
-        switch ($side) {
-            case "top":
-                $x += $half_width;
-                $y += $half_width;
+        $this->_apply_ratio($side, 0.5, $top, $right, $bottom, $left, $x, $y, $length, $r1, $r2);
 
-                if ($r1 > 0) {
-                    $this->_canvas->arc($x + $r1, $y + $r1, $r1, $r1, 90 - $adjust, 135 + $adjust, $color, $width, $pattern);
-                }
+        $this->_border_inset($x, $y, $length, $color, $half_widths, $side, $corner_style, $r1, $r2);
 
-                $this->_canvas->line($x + $r1, $y, $x + $length - $r2, $y, $color, $width, $pattern);
+    }
 
-                if ($r2 > 0) {
-                    $this->_canvas->arc($x + $length - $r2, $y + $r2, $r2, $r2, 45 - $adjust, 90 + $adjust, $color, $width, $pattern);
-                }
-                break;
-
-            case "bottom":
-                $x += $half_width;
-                $y -= $half_width;
-
-                if ($r1 > 0) {
-                    $this->_canvas->arc($x + $r1, $y - $r1, $r1, $r1, 225 - $adjust, 270 + $adjust, $color, $width, $pattern);
-                }
-
-                $this->_canvas->line($x + $r1, $y, $x + $length - $r2, $y, $color, $width, $pattern);
-
-                if ($r2 > 0) {
-                    $this->_canvas->arc($x + $length - $r2, $y - $r2, $r2, $r2, 270 - $adjust, 315 + $adjust, $color, $width, $pattern);
-                }
-                break;
-
-            case "left":
-                $y += $half_width;
-                $x += $half_width;
-
-                if ($r1 > 0) {
-                    $this->_canvas->arc($x + $r1, $y + $r1, $r1, $r1, 135 - $adjust, 180 + $adjust, $color, $width, $pattern);
-                }
-
-                $this->_canvas->line($x, $y + $r1, $x, $y + $length - $r2, $color, $width, $pattern);
-
-                if ($r2 > 0) {
-                    $this->_canvas->arc($x + $r2, $y + $length - $r2, $r2, $r2, 180 - $adjust, 225 + $adjust, $color, $width, $pattern);
-                }
-                break;
-
-            case "right":
-                $y += $half_width;
-                $x -= $half_width;
-
-                if ($r1 > 0) {
-                    $this->_canvas->arc($x - $r1, $y + $r1, $r1, $r1, 0 - $adjust, 45 + $adjust, $color, $width, $pattern);
-                }
-
-                $this->_canvas->line($x, $y + $r1, $x, $y + $length - $r2, $color, $width, $pattern);
-
-                if ($r2 > 0) {
-                    $this->_canvas->arc($x - $r2, $y + $length - $r2, $r2, $r2, 315 - $adjust, 360 + $adjust, $color, $width, $pattern);
-                }
-                break;
+    /**
+     * @param $c
+     * @return mixed
+     */
+    protected function _tint($c)
+    {
+        if (!is_numeric($c)) {
+            return $c;
         }
+
+        return min(1, $c + 0.16);
+    }
+
+    /**
+     * @param $c
+     * @return mixed
+     */
+    protected function _shade($c)
+    {
+        if (!is_numeric($c)) {
+            return $c;
+        }
+
+        return max(0, $c - 0.33);
     }
 
     /**

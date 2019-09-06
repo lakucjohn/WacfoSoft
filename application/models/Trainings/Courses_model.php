@@ -229,6 +229,104 @@ class Courses_model extends CI_Model{
                 </style>
                 </head>';
 
+            $output .= '<hr>';
+            $output .= '<div class="row">';
+
+            $output .= '<div class="col-md-2">SORT BY:</div>';
+
+            $output .= '<div class="col-md-4">
+                            <select name="" id="" class="form-control">
+                                <option value="">Date of Training</option>
+                                <option value="">Group</option>
+                                <option value="">Livelihood Category</option>
+                                <option value="">Venue</option>
+                                <option value="">Trainer</option>
+                            </select>
+                        </div>
+            ';
+
+            $output .= '</div>';
+            $output .= '<hr>';
+
+            $output .= '<div class="row">';
+
+            $output .= '<div class="col-md-2">LIMIT:</div>';
+
+            $output .= '<div class="col-md-3">
+                            <select name="" id="" class="form-control">
+                                <option value="">2010</option>
+                                <option value="">2011</option>
+                                <option value="">2012</option>
+                                <option value="">2013</option>
+                                <option value="">2014</option>
+                                <option value="">2015</option>
+                                <option value="">2016</option>
+                                <option value="">2017</option>
+                                <option value="">2018</option>
+                                <option value="">2019</option>
+                            </select>
+                        </div>
+            ';
+
+            $output .= '<div class="col-md-3">
+                            <select name="" id="" class="form-control">
+                                <option value="">January</option>
+                                <option value="">February</option>
+                                <option value="">March</option>
+                                <option value="">April</option>
+                                <option value="">May</option>
+                                <option value="">June</option>
+                                <option value="">July</option>
+                                <option value="">August</option>
+                                <option value="">September</option>
+                                <option value="">October</option>
+                                <option value="">November</option>
+                                <option value="">December</option>
+                            </select>
+                        </div>
+            ';
+
+            $output .= '<div class="col-md-3">
+                            <select name="" id="" class="form-control">
+                                <option value="">01</option>
+                                <option value="">02</option>
+                                <option value="">03</option>
+                                <option value="">04</option>
+                                <option value="">05</option>
+                                <option value="">06</option>
+                                <option value="">07</option>
+                                <option value="">08</option>
+                                <option value="">09</option>
+                                <option value="">10</option>
+                                <option value="">11</option>
+                                <option value="">12</option>
+                                <option value="">13</option>
+                                <option value="">14</option>
+                                <option value="">15</option>
+                                <option value="">16</option>
+                                <option value="">17</option>
+                                <option value="">18</option>
+                                <option value="">19</option>
+                                <option value="">20</option>
+                                <option value="">21</option>
+                                <option value="">21</option>
+                                <option value="">22</option>
+                                <option value="">23</option>
+                                <option value="">24</option>
+                                <option value="">25</option>
+                                <option value="">26</option>
+                                <option value="">27</option>
+                                <option value="">28</option>
+                                <option value="">29</option>
+                                <option value="">30</option>
+                                <option value="">31</option>
+                            </select>
+                        </div>
+            ';
+
+            $output .= '</div>';
+            $output .= '<hr>';
+
             $output .= '<table id="innertable-2" class="table table-bordered" style="border: 1px solid; border-collapse: collapse;">';
             $output .= '<tr>';
             $output .= '<th>DATE OF TRAINING</th>';
@@ -248,9 +346,15 @@ class Courses_model extends CI_Model{
                         $output .= '<td>' . $training->OBJECTIVE . '</td>';
                         $output .= '<td>' . $training->VENUE . '</td>';
                         $output .= '<td>' . $training->CONDUCTED_BY . '</td>';
-                        $output .= '<td>' . $training->IS_STAFF . '</td>';
+                        $output .= '<td>';
+                        if ($training->IS_STAFF == 1) {
+                            $output .= 'Yes';
+                        } else {
+                            $output .= 'No';
+                        }
+                        $output .= '</td>';
                         $output .= '<td>' . $group->GROUP_ID . '</td>';
-                        $output .= '<td>' . $group->NAME . '</td>';
+                        $output .= '<td>' . $group->GROUP_NAME . '</td>';
                         $output .= '</tr>';
                     }
                 }
@@ -378,13 +482,19 @@ class Courses_model extends CI_Model{
 
     function get_name_of_topic($topic)
     {
+        $topic_name = '';
         $this->db->where('ID', $topic);
         $this->db->where('STATUS', TRUE);
 
         $query = $this->db->get('COURSES_AND_TOPICS');
 
         foreach ($query->result() as $row) {
-            $topic_name = $row->TOPIC;
+            if (!empty($row->TOPIC)) {
+                $topic_name = $row->TOPIC;
+            } else {
+                $topic_name = 'Multiple';
+            }
+
         }
 
         return $topic_name;

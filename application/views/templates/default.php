@@ -5,6 +5,102 @@
  * Date: 11/29/18
  * Time: 11:55 PM
  */
+class visitation_notification
+{
+    private $conn;
+    private $visits_available_status;
+    private $number_of_visits;
+    private $visit_list;
+    private $visitation_data_resource;
+    private $sql = "SELECT * FROM VISIT_RECORDS WHERE WEEK(NOW())=WEEK(NEXT_VISIT_DATE)";
+
+    public function __construct()
+    {
+        $hostname = 'localhost';
+        $username = 'root';
+        $password = '';
+        $database = 'wacfosoft_info';
+        $this->conn = new mysqli($hostname, $username, $password, $database);
+
+    }
+
+    function check_for_close_visitations()
+    {
+
+
+        if ($sql_run = mysqli_query($this->conn, $this->sql)) {
+            if (mysqli_num_rows($sql_run) > 0) {
+                $this->visits_available_status = true;
+                $this->visitation_data_resource = $sql_run;
+                return true;
+            } else {
+                $this->visits_available_status = false;
+                return false;
+            }
+
+        }
+    }
+}
+
+function get_child_name($child_id)
+{
+
+    $conn = new mysqli('localhost', 'root', '', 'wacfosoft_info');
+    $sql = "SELECT NAME FROM CHILDREN WHERE CHILD_ID =" . mysqli_real_escape_string($conn, $child_id);
+//
+    if ($sql_run = mysqli_query($conn, $sql)) {
+        while ($rs = mysqli_fetch_assoc($sql_run)) {
+            $output = $rs['NAME'];
+            return $output;
+        }
+
+
+    }
+}
+
+function get_subcounty_name($subcounty_id)
+{
+    $conn = new mysqli('localhost', 'root', '', 'wacfosoft_info');
+    $sql = "SELECT SUBCOUNTY FROM SUBCOUNTY WHERE ID = " . $subcounty_id;
+
+    if ($sql_run = mysqli_query($conn, $sql)) {
+        while ($rs = mysqli_fetch_assoc($sql_run)) {
+            $output = $rs['SUBCOUNTY'];
+            return $output;
+        }
+
+    }
+}
+
+function get_parish_name($parish_id)
+{
+    $conn = new mysqli('localhost', 'root', '', 'wacfosoft_info');
+    $sql = "SELECT PARISH FROM PARISH WHERE ID = " . $parish_id;
+
+    if ($sql_run = mysqli_query($conn, $sql)) {
+        while ($rs = mysqli_fetch_assoc($sql_run)) {
+            $output = $rs['PARISH'];
+            return $output;
+        }
+
+
+    }
+}
+
+function get_village_name($village_id)
+{
+    $conn = new mysqli('localhost', 'root', '', 'wacfosoft_info');
+    $sql = "SELECT VILLAGE FROM VILLAGE WHERE ID = " . $village_id;
+
+    if ($sql_run = mysqli_query($conn, $sql)) {
+        while ($rs = mysqli_fetch_assoc($sql_run)) {
+            $output = $rs['VILLAGE'];
+            return $output;
+        }
+
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -191,50 +287,61 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+            <?php
+            $visitation_notice = new visitation_notification();
 
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-fw fa-bell"></i>
-                    <span class="d-lg-none">Alerts
-              <span class="badge badge-pill badge-warning">6 New</span>
-            </span>
-                    <span class="indicator text-warning d-none d-lg-block">
-              <i class="fa fa-fw fa-circle"></i>
-            </span>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-                    <h6 class="dropdown-header">New Alerts:</h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-                        <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+            if ($visitation_notice->check_for_close_visitations()) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-fw fa-bell"></i>
+                        <span class="d-lg-none">Alerts
+                              <span class="badge badge-pill badge-warning">6 New</span>
+                            </span>
+                        <span class="indicator text-warning d-none d-lg-block">
+                              <i class="fa fa-fw fa-circle"></i>
+                            </span>
                     </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-              <span class="text-danger">
-                <strong>
-                  <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong>
-              </span>
-                        <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-                        <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item small" href="#">View all alerts</a>
-                </div>
-            </li>
+                    <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+                        <h6 class="dropdown-header">New Alerts:</h6>
+
+                        <div class="dropdown-divider"></div>
+
+                        <?php
+                        $conn = new mysqli('localhost', 'root', '', 'wacfosoft_info');
+                        $sql = "SELECT * FROM VISIT_RECORDS WHERE WEEK(NOW())=WEEK(NEXT_VISIT_DATE)";
+                        //$visitation_notice ->get_visitation_list();
+                        if ($sql_run = mysqli_query($conn, $sql)) {
+                            while ($rs = mysqli_fetch_assoc($sql_run)) {
+
+                                ?>
+                                <a class="dropdown-item" href="#">
+                                                      <span class="text-danger">
+                                                        <strong>
+                                                          <i class="fa fa-long-arrow-down fa-fw"></i><?php echo get_child_name($rs['CHILD_ID_VISITED']) . ' (' . $rs['CHILD_ID_VISITED'] . ')'; ?></strong>
+                                                      </span>
+                                    <span class="small float-right text-muted"><?php echo $rs['NEXT_VISIT_DATE']; ?></span>
+                                    <div class="dropdown-message small"><?php echo $rs['NEXT_VISIT_ACTIVITY'] . ' at ' . get_village_name($rs['VILLAGE']) . ', ' . get_parish_name($rs['PARISH']) . ' PARISH in ' . get_subcounty_name($rs['SUBCOUNTY']); ?></div>
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+                                <?php
+
+                            }
+
+                        }
+                        ?>
+
+
+                        <a class="dropdown-item small" href="#">Mark all as read</a>
+                    </div>
+                </li>
+
+                <?php
+
+            }
+            ?>
             <li class="nav-item">
                 <?php
                 if (isset($search_content)) {
@@ -332,6 +439,13 @@
     <!-- Custom scripts for this page-->
     <script src="<?php echo base_url('Assets/js/sb-admin-datatables.min.js') ?>"></script>
     <script src="<?php echo base_url('Assets/js/sb-admin-charts.min.js') ?>"></script>
+<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') ?>"></script>
+<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') ?>"></script>
+<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/jszip.min.js') ?>"></script>
+<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') ?>"></script>
+<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') ?>"></script>
+<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') ?>"></script>
+<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') ?>"></script>
 <script src="<?php echo base_url('Assets/js/app_main.js') ?>"></script>
 <!--<script src="--><?php //echo base_url('Assets/js/query_data.js') ?><!--"></script>-->
 </div>

@@ -190,7 +190,12 @@ class Training extends AuthContentController {
 
             if (!empty($group_members)) {
 
-                $html_content .= '<h3>GROUP:  ' . $group->NAME . '</h3>';
+                $html_content .= '<h3>TOPIC:  ' . $topic_name . '</h3>';
+                $html_content .= '<h3>OBJECTIVE:  ' . $objective . '</h3>';
+                $html_content .= '<h3>VENUE:  ' . $venue . '</h3>';
+                $html_content .= '<h3>DATE:  ' . $date_of_training . '</h3>';
+                $html_content .= '<p>&nbsp;</p>';
+                $html_content .= '<p><h5>GROUP:  ' . $group->GROUP_NAME . '</h5></p>';
                 $html_content .= $group_members;
                 $html_content .= '<div style="page-break-after: always;"></div>';
 
@@ -198,6 +203,14 @@ class Training extends AuthContentController {
             }
 
         }
+
+        $html_content .= '<h3>TOPIC:  ' . $topic_name . '</h3>';
+        $html_content .= '<h3>OBJECTIVE:  ' . $objective . '</h3>';
+        $html_content .= '<h3>VENUE:  ' . $venue . '</h3>';
+        $html_content .= '<h3>DATE:  ' . $date_of_training . '</h3>';
+        $html_content .= '<p>&nbsp;</p>';
+
+        $html_content .= '<p><h5>ATTENDANCE SHEET</h5></p>';
 
         $html_content .= '<table border="1px solid" style="border-collapse: collapse;">';
 

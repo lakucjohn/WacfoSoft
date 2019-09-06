@@ -31,14 +31,6 @@ class JavascriptEmbedder
     }
 
     /**
-     * @param $script
-     */
-    public function insert($script)
-    {
-        $this->_dompdf->getCanvas()->javascript($script);
-    }
-
-    /**
      * @param Frame $frame
      */
     public function render(Frame $frame)
@@ -48,5 +40,13 @@ class JavascriptEmbedder
         }
 
         $this->insert($frame->get_node()->nodeValue);
+    }
+
+    /**
+     * @param $script
+     */
+    public function insert($script)
+    {
+        $this->_dompdf->getCanvas()->javascript($script);
     }
 }

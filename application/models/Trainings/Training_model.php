@@ -320,14 +320,14 @@ class Training_model extends CI_Model{
     {
 
         #Obtaining the group name
-        $this->db->select('NAME');
+        $this->db->select('GROUP_NAME');
         $this->db->where('GROUP_ID', $group_id);
         $this->db->limit(1);
 
         $child_data = $this->db->get('GROUPS');
 
         foreach ($child_data->result() as $row) {
-            $group_name = $row->NAME;
+            $group_name = $row->GROUP_NAME;
         }
 
         return $group_name;

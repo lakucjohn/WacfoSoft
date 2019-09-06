@@ -2,12 +2,11 @@
 
 class CI_TestCase extends PHPUnit_Framework_TestCase {
 
+    protected static $ci_test_instance;
 	public $ci_vfs_root;
 	public $ci_app_root;
 	public $ci_base_root;
 	protected $ci_instance;
-	protected static $ci_test_instance;
-
 	private $global_map = array(
 		'benchmark'	=> 'bm',
 		'config'	=> 'cfg',
@@ -32,6 +31,13 @@ class CI_TestCase extends PHPUnit_Framework_TestCase {
 
 	// --------------------------------------------------------------------
 
+    public static function instance()
+    {
+        return self::$ci_test_instance;
+    }
+
+    // --------------------------------------------------------------------
+
 	public function setUp()
 	{
 		// Setup VFS with base directories
@@ -54,13 +60,6 @@ class CI_TestCase extends PHPUnit_Framework_TestCase {
 		{
 			$this->tear_down();
 		}
-	}
-
-	// --------------------------------------------------------------------
-
-	public static function instance()
-	{
-		return self::$ci_test_instance;
 	}
 
 	// --------------------------------------------------------------------
@@ -122,6 +121,16 @@ class CI_TestCase extends PHPUnit_Framework_TestCase {
 
 	// --------------------------------------------------------------------
 
+    public function ci_set_core_class($name, $obj)
+    {
+        $orig =& $this->ci_core_class($name);
+        $orig = $obj;
+    }
+
+    // --------------------------------------------------------------------
+
+    // convenience function for global mocks
+
 	/**
 	 * Grab a core class
 	 *
@@ -159,15 +168,6 @@ class CI_TestCase extends PHPUnit_Framework_TestCase {
 		return $GLOBALS[strtoupper($global_name)];
 	}
 
-	// --------------------------------------------------------------------
-
-	// convenience function for global mocks
-	public function ci_set_core_class($name, $obj)
-	{
-		$orig =& $this->ci_core_class($name);
-		$orig = $obj;
-	}
-
 	/**
 	 * Create VFS directory
 	 *
@@ -188,6 +188,39 @@ class CI_TestCase extends PHPUnit_Framework_TestCase {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Clone a real file into VFS
+     *
+     * @param    string    Path from base directory
+     * @return    bool    TRUE on success, otherwise FALSE
+     */
+    public function ci_vfs_clone($path, $dest = '')
+    {
+        // Check for array
+        if (is_array($path)) {
+            foreach ($path as $file) {
+                $this->ci_vfs_clone($file, $dest);
+            }
+            return;
+        }
+
+        // Get real file contents
+        $content = file_get_contents(PROJECT_BASE . $path);
+        if ($content === FALSE) {
+            // Couldn't find file to clone
+            return FALSE;
+        }
+
+        if (empty($dest)) {
+            $dest = dirname($path);
+        }
+
+        $this->ci_vfs_create(basename($path), $content, NULL, $dest);
+        return TRUE;
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Create VFS content
@@ -264,43 +297,6 @@ class CI_TestCase extends PHPUnit_Framework_TestCase {
 
 		// Create tree
 		vfsStream::create($tree, $root);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Clone a real file into VFS
-	 *
-	 * @param	string	Path from base directory
-	 * @return	bool	TRUE on success, otherwise FALSE
-	 */
-	public function ci_vfs_clone($path, $dest='')
-	{
-		// Check for array
-		if (is_array($path))
-		{
-			foreach ($path as $file)
-			{
-				$this->ci_vfs_clone($file, $dest);
-			}
-			return;
-		}
-
-		// Get real file contents
-		$content = file_get_contents(PROJECT_BASE.$path);
-		if ($content === FALSE)
-		{
-			// Couldn't find file to clone
-			return FALSE;
-		}
-
-		if (empty($dest))
-		{
-			$dest = dirname($path);
-		}
-
-		$this->ci_vfs_create(basename($path), $content, NULL, $dest);
-		return TRUE;
 	}
 
 	// --------------------------------------------------------------------

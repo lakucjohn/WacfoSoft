@@ -103,12 +103,14 @@ $route['visitation-info/generate-pdf/(:any)'] = 'People/Other/Visits/visit/gener
 
 $route['assessments/form-1'] = 'People/Other/Assessments/form_1';
 $route['assessments/form-1/record-a-new-assessment'] = 'People/Other/Assessments/form_1/create';
+$route['assessments/form-1/record-a-new-assessment/(:any)'] = 'People/Other/Assessments/form_1/show_create_for_specific_child';
 $route['assessments/form-1-details/(:any)'] = 'People/Other/Assessments/form_1/details';
 $route['assessments/form-1-details/edit/(:any)'] = 'People/Other/Assessments/form_1/edit';
 $route['assessments/form-1/generate-pdf/(:any)'] = 'People/Other/Assessments/form_1/generate_pdf_document';
 
 $route['assessments/form-2'] = 'People/Other/Assessments/form_2';
 $route['assessments/form-2/record-a-new-assessment'] = 'People/Other/Assessments/form_2/create';
+$route['assessments/form-2/record-a-new-assessment/(:any)'] = 'People/Other/Assessments/form_2/show_create_for_specific_child';
 $route['assessments/form-2-details/(:any)'] = 'People/Other/Assessments/form_2/details';
 $route['assessments/form-2-details/edit/(:any)'] = 'People/Other/Assessments/form_2/edit';
 $route['assessments/form-2/generate-pdf/(:any)'] = 'People/Other/Assessments/form_2/generate_pdf_document';
@@ -143,7 +145,9 @@ $route['production/fish%20farming-details/edit/(:any)'] = 'Production/FishFarmin
 $route['production/fish%20farming-info/generate-pdf/(:any)'] = 'Production/FishFarming/fishFarming/generate_detailed_pdf';
 
 $route['production/misean%20cara%20baseline%20surveys'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey';
+#$route['production/misean%20cara%20baseline%20surveys%20for%20group/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome/';
 $route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create';
+$route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security%20for%20group/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome';
 $route['production/misean%20cara%20baseline%20survey-details/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/details';
 $route['production/misean%20cara%20baseline%20survey-details/edit/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/edit';
 $route['production/misean%20cara%20baseline%20survey-info/generate-pdf/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/generate_pdf_document';
@@ -206,9 +210,13 @@ $route['settings'] = 'Settings/Welcome/settings';
 $route['settings/new_disability'] = 'Settings/Disabilities/disability/create';
 $route['settings/new_livelihood_category'] = 'Settings//Livelihood/livelihood/create';
 $route['settings/new_county'] = 'Settings/Location/county/create';
+$route['settings/county-details/edit/(:any)'] = 'Settings/Location/county/edit/';
 $route['settings/new_subcounty'] = 'Settings/Location/subcounty/create';
+$route['settings/subcounty-details/edit/(:any)'] = 'Settings/Location/subcounty/edit/';
 $route['settings/new_parish'] = 'Settings/Location/parish/create';
+$route['settings/parish-details/edit/(:any)'] = 'Settings/Location/parish/edit/';
 $route['settings/new_village'] = 'Settings/Location/village/create';
+$route['settings/village-details/edit/(:any)'] = 'Settings/Location/village/edit/';
 $route['settings/new_department'] = 'Settings/Department/department/create';
 
 #Urls for querying data

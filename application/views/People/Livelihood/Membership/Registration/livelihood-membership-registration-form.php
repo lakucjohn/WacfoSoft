@@ -72,7 +72,7 @@
 
                             <?php
                             foreach ($grouping_list->result() as $row) {
-                                echo '<option value="' . $row->GROUP_ID . '" title="' . $row->NAME . '">' . $row->NAME . '</option>';
+                                echo '<option value="' . $row->GROUP_ID . '" title="' . $row->GROUP_NAME . '">' . $row->GROUP_NAME . '</option>';
                             }
                             ?>
                         </select><br>

@@ -27,15 +27,6 @@ class File extends \FontLib\TrueType\File {
    */
   public $header;
 
-  function parseHeader() {
-    if (!empty($this->header)) {
-      return;
-    }
-
-    $this->header = new Header($this);
-    $this->header->parse();
-  }
-
   function parse() {
     $this->parseHeader();
 
@@ -60,6 +51,16 @@ class File extends \FontLib\TrueType\File {
     }
     // TODO Read font data ...
   }
+
+    function parseHeader()
+    {
+        if (!empty($this->header)) {
+            return;
+        }
+
+        $this->header = new Header($this);
+        $this->header->parse();
+    }
 
     /**
      * Little endian version of the read method

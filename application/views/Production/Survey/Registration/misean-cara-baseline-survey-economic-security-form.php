@@ -254,310 +254,11 @@
 
     <hr>
 
-    <div class="document-part-header">
-        Table 2.0: % Increase in target group's knowledge on problems affecting vegetable/crop production and challenges on the marketing aspect
+    <div id="production_tables">
+
     </div>
 
     <hr>
-
-    <div class="document-part-content">
-
-        <div class="col-md-12">
-            <table class="table table-bordered table-responsive">
-                <tr>
-                    <td style="width: 50%;">
-                        <div class="col-md-12">
-                            Q - 12: Mention problems affecting vegetable production<br><br>
-                            <textarea class="form-control" name="problems_affecting_vegetable_production"
-                                      id="problems_affecting_vegetable_production"></textarea>
-
-                        </div>
-                    </td>
-                    <td style="width: 50%;">
-                        <div class="col-md-12"">
-                            Q - 12: Mention the challenges faced in marketing vegetable products<br><br>
-                        <textarea class="form-control" name="challenges_faced_in_marketing_vegetable_products"
-                                  id="challenges_faced_in_marketing_vegetable_products"></textarea>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 50%;">
-                        <div class="col-md-12">
-                            Q - 12: Mention problems affecting crop production<br><br>
-                            <textarea class="form-control" name="problems_affecting_crop_production"
-                                      id="problems_affecting_crop_production"></textarea>
-
-                        </div>
-                    </td>
-                    <td style="width: 50%;">
-                        <div class="col-md-12">
-                            Q - 12: Problems hindering marketing crop products<br><br>
-                            <textarea class="form-control" name="problems_hindering_marketing_crop_products"
-                                      id="problems_hindering_marketing_crop_products"></textarea>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <hr>
-    <div class="document-part-header">
-        Table 3.0: Vegetable Product
-    </div>
-    <hr>
-    <div class="document-part-content">
-        <table class="table table-bordered table-responsive">
-            <tr>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        % increase in value of sales (UGX)
-                    </div>
-                </td>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        <input type="number" name="percentage_increase_in_sale_of_vegetable"
-                               id="percentage_increase_in_sale_of_vegetable" class="form-control"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        % increase in productivity (Kg/Acre)
-                    </div>
-                </td>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        <input type="number" name="percentage_increase_in_productivity_of_vegetable"
-                               id="percentage_increase_in_productivity_of_vegetable" class="form-control"/>
-                    </div>
-                </td>
-            </tr>
-        </table><br>
-
-        <div id="vegetable_table">
-
-        </div>
-
-    </div>
-    <hr>
-
-    <div class="document-part-header">
-        Table 4.0: Crop Product
-    </div>
-    <hr>
-    <div class="document-part-content">
-        <table class="table table-bordered table-responsive">
-            <tr>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        % increase in value of sales (UGX)
-                    </div>
-                </td>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        <input type="number" name="percentage_increase_in_sale_of_crops"
-                               id="percentage_increase_in_sale_of_crops" class="form-control"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        % increase in productivity (Kg/Acre)
-                    </div>
-                </td>
-                <td style="width: 50%;">
-                    <div class="col-md-12">
-                        <input type="number" name="percentage_increase_in_productivity_of_crops"
-                               id="percentage_increase_in_productivity_of_crops" class="form-control"/>
-                    </div>
-                </td>
-            </tr>
-        </table><br>
-
-        <div id="crop_production_table">
-
-        </div>
-
-    </div>
-    <hr>
-
-<hr>
-<div class="document-part-header">Table 5.0: Number of Misean Cara beneficiaries adopting new technologies in vegetables and crop production</div>
-<hr>
-<div class="document-part-content">
-    <div class="row">
-        <div class="col-md-12">
-            <strong>Did you use any of the following technologies during your production process?</strong>
-        </div>
-    </div><br>
-
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-responsive">
-                <tr>
-                    <th>Q - 41: Did you use any improved seed during the year in your production</th>
-                    <th>Q - 42: Did you use underground water in your crop production process during the dry season?</th>
-                    <th>Q - 43: Did you use any pesticides on your crops(vegetables)?</th>
-                    <th>Q - 44: Use of farm imlements e.g. zero tillage during land opening?</th>
-                    <th>Q - 45: Have you been using any method of post-harvest handling and processing techniques?</th>
-                    <th>Q - 46: Did you have any opportunity in planting your crops in Rows/Lines as oppsed to random
-                        sowing/scattering?
-                    </th>
-                    <th>Q - 47: What other techniques did you use apart from the ones discussed here? (Name them)</th>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="1"/>Yes<br>
-                            <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="used_underground_water_during_dry_season"
-                                   id="used_underground_water_during_dry_season" value="1"/>Yes<br>
-                            <input type="radio" name="used_underground_water_during_dry_season"
-                                   id="used_underground_water_during_dry_season" value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="used_pesticides" id="used_pesticides" value="1"/>Yes<br>
-                            <input type="radio" name="used_pesticides" id="used_pesticides" value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="used_farm_implements" id="used_farm_implements" value="1"/>Yes<br>
-                            <input type="radio" name="used_farm_implements" id="used_farm_implements" value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
-                                   id="used_post_harvest_handling_and_processing_techniques" value="1"/>Yes<br>
-                            <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
-                                   id="used_post_harvest_handling_and_processing_techniques" value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
-                                   id="had_the_opportunity_to_plant_crops_in_rows" value="1"/>Yes<br>
-                            <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
-                                   id="had_the_opportunity_to_plant_crops_in_rows" value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12">
-                            <textarea name="" cols="400" id="other_techniques_used" id="other_techniques_used"
-                                      class="form-control"></textarea>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-<hr>
-<div class="document-part-header">Table 6.0: % Change in People's knowledge on Marketing and Processing</div>
-
-<hr>
-<div class="document-part-content">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-responsive">
-                <tr>
-                    <th style="width: 25%;">Q - 48: Do you sell all your vegetable products?</th>
-                    <th colspan="3" style="width: 75%;">Q - 49: In what forms do you market the product?</th>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="sells_all_vegetable_products" id="sells_all_vegetable_products"
-                                   value="1"/>Yes<br>
-                            <input type="radio" name="sells_all_vegetable_products" id="sells_all_vegetable_products"
-                                   value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12"">
-                            <label for="place_1">Place 1:</label>
-                        <input type="text" class="form-control" name="vegetable_market_place_1"
-                               id="vegetable_market_place_1"/>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12"">
-                            <label for="place_2">Place 2:</label>
-                        <input type="text" class="form-control" name="vegetable_market_place_2"
-                               id="vegetable_market_place_2"/>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12"">
-                            <label for="place_3">Place 3:</label>
-                        <input type="text" class="form-control" name="vegetable_market_place_3"
-                               id="vegetable_market_place_3"/>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-responsive">
-                <tr>
-                    <th style="width: 25%;">Q -48: Do you sell all your crop products?</th>
-                    <th colspan="3" style="width: 75%;">Q - 49: In what forms do you market the product?</th>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="col-md-12">
-                            <input type="radio" name="sells_all_crop_products" id="sells_all_crop_products" value="1"/>Yes<br>
-                            <input type="radio" name="sells_all_crop_products" id="sells_all_crop_products" value="2"/>No
-                        </div>
-                    </td>
-                    <td>
-                        <div class="col-md-12"">
-                        <label for="place_1">Place 1:</label>
-                        <input type="text" class="form-control" name="crop_market_place_1" id="crop_market_place_1"/>
-        </div>
-        </td>
-        <td>
-            <div class="col-md-12"">
-            <label for="place_2">Place 2:</label>
-            <input type="text" class="form-control" name="crop_market_place_2" id="crop_market_place_2"/>
-    </div>
-</td>
-<td>
-    <div class="col-md-12"">
-    <label for="place_3">Place 3:</label>
-    <input type="text" class="form-control" name="crop_market_place_3" id="crop_market_place_3"/>
-    </div>
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<hr>
-<div class="document-part-header">
-    FISH FARMING
-</div>
-<hr>
-<div class="document-part-content">
-    <div class="row">
-        <div id="fish_farming_table"></div>
-
-    </div>
-</div>
-<hr>
 <div class="row">
     <div class="col-md-12" style="text-align: center;">
         <button type="submit" class="btn btn-primary btn-md">Save Information</button>
@@ -575,35 +276,35 @@
         if (group_id !== '') {
             //Posting data to the crop production table
             $.ajax({
-                url: "<?php echo base_url('Production/BaselineSurveys/miseanCaraBaselineSurvey/fetch_group_members_for_crop_production');?>",
+                url: "<?php echo base_url('Production/BaselineSurveys/miseanCaraBaselineSurvey/check_and_display_list_as_per_group_type');?>",
                 method: "POST",
                 data: {group_id: group_id},
                 success: function (data) {
 //                    alert(data);
-//                    show_group_details(group_id);
-                    document.getElementById('crop_production_table').innerHTML = data;
+                    show_group_details(group_id);
+                    document.getElementById('production_tables').innerHTML = data;
 //                    document.getElementById('group_id').value = group_id;
 
                     //Posting data to the vegetable production table
-                    $.ajax({
-                        url: "<?php echo base_url('Production/BaselineSurveys/miseanCaraBaselineSurvey/fetch_group_members_for_vegetable_production');?>",
-                        method: "POST",
-                        data: {group_id: group_id},
-                        success: function (data) {
-                            document.getElementById('vegetable_table').innerHTML = data;
-
-                            //Posting data to the fish farming table
-                            $.ajax({
-                                url: "<?php echo base_url('Production/BaselineSurveys/miseanCaraBaselineSurvey/fetch_group_members_for_fish_farming');?>",
-                                method: "POST",
-                                data: {group_id: group_id},
-                                success: function (data) {
-                                    document.getElementById('fish_farming_table').innerHTML = data;
-                                    show_group_details(group_id);
-                                }
-                            });
-                        }
-                    });
+//                    $.ajax({
+//                        url: "<?php //echo base_url('Production/BaselineSurveys/miseanCaraBaselineSurvey/fetch_group_members_for_vegetable_production');?>//",
+//                        method: "POST",
+//                        data: {group_id: group_id},
+//                        success: function (data) {
+//                            document.getElementById('vegetable_table').innerHTML = data;
+//
+//                            //Posting data to the fish farming table
+//                            $.ajax({
+//                                url: "<?php //echo base_url('Production/BaselineSurveys/miseanCaraBaselineSurvey/fetch_group_members_for_fish_farming');?>//",
+//                                method: "POST",
+//                                data: {group_id: group_id},
+//                                success: function (data) {
+//                                    document.getElementById('fish_farming_table').innerHTML = data;
+//                                    show_group_details(group_id);
+//                                }
+//                            });
+//                        }
+//                    });
                 }
             });
         }

@@ -20,6 +20,7 @@ class Grouping_model extends CI_Model{
 
     function fetch(){
         $this->db->order_by('ID','DESC');
+        $this->db->where('STATUS', TRUE);
 
         return $this->db->get('GROUPS');
     }
@@ -44,17 +45,50 @@ class Grouping_model extends CI_Model{
     {
 
         #Obtaining the group name
-        $this->db->select('NAME');
+        $this->db->select('GROUP_NAME');
         $this->db->where('GROUP_ID', $group_id);
         $this->db->limit(1);
 
-        $child_data = $this->db->get('GROUPS');
+        $group_name = '';
+        $group_data = $this->db->get('GROUPS');
 
-        foreach ($child_data->result() as $row) {
-            $group_name = $row->NAME;
+        foreach ($group_data->result() as $row) {
+            $group_name .= $row->GROUP_NAME;
         }
 
         return $group_name;
+
+    }
+
+
+    function get_livelihood_group_category_from_db($group_id)
+    {
+
+        #Obtaining the group type id
+        $this->db->select('TYPE');
+        $this->db->where('GROUP_ID', $group_id);
+        $this->db->limit(1);
+        $group_id_data = $this->db->get('GROUPS');
+
+        $group_type_id = '';
+        foreach ($group_id_data->result() as $row) {
+            $group_type_id .= $row->TYPE;
+        }
+
+        $group_type_name = '';
+
+        #Obtaining the group type name
+        $this->db->select('CATEGORYNAME');
+        $this->db->where('ID', $group_type_id);
+        $this->db->limit(1);
+        $group_type_data = $this->db->get('LIVELIHOODGROUPCATEGORIES');
+
+        foreach ($group_type_data->result() as $row) {
+            $group_type_name .= $row->CATEGORYNAME;
+        }
+
+
+        return $group_type_name;
 
     }
 
@@ -87,7 +121,7 @@ class Grouping_model extends CI_Model{
                 $group_id = $row->GROUP_ID;
                 $output .= '
                 
-                <tr title="' . $row->NAME . '">
+                <tr title="' . $row->GROUP_NAME . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px;" border="0" class="table">
@@ -97,7 +131,7 @@ class Grouping_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Name of the Group :</td>
-                                <td>' . $row->NAME . '</td>
+                                <td>' . $row->GROUP_NAME . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Project Category :</td>
@@ -140,7 +174,7 @@ class Grouping_model extends CI_Model{
         foreach ($data->result() as $row) {
             $output .= '
                 
-                <tr title="'.$row->NAME.'">
+                <tr title="' . $row->GROUP_NAME . '">
                     <td>
                     
                         <table id="group_support_table" style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered" id="group_support_records">
@@ -185,7 +219,7 @@ class Grouping_model extends CI_Model{
         foreach ($data->result() as $row) {
             $output .= '
                 
-                <tr title="' . $row->NAME . '">
+                <tr title="' . $row->GROUP_NAME . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered">
@@ -311,8 +345,12 @@ class Grouping_model extends CI_Model{
                 $output .= '<td id="realisation_date' . $row->ID . '">&nbsp;</td>';
                 $output .= '<td id="option-col<?php echo $id; ?>" style="white-space: nowrap;">
                                 <button class="btn btn-info btn-sm" type="button" id="editRow' . $row->ID . '"
-                                        onclick="editContent(' . $row->ID . ');"><i class="fa fa-edit"> Edit Outcome</i>
-                                </button>&nbsp;&nbsp;<button class="btn btn-success btn-sm" style="display: none;"
+                                        onclick="editContent(' . $row->ID . ');"><i class="fa fa-edit"> Edit Group Outcome</i>
+                                </button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-warning btn-sm" href="' . site_url('Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome/' . $row->BENEFICIARY . '/' . $row->TRACK_ID) . '"
+                                        <i class="fa fa-edit"> Edit Outcome Per Member</i>
+                                </a>
+                                &nbsp;&nbsp;<button class="btn btn-success btn-sm" style="display: none;"
                                                              type="button" id="saveRow' . $row->ID . '"
                                                              onclick="saveEditedContent(' . $row->ID . ');"><i
                                             class="fa fa-save"> Save</i></button>&nbsp;&nbsp;<a class="btn btn-danger btn-sm" href="' . base_url('delete_data/delete_row/SUPPORT_RENDERED/' . $row->ID) . '"><i class="fa fa-remove">
@@ -391,7 +429,7 @@ class Grouping_model extends CI_Model{
             $group_id = $row->GROUP_ID;
             $output .= '
                 
-                <tr title="' . $row->NAME . '">
+                <tr title="' . $row->GROUP_NAME . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px;" border="0" class="table">
@@ -401,7 +439,7 @@ class Grouping_model extends CI_Model{
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Name of the Group :</td>
-                                <td>' . $row->NAME . '</td>
+                                <td>' . $row->GROUP_NAME . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Project Category :</td>
@@ -441,7 +479,7 @@ class Grouping_model extends CI_Model{
         foreach ($data->result() as $row) {
             $output .= '
                 
-                <tr title="' . $row->NAME . '">
+                <tr title="' . $row->GROUP_NAME . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered">
@@ -484,7 +522,7 @@ class Grouping_model extends CI_Model{
         foreach ($data->result() as $row) {
             $output .= '
                 
-                <tr title="' . $row->NAME . '">
+                <tr title="' . $row->GROUP_NAME . '">
                     <td>
                     
                         <table style="width: 100%; font-size: 18px; border-collapse: collapse;" border="0" class="table table-bordered">
@@ -685,7 +723,7 @@ class Grouping_model extends CI_Model{
 
             $query = $this->db->or_where('TYPE', substr($item, 1));
         }
-        $query = $this->db->order_by('NAME', 'ASC');
+        $query = $this->db->order_by('GROUP_NAME', 'ASC');
         $query = $this->db->get('GROUPS');
 
         $output = '<select name="training_group_attendants" id="training_group_attendants" class="form-control" onchange="display_members(this.value);" required>
@@ -695,7 +733,7 @@ class Grouping_model extends CI_Model{
         $counter = 0;
         foreach ($query->result() as $row) {
             $output .= '
-                        <option value="' . $row->GROUP_ID . '">' . $row->NAME . '</option>
+                        <option value="' . $row->GROUP_ID . '">' . $row->GROUP_NAME . '</option>
                         ';
         }
         $output .= '</select>';
@@ -714,6 +752,16 @@ class Grouping_model extends CI_Model{
         } else {
             return false;
         }
+    }
+
+    function generate_track_id()
+    {
+        $TrackId_Digits = '0000000011111111222222223333333344444444555555566666666777777778888888899999999AAAAAAAABBBBBBBBCCCCCCCCDDDDDDDDEEEEEEEEFFFFFFFF';
+        $TrackId_Shuffled = str_shuffle($TrackId_Digits);
+        $TrackId = substr($TrackId_Shuffled, 0, 11);
+
+        return $TrackId;
+
     }
 
 

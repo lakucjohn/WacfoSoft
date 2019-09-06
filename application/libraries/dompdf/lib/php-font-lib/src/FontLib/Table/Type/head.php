@@ -7,8 +7,8 @@
  */
 
 namespace FontLib\Table\Type;
-use FontLib\Table\Table;
 use Exception;
+use FontLib\Table\Table;
 
 /**
  * `head` font table.

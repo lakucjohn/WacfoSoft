@@ -586,290 +586,212 @@ class CI_Upload {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Finalized Data Array
+     * Set an error message
 	 *
-	 * Returns an associative array containing all of the information
-	 * related to the upload, allowing the developer easy access in one array.
-	 *
-	 * @param	string	$index
-	 * @return	mixed
-	 */
-	public function data($index = NULL)
-	{
-		$data = array(
-				'file_name'		=> $this->file_name,
-				'file_type'		=> $this->file_type,
-				'file_path'		=> $this->upload_path,
-				'full_path'		=> $this->upload_path.$this->file_name,
-				'raw_name'		=> substr($this->file_name, 0, -strlen($this->file_ext)),
-				'orig_name'		=> $this->orig_name,
-				'client_name'		=> $this->client_name,
-				'file_ext'		=> $this->file_ext,
-				'file_size'		=> $this->file_size,
-				'is_image'		=> $this->is_image(),
-				'image_width'		=> $this->image_width,
-				'image_height'		=> $this->image_height,
-				'image_type'		=> $this->image_type,
-				'image_size_str'	=> $this->image_size_str,
-			);
-
-		if ( ! empty($index))
-		{
-			return isset($data[$index]) ? $data[$index] : NULL;
-		}
-
-		return $data;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Upload Path
-	 *
-	 * @param	string	$path
+     * @param    string $msg
 	 * @return	CI_Upload
 	 */
-	public function set_upload_path($path)
+    public function set_error($msg, $log_level = 'error')
 	{
-		// Make sure it has a trailing slash
-		$this->upload_path = rtrim($path, '/').'/';
+        $this->_CI->lang->load('upload');
+
+        is_array($msg) OR $msg = array($msg);
+        foreach ($msg as $val) {
+            $msg = ($this->_CI->lang->line($val) === FALSE) ? $val : $this->_CI->lang->line($val);
+            $this->error_msg[] = $msg;
+            log_message($log_level, $msg);
+        }
+
 		return $this;
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set the file name
+     * Validate Upload Path
 	 *
-	 * This function takes a filename/path as input and looks for the
-	 * existence of a file with the same name. If found, it will append a
-	 * number to the end of the filename to avoid overwriting a pre-existing file.
+     * Verifies that it is a valid upload path with proper permissions.
 	 *
-	 * @param	string	$path
+     * @return    bool
+     */
+    public function validate_upload_path()
+    {
+        if ($this->upload_path === '') {
+            $this->set_error('upload_no_filepath', 'error');
+            return FALSE;
+        }
+
+        if (realpath($this->upload_path) !== FALSE) {
+            $this->upload_path = str_replace('\\', '/', realpath($this->upload_path));
+        }
+
+        if (!is_dir($this->upload_path)) {
+            $this->set_error('upload_no_filepath', 'error');
+            return FALSE;
+        }
+
+        if (!is_really_writable($this->upload_path)) {
+            $this->set_error('upload_not_writable', 'error');
+            return FALSE;
+        }
+
+        $this->upload_path = preg_replace('/(.+?)\/*$/', '\\1/', $this->upload_path);
+        return TRUE;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * File MIME type
+     *
+     * Detects the (actual) MIME type of the uploaded file, if possible.
+     * The input array is expected to be $_FILES[$field]
+     *
+     * @param    array $file
+     * @return    void
+     */
+    protected function _file_mime_type($file)
+    {
+        // We'll need this to validate the MIME info string (e.g. text/plain; charset=us-ascii)
+        $regexp = '/^([a-z\-]+\/[a-z0-9\-\.\+]+)(;\s.+)?$/';
+
+        /**
+         * Fileinfo extension - most reliable method
+         *
+         * Apparently XAMPP, CentOS, cPanel and who knows what
+         * other PHP distribution channels EXPLICITLY DISABLE
+         * ext/fileinfo, which is otherwise enabled by default
+         * since PHP 5.3 ...
+         */
+        if (function_exists('finfo_file')) {
+            $finfo = @finfo_open(FILEINFO_MIME);
+            if (is_resource($finfo)) // It is possible that a FALSE value is returned, if there is no magic MIME database file found on the system
+            {
+                $mime = @finfo_file($finfo, $file['tmp_name']);
+                finfo_close($finfo);
+
+                /* According to the comments section of the PHP manual page,
+                 * it is possible that this function returns an empty string
+                 * for some files (e.g. if they don't exist in the magic MIME database)
+                 */
+                if (is_string($mime) && preg_match($regexp, $mime, $matches)) {
+                    $this->file_type = $matches[1];
+                    return;
+                }
+            }
+        }
+
+        /* This is an ugly hack, but UNIX-type systems provide a "native" way to detect the file type,
+         * which is still more secure than depending on the value of $_FILES[$field]['type'], and as it
+         * was reported in issue #750 (https://github.com/EllisLab/CodeIgniter/issues/750) - it's better
+         * than mime_content_type() as well, hence the attempts to try calling the command line with
+         * three different functions.
+         *
+         * Notes:
+         *	- the DIRECTORY_SEPARATOR comparison ensures that we're not on a Windows system
+         *	- many system admins would disable the exec(), shell_exec(), popen() and similar functions
+         *	  due to security concerns, hence the function_usable() checks
+         */
+        if (DIRECTORY_SEPARATOR !== '\\') {
+            $cmd = function_exists('escapeshellarg')
+                ? 'file --brief --mime ' . escapeshellarg($file['tmp_name']) . ' 2>&1'
+                : 'file --brief --mime ' . $file['tmp_name'] . ' 2>&1';
+
+            if (function_usable('exec')) {
+                /* This might look confusing, as $mime is being populated with all of the output when set in the second parameter.
+                 * However, we only need the last line, which is the actual return value of exec(), and as such - it overwrites
+                 * anything that could already be set for $mime previously. This effectively makes the second parameter a dummy
+                 * value, which is only put to allow us to get the return status code.
+                 */
+                $mime = @exec($cmd, $mime, $return_status);
+                if ($return_status === 0 && is_string($mime) && preg_match($regexp, $mime, $matches)) {
+                    $this->file_type = $matches[1];
+                    return;
+                }
+            }
+
+            if (!ini_get('safe_mode') && function_usable('shell_exec')) {
+                $mime = @shell_exec($cmd);
+                if (strlen($mime) > 0) {
+                    $mime = explode("\n", trim($mime));
+                    if (preg_match($regexp, $mime[(count($mime) - 1)], $matches)) {
+                        $this->file_type = $matches[1];
+                        return;
+                    }
+                }
+            }
+
+            if (function_usable('popen')) {
+                $proc = @popen($cmd, 'r');
+                if (is_resource($proc)) {
+                    $mime = @fread($proc, 512);
+                    @pclose($proc);
+                    if ($mime !== FALSE) {
+                        $mime = explode("\n", trim($mime));
+                        if (preg_match($regexp, $mime[(count($mime) - 1)], $matches)) {
+                            $this->file_type = $matches[1];
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fall back to mime_content_type(), if available (still better than $_FILES[$field]['type'])
+        if (function_exists('mime_content_type')) {
+            $this->file_type = @mime_content_type($file['tmp_name']);
+            if (strlen($this->file_type) > 0) // It's possible that mime_content_type() returns FALSE or an empty string
+            {
+                return;
+            }
+        }
+
+        $this->file_type = $file['type'];
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Prep Filename
+     *
+     * Prevents possible script execution from Apache's handling
+     * of files' multiple extensions.
+     *
+     * @link    http://httpd.apache.org/docs/1.3/mod/mod_mime.html#multipleext
+     *
 	 * @param	string	$filename
 	 * @return	string
 	 */
-	public function set_filename($path, $filename)
+    protected function _prep_filename($filename)
 	{
-		if ($this->encrypt_name === TRUE)
-		{
-			$filename = md5(uniqid(mt_rand())).$this->file_ext;
-		}
-
-		if ($this->overwrite === TRUE OR ! file_exists($path.$filename))
+        if ($this->mod_mime_fix === FALSE OR $this->allowed_types === '*' OR ($ext_pos = strrpos($filename, '.')) === FALSE)
 		{
 			return $filename;
 		}
 
-		$filename = str_replace($this->file_ext, '', $filename);
-
-		$new_filename = '';
-		for ($i = 1; $i < $this->max_filename_increment; $i++)
-		{
-			if ( ! file_exists($path.$filename.$i.$this->file_ext))
-			{
-				$new_filename = $filename.$i.$this->file_ext;
-				break;
-			}
-		}
-
-		if ($new_filename === '')
-		{
-			$this->set_error('upload_bad_filename', 'debug');
-			return FALSE;
-		}
-
-		return $new_filename;
+        $ext = substr($filename, $ext_pos);
+        $filename = substr($filename, 0, $ext_pos);
+        return str_replace('.', '_', $filename) . $ext;
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set Maximum File Size
+     * Extract the file extension
 	 *
-	 * @param	int	$n
-	 * @return	CI_Upload
+     * @param    string $filename
+     * @return    string
 	 */
-	public function set_max_filesize($n)
+    public function get_extension($filename)
 	{
-		$this->max_size = ($n < 0) ? 0 : (int) $n;
-		return $this;
-	}
+        $x = explode('.', $filename);
 
-	// --------------------------------------------------------------------
+        if (count($x) === 1) {
+            return '';
+        }
 
-	/**
-	 * Set Maximum File Size
-	 *
-	 * An internal alias to set_max_filesize() to help with configuration
-	 * as initialize() will look for a set_<property_name>() method ...
-	 *
-	 * @param	int	$n
-	 * @return	CI_Upload
-	 */
-	protected function set_max_size($n)
-	{
-		return $this->set_max_filesize($n);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Maximum File Name Length
-	 *
-	 * @param	int	$n
-	 * @return	CI_Upload
-	 */
-	public function set_max_filename($n)
-	{
-		$this->max_filename = ($n < 0) ? 0 : (int) $n;
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Maximum Image Width
-	 *
-	 * @param	int	$n
-	 * @return	CI_Upload
-	 */
-	public function set_max_width($n)
-	{
-		$this->max_width = ($n < 0) ? 0 : (int) $n;
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Maximum Image Height
-	 *
-	 * @param	int	$n
-	 * @return	CI_Upload
-	 */
-	public function set_max_height($n)
-	{
-		$this->max_height = ($n < 0) ? 0 : (int) $n;
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set minimum image width
-	 *
-	 * @param	int	$n
-	 * @return	CI_Upload
-	 */
-	public function set_min_width($n)
-	{
-		$this->min_width = ($n < 0) ? 0 : (int) $n;
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set minimum image height
-	 *
-	 * @param	int	$n
-	 * @return	CI_Upload
-	 */
-	public function set_min_height($n)
-	{
-		$this->min_height = ($n < 0) ? 0 : (int) $n;
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Allowed File Types
-	 *
-	 * @param	mixed	$types
-	 * @return	CI_Upload
-	 */
-	public function set_allowed_types($types)
-	{
-		$this->allowed_types = (is_array($types) OR $types === '*')
-			? $types
-			: explode('|', $types);
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Image Properties
-	 *
-	 * Uses GD to determine the width/height/type of image
-	 *
-	 * @param	string	$path
-	 * @return	CI_Upload
-	 */
-	public function set_image_properties($path = '')
-	{
-		if ($this->is_image() && function_exists('getimagesize'))
-		{
-			if (FALSE !== ($D = @getimagesize($path)))
-			{
-				$types = array(1 => 'gif', 2 => 'jpeg', 3 => 'png');
-
-				$this->image_width	= $D[0];
-				$this->image_height	= $D[1];
-				$this->image_type	= isset($types[$D[2]]) ? $types[$D[2]] : 'unknown';
-				$this->image_size_str	= $D[3]; // string containing height and width
-			}
-		}
-
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set XSS Clean
-	 *
-	 * Enables the XSS flag so that the file that was uploaded
-	 * will be run through the XSS filter.
-	 *
-	 * @param	bool	$flag
-	 * @return	CI_Upload
-	 */
-	public function set_xss_clean($flag = FALSE)
-	{
-		$this->xss_clean = ($flag === TRUE);
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Validate the image
-	 *
-	 * @return	bool
-	 */
-	public function is_image()
-	{
-		// IE will sometimes return odd mime-types during upload, so here we just standardize all
-		// jpegs or pngs to the same file type.
-
-		$png_mimes  = array('image/x-png');
-		$jpeg_mimes = array('image/jpg', 'image/jpe', 'image/jpeg', 'image/pjpeg');
-
-		if (in_array($this->file_type, $png_mimes))
-		{
-			$this->file_type = 'image/png';
-		}
-		elseif (in_array($this->file_type, $jpeg_mimes))
-		{
-			$this->file_type = 'image/jpeg';
-		}
-
-		$img_mimes = array('image/gif',	'image/jpeg', 'image/png');
-
-		return in_array($this->file_type, $img_mimes, TRUE);
+        $ext = ($this->file_ext_tolower) ? strtolower(end($x)) : end($x);
+        return '.' . $ext;
 	}
 
 	// --------------------------------------------------------------------
@@ -978,60 +900,29 @@ class CI_Upload {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Validate Upload Path
-	 *
-	 * Verifies that it is a valid upload path with proper permissions.
+     * Validate the image
 	 *
 	 * @return	bool
 	 */
-	public function validate_upload_path()
+    public function is_image()
 	{
-		if ($this->upload_path === '')
+        // IE will sometimes return odd mime-types during upload, so here we just standardize all
+        // jpegs or pngs to the same file type.
+
+        $png_mimes = array('image/x-png');
+        $jpeg_mimes = array('image/jpg', 'image/jpe', 'image/jpeg', 'image/pjpeg');
+
+        if (in_array($this->file_type, $png_mimes))
 		{
-			$this->set_error('upload_no_filepath', 'error');
-			return FALSE;
+            $this->file_type = 'image/png';
+		} elseif (in_array($this->file_type, $jpeg_mimes))
+		{
+            $this->file_type = 'image/jpeg';
 		}
 
-		if (realpath($this->upload_path) !== FALSE)
-		{
-			$this->upload_path = str_replace('\\', '/', realpath($this->upload_path));
-		}
+        $img_mimes = array('image/gif', 'image/jpeg', 'image/png');
 
-		if ( ! is_dir($this->upload_path))
-		{
-			$this->set_error('upload_no_filepath', 'error');
-			return FALSE;
-		}
-
-		if ( ! is_really_writable($this->upload_path))
-		{
-			$this->set_error('upload_not_writable', 'error');
-			return FALSE;
-		}
-
-		$this->upload_path = preg_replace('/(.+?)\/*$/', '\\1/',  $this->upload_path);
-		return TRUE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Extract the file extension
-	 *
-	 * @param	string	$filename
-	 * @return	string
-	 */
-	public function get_extension($filename)
-	{
-		$x = explode('.', $filename);
-
-		if (count($x) === 1)
-		{
-			return '';
-		}
-
-		$ext = ($this->file_ext_tolower) ? strtolower(end($x)) : end($x);
-		return '.'.$ext;
+        return in_array($this->file_type, $img_mimes, TRUE);
 	}
 
 	// --------------------------------------------------------------------
@@ -1062,6 +953,47 @@ class CI_Upload {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Set the file name
+     *
+     * This function takes a filename/path as input and looks for the
+     * existence of a file with the same name. If found, it will append a
+     * number to the end of the filename to avoid overwriting a pre-existing file.
+     *
+     * @param    string $path
+     * @param    string $filename
+     * @return    string
+     */
+    public function set_filename($path, $filename)
+    {
+        if ($this->encrypt_name === TRUE) {
+            $filename = md5(uniqid(mt_rand())) . $this->file_ext;
+        }
+
+        if ($this->overwrite === TRUE OR !file_exists($path . $filename)) {
+            return $filename;
+        }
+
+        $filename = str_replace($this->file_ext, '', $filename);
+
+        $new_filename = '';
+        for ($i = 1; $i < $this->max_filename_increment; $i++) {
+            if (!file_exists($path . $filename . $i . $this->file_ext)) {
+                $new_filename = $filename . $i . $this->file_ext;
+                break;
+            }
+        }
+
+        if ($new_filename === '') {
+            $this->set_error('upload_bad_filename', 'debug');
+            return FALSE;
+        }
+
+        return $new_filename;
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Runs the file through the XSS clean function
@@ -1141,27 +1073,186 @@ class CI_Upload {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set an error message
+     * Set Image Properties
 	 *
-	 * @param	string	$msg
+     * Uses GD to determine the width/height/type of image
+     *
+     * @param    string $path
 	 * @return	CI_Upload
 	 */
-	public function set_error($msg, $log_level = 'error')
+    public function set_image_properties($path = '')
 	{
-		$this->_CI->lang->load('upload');
-
-		is_array($msg) OR $msg = array($msg);
-		foreach ($msg as $val)
+        if ($this->is_image() && function_exists('getimagesize'))
 		{
-			$msg = ($this->_CI->lang->line($val) === FALSE) ? $val : $this->_CI->lang->line($val);
-			$this->error_msg[] = $msg;
-			log_message($log_level, $msg);
+            if (FALSE !== ($D = @getimagesize($path))) {
+                $types = array(1 => 'gif', 2 => 'jpeg', 3 => 'png');
+
+                $this->image_width = $D[0];
+                $this->image_height = $D[1];
+                $this->image_type = isset($types[$D[2]]) ? $types[$D[2]] : 'unknown';
+                $this->image_size_str = $D[3]; // string containing height and width
+            }
 		}
 
 		return $this;
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Finalized Data Array
+     *
+     * Returns an associative array containing all of the information
+     * related to the upload, allowing the developer easy access in one array.
+     *
+     * @param    string $index
+     * @return    mixed
+     */
+    public function data($index = NULL)
+    {
+        $data = array(
+            'file_name' => $this->file_name,
+            'file_type' => $this->file_type,
+            'file_path' => $this->upload_path,
+            'full_path' => $this->upload_path . $this->file_name,
+            'raw_name' => substr($this->file_name, 0, -strlen($this->file_ext)),
+            'orig_name' => $this->orig_name,
+            'client_name' => $this->client_name,
+            'file_ext' => $this->file_ext,
+            'file_size' => $this->file_size,
+            'is_image' => $this->is_image(),
+            'image_width' => $this->image_width,
+            'image_height' => $this->image_height,
+            'image_type' => $this->image_type,
+            'image_size_str' => $this->image_size_str,
+        );
+
+        if (!empty($index)) {
+            return isset($data[$index]) ? $data[$index] : NULL;
+        }
+
+        return $data;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set Upload Path
+     *
+     * @param    string $path
+     * @return    CI_Upload
+     */
+    public function set_upload_path($path)
+    {
+        // Make sure it has a trailing slash
+        $this->upload_path = rtrim($path, '/') . '/';
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set Maximum File Name Length
+     *
+     * @param    int $n
+     * @return    CI_Upload
+     */
+    public function set_max_filename($n)
+    {
+        $this->max_filename = ($n < 0) ? 0 : (int)$n;
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set Maximum Image Width
+     *
+     * @param    int $n
+     * @return    CI_Upload
+     */
+    public function set_max_width($n)
+    {
+        $this->max_width = ($n < 0) ? 0 : (int)$n;
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set Maximum Image Height
+     *
+     * @param    int $n
+     * @return    CI_Upload
+     */
+    public function set_max_height($n)
+    {
+        $this->max_height = ($n < 0) ? 0 : (int)$n;
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set minimum image width
+     *
+     * @param    int $n
+     * @return    CI_Upload
+     */
+    public function set_min_width($n)
+    {
+        $this->min_width = ($n < 0) ? 0 : (int)$n;
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set minimum image height
+     *
+     * @param    int $n
+     * @return    CI_Upload
+     */
+    public function set_min_height($n)
+    {
+        $this->min_height = ($n < 0) ? 0 : (int)$n;
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set Allowed File Types
+     *
+     * @param    mixed $types
+     * @return    CI_Upload
+     */
+    public function set_allowed_types($types)
+    {
+        $this->allowed_types = (is_array($types) OR $types === '*')
+            ? $types
+            : explode('|', $types);
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set XSS Clean
+     *
+     * Enables the XSS flag so that the file that was uploaded
+     * will be run through the XSS filter.
+     *
+     * @param    bool $flag
+     * @return    CI_Upload
+     */
+    public function set_xss_clean($flag = FALSE)
+    {
+        $this->xss_clean = ($flag === TRUE);
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Display the error message
@@ -1178,149 +1269,31 @@ class CI_Upload {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Prep Filename
+     * Set Maximum File Size
 	 *
-	 * Prevents possible script execution from Apache's handling
-	 * of files' multiple extensions.
+     * An internal alias to set_max_filesize() to help with configuration
+     * as initialize() will look for a set_<property_name>() method ...
 	 *
-	 * @link	http://httpd.apache.org/docs/1.3/mod/mod_mime.html#multipleext
-	 *
-	 * @param	string	$filename
-	 * @return	string
+     * @param    int $n
+     * @return    CI_Upload
 	 */
-	protected function _prep_filename($filename)
+    protected function set_max_size($n)
 	{
-		if ($this->mod_mime_fix === FALSE OR $this->allowed_types === '*' OR ($ext_pos = strrpos($filename, '.')) === FALSE)
-		{
-			return $filename;
-		}
-
-		$ext = substr($filename, $ext_pos);
-		$filename = substr($filename, 0, $ext_pos);
-		return str_replace('.', '_', $filename).$ext;
+        return $this->set_max_filesize($n);
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	 * File MIME type
+     * Set Maximum File Size
 	 *
-	 * Detects the (actual) MIME type of the uploaded file, if possible.
-	 * The input array is expected to be $_FILES[$field]
-	 *
-	 * @param	array	$file
-	 * @return	void
+     * @param    int $n
+     * @return    CI_Upload
 	 */
-	protected function _file_mime_type($file)
+    public function set_max_filesize($n)
 	{
-		// We'll need this to validate the MIME info string (e.g. text/plain; charset=us-ascii)
-		$regexp = '/^([a-z\-]+\/[a-z0-9\-\.\+]+)(;\s.+)?$/';
-
-		/**
-		 * Fileinfo extension - most reliable method
-		 *
-		 * Apparently XAMPP, CentOS, cPanel and who knows what
-		 * other PHP distribution channels EXPLICITLY DISABLE
-		 * ext/fileinfo, which is otherwise enabled by default
-		 * since PHP 5.3 ...
-		 */
-		if (function_exists('finfo_file'))
-		{
-			$finfo = @finfo_open(FILEINFO_MIME);
-			if (is_resource($finfo)) // It is possible that a FALSE value is returned, if there is no magic MIME database file found on the system
-			{
-				$mime = @finfo_file($finfo, $file['tmp_name']);
-				finfo_close($finfo);
-
-				/* According to the comments section of the PHP manual page,
-				 * it is possible that this function returns an empty string
-				 * for some files (e.g. if they don't exist in the magic MIME database)
-				 */
-				if (is_string($mime) && preg_match($regexp, $mime, $matches))
-				{
-					$this->file_type = $matches[1];
-					return;
-				}
-			}
-		}
-
-		/* This is an ugly hack, but UNIX-type systems provide a "native" way to detect the file type,
-		 * which is still more secure than depending on the value of $_FILES[$field]['type'], and as it
-		 * was reported in issue #750 (https://github.com/EllisLab/CodeIgniter/issues/750) - it's better
-		 * than mime_content_type() as well, hence the attempts to try calling the command line with
-		 * three different functions.
-		 *
-		 * Notes:
-		 *	- the DIRECTORY_SEPARATOR comparison ensures that we're not on a Windows system
-		 *	- many system admins would disable the exec(), shell_exec(), popen() and similar functions
-		 *	  due to security concerns, hence the function_usable() checks
-		 */
-		if (DIRECTORY_SEPARATOR !== '\\')
-		{
-			$cmd = function_exists('escapeshellarg')
-				? 'file --brief --mime '.escapeshellarg($file['tmp_name']).' 2>&1'
-				: 'file --brief --mime '.$file['tmp_name'].' 2>&1';
-
-			if (function_usable('exec'))
-			{
-				/* This might look confusing, as $mime is being populated with all of the output when set in the second parameter.
-				 * However, we only need the last line, which is the actual return value of exec(), and as such - it overwrites
-				 * anything that could already be set for $mime previously. This effectively makes the second parameter a dummy
-				 * value, which is only put to allow us to get the return status code.
-				 */
-				$mime = @exec($cmd, $mime, $return_status);
-				if ($return_status === 0 && is_string($mime) && preg_match($regexp, $mime, $matches))
-				{
-					$this->file_type = $matches[1];
-					return;
-				}
-			}
-
-			if ( ! ini_get('safe_mode') && function_usable('shell_exec'))
-			{
-				$mime = @shell_exec($cmd);
-				if (strlen($mime) > 0)
-				{
-					$mime = explode("\n", trim($mime));
-					if (preg_match($regexp, $mime[(count($mime) - 1)], $matches))
-					{
-						$this->file_type = $matches[1];
-						return;
-					}
-				}
-			}
-
-			if (function_usable('popen'))
-			{
-				$proc = @popen($cmd, 'r');
-				if (is_resource($proc))
-				{
-					$mime = @fread($proc, 512);
-					@pclose($proc);
-					if ($mime !== FALSE)
-					{
-						$mime = explode("\n", trim($mime));
-						if (preg_match($regexp, $mime[(count($mime) - 1)], $matches))
-						{
-							$this->file_type = $matches[1];
-							return;
-						}
-					}
-				}
-			}
-		}
-
-		// Fall back to mime_content_type(), if available (still better than $_FILES[$field]['type'])
-		if (function_exists('mime_content_type'))
-		{
-			$this->file_type = @mime_content_type($file['tmp_name']);
-			if (strlen($this->file_type) > 0) // It's possible that mime_content_type() returns FALSE or an empty string
-			{
-				return;
-			}
-		}
-
-		$this->file_type = $file['type'];
+        $this->max_size = ($n < 0) ? 0 : (int)$n;
+        return $this;
 	}
 
 }

@@ -8,8 +8,8 @@
 
 namespace Svg\Surface;
 
-use Svg\Style;
 use Svg\Document;
+use Svg\Style;
 
 class SurfacePDFLib implements SurfaceInterface
 {

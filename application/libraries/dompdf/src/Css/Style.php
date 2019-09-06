@@ -11,9 +11,9 @@ namespace Dompdf\Css;
 
 use Dompdf\Adapter\CPDF;
 use Dompdf\Exception;
-use Dompdf\Helpers;
 use Dompdf\FontMetrics;
 use Dompdf\Frame;
+use Dompdf\Helpers;
 
 /**
  * Represents CSS properties.
@@ -129,15 +129,17 @@ class Style
      * @var array<bool>
      */
     static protected $_methods_cache = array();
-
+    /**
+     * @var bool
+     */
+    public $_has_border_radius = false; // stylesheet this style is attached to
     /**
      * The stylesheet this style belongs to
      *
      * @see Stylesheet
      * @var Stylesheet
      */
-    protected $_stylesheet; // stylesheet this style is attached to
-
+    protected $_stylesheet;
     /**
      * Media queries attached to the style
      *
@@ -145,68 +147,54 @@ class Style
      */
     protected $_media_queries;
 
+    /* var instead of protected would allow access outside of class */
     /**
      * Main array of all CSS properties & values
      *
      * @var array
      */
     protected $_props;
-
-    /* var instead of protected would allow access outside of class */
     protected $_important_props;
-
     /**
      * Cached property values
      *
      * @var array
      */
-    protected $_prop_cache;
-
+    protected $_prop_cache; // Font size of parent element
     /**
      * Font size of parent element in document tree.  Used for relative font
      * size resolution.
      *
      * @var float
      */
-    protected $_parent_font_size; // Font size of parent element
-
+    protected $_parent_font_size;
     protected $_font_family;
-
     /**
      * @var Frame
      */
     protected $_frame;
 
+    // private members
     /**
      * The origin of the style
      *
      * @var int
      */
-    protected $_origin = Stylesheet::ORIG_AUTHOR;
-
-    // private members
+    protected $_origin = Stylesheet::ORIG_AUTHOR; // Cache flag
     /**
      * True once the font size is resolved absolutely
      *
      * @var bool
      */
-    private $__font_size_calculated; // Cache flag
-
+    private $__font_size_calculated;
     /**
      * The computed bottom spacing
      */
     private $_computed_bottom_spacing = null;
-
     /**
      * The computed border radius
      */
     private $_computed_border_radius = null;
-
-    /**
-     * @var bool
-     */
-    public $_has_border_radius = false;
-
     /**
      * @var FontMetrics
      */
@@ -432,14 +420,6 @@ class Style
     }
 
     /**
-     * @param $media_queries
-     */
-    function set_media_queries($media_queries)
-    {
-        $this->_media_queries = $media_queries;
-    }
-
-    /**
      * @return array|int
      */
     function get_media_queries()
@@ -448,11 +428,11 @@ class Style
     }
 
     /**
-     * @param Frame $frame
+     * @param $media_queries
      */
-    function set_frame(Frame $frame)
+    function set_media_queries($media_queries)
     {
-        $this->_frame = $frame;
+        $this->_media_queries = $media_queries;
     }
 
     /**
@@ -464,11 +444,11 @@ class Style
     }
 
     /**
-     * @param $origin
+     * @param Frame $frame
      */
-    function set_origin($origin)
+    function set_frame(Frame $frame)
     {
-        $this->_origin = $origin;
+        $this->_frame = $frame;
     }
 
     /**
@@ -480,6 +460,14 @@ class Style
     }
 
     /**
+     * @param $origin
+     */
+    function set_origin($origin)
+    {
+        $this->_origin = $origin;
+    }
+
+    /**
      * returns the {@link Stylesheet} this Style is associated with.
      *
      * @return Stylesheet
@@ -487,6 +475,122 @@ class Style
     function get_stylesheet()
     {
         return $this->_stylesheet;
+    }
+
+    /**
+     * Set inherited properties in this style using values in $parent
+     *
+     * @param Style $parent
+     *
+     * @return Style
+     */
+    function inherit(Style $parent)
+    {
+
+        // Set parent font size
+        $this->_parent_font_size = $parent->get_font_size();
+
+        foreach (self::$_inherited as $prop) {
+            //inherit the !important property also.
+            //if local property is also !important, don't inherit.
+            if (isset($parent->_props[$prop]) &&
+                (!isset($this->_props[$prop]) ||
+                    (isset($parent->_important_props[$prop]) && !isset($this->_important_props[$prop]))
+                )
+            ) {
+                if (isset($parent->_important_props[$prop])) {
+                    $this->_important_props[$prop] = true;
+                }
+                //see __set and __get, on all assignments clear cache!
+                $this->_prop_cache[$prop] = null;
+                $this->_props[$prop] = $parent->_props[$prop];
+            }
+        }
+
+        foreach ($this->_props as $prop => $value) {
+            if ($value === "inherit") {
+                if (isset($parent->_important_props[$prop])) {
+                    $this->_important_props[$prop] = true;
+                }
+                //do not assign direct, but
+                //implicite assignment through __set, redirect to specialized, get value with __get
+                //This is for computing defaults if the parent setting is also missing.
+                //Therefore do not directly assign the value without __set
+                //set _important_props before that to be able to propagate.
+                //see __set and __get, on all assignments clear cache!
+                //$this->_prop_cache[$prop] = null;
+                //$this->_props[$prop] = $parent->_props[$prop];
+                //props_set for more obvious explicite assignment not implemented, because
+                //too many implicite uses.
+                // $this->props_set($prop, $parent->$prop);
+                $this->__set($prop, $parent->__get($prop));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the resolved font size, in points
+     *
+     * @link http://www.w3.org/TR/CSS21/fonts.html#propdef-font-size
+     * @return float
+     */
+    function get_font_size()
+    {
+
+        if ($this->__font_size_calculated) {
+            return $this->_props["font_size"];
+        }
+
+        if (!isset($this->_props["font_size"])) {
+            $fs = self::$_defaults["font_size"];
+        } else {
+            $fs = $this->_props["font_size"];
+        }
+
+        if (!isset($this->_parent_font_size)) {
+            $this->_parent_font_size = self::$default_font_size;
+        }
+
+        switch ((string)$fs) {
+            case "xx-small":
+            case "x-small":
+            case "small":
+            case "medium":
+            case "large":
+            case "x-large":
+            case "xx-large":
+                $fs = self::$default_font_size * self::$font_size_keywords[$fs];
+                break;
+
+            case "smaller":
+                $fs = 8 / 9 * $this->_parent_font_size;
+                break;
+
+            case "larger":
+                $fs = 6 / 5 * $this->_parent_font_size;
+                break;
+
+            default:
+                break;
+        }
+
+        // Ensure relative sizes resolve to something
+        if (($i = mb_strpos($fs, "em")) !== false) {
+            $fs = (float)mb_substr($fs, 0, $i) * $this->_parent_font_size;
+        } else if (($i = mb_strpos($fs, "ex")) !== false) {
+            $fs = (float)mb_substr($fs, 0, $i) * $this->_parent_font_size;
+        } else {
+            $fs = (float)$this->length_in_pt($fs);
+        }
+
+        //see __set and __get, on all assignments clear cache!
+        $this->_prop_cache["font_size"] = null;
+        $this->_props["font_size"] = $fs;
+        $this->__font_size_calculated = true;
+        return $this->_props["font_size"];
+
     }
 
     /**
@@ -628,112 +732,45 @@ class Style
         return $cache[$key] = $ret;
     }
 
-
     /**
-     * Set inherited properties in this style using values in $parent
+     * PHP5 overloaded getter
+     * Along with {@link Style::__set()} __get() provides access to all CSS
+     * properties directly.  Typically __get() is not called directly outside
+     * of this class.
+     * On each modification clear cache to return accurate setting.
+     * Also affects direct settings not using __set
      *
-     * @param Style $parent
+     * @param string $prop
      *
-     * @return Style
+     * @throws Exception
+     * @return mixed
      */
-    function inherit(Style $parent)
+    function __get($prop)
     {
-
-        // Set parent font size
-        $this->_parent_font_size = $parent->get_font_size();
-
-        foreach (self::$_inherited as $prop) {
-            //inherit the !important property also.
-            //if local property is also !important, don't inherit.
-            if (isset($parent->_props[$prop]) &&
-                (!isset($this->_props[$prop]) ||
-                    (isset($parent->_important_props[$prop]) && !isset($this->_important_props[$prop]))
-                )
-            ) {
-                if (isset($parent->_important_props[$prop])) {
-                    $this->_important_props[$prop] = true;
-                }
-                //see __set and __get, on all assignments clear cache!
-                $this->_prop_cache[$prop] = null;
-                $this->_props[$prop] = $parent->_props[$prop];
-            }
+        if (!isset(self::$_defaults[$prop])) {
+            throw new Exception("'$prop' is not a valid CSS2 property.");
         }
 
-        foreach ($this->_props as $prop => $value) {
-            if ($value === "inherit") {
-                if (isset($parent->_important_props[$prop])) {
-                    $this->_important_props[$prop] = true;
-                }
-                //do not assign direct, but
-                //implicite assignment through __set, redirect to specialized, get value with __get
-                //This is for computing defaults if the parent setting is also missing.
-                //Therefore do not directly assign the value without __set
-                //set _important_props before that to be able to propagate.
-                //see __set and __get, on all assignments clear cache!
-                //$this->_prop_cache[$prop] = null;
-                //$this->_props[$prop] = $parent->_props[$prop];
-                //props_set for more obvious explicite assignment not implemented, because
-                //too many implicite uses.
-                // $this->props_set($prop, $parent->$prop);
-                $this->__set($prop, $parent->__get($prop));
-            }
+        if (isset($this->_prop_cache[$prop]) && $this->_prop_cache[$prop] != null) {
+            return $this->_prop_cache[$prop];
         }
 
-        return $this;
-    }
+        $method = "get_$prop";
 
-    /**
-     * Override properties in this style with those in $style
-     *
-     * @param Style $style
-     */
-    function merge(Style $style)
-    {
-        $shorthand_properties = array("background", "border", "border_bottom", "border_color", "border_left", "border_radius", "border_right", "border_style", "border_top", "border_width", "flex", "font", "list_style", "margin", "padding", "transform");
-        //treat the !important attribute
-        //if old rule has !important attribute, override with new rule only if
-        //the new rule is also !important
-        foreach ($style->_props as $prop => $val) {
-            $can_merge = false;
-            if (isset($style->_important_props[$prop])) {
-                $this->_important_props[$prop] = true;
-                $can_merge = true;
-            } else if (!isset($this->_important_props[$prop])) {
-                $can_merge = true;
-            }
-
-            if ($can_merge) {
-                //see __set and __get, on all assignments clear cache!
-                $this->_prop_cache[$prop] = null;
-                $this->_props[$prop] = $val;
-
-                // Clear out "inherit" shorthand properties if specific properties have been set
-                $shorthands = array_filter($shorthand_properties, function($el) use ($prop) {
-                    return ( strpos($prop, $el."_") !== false );
-                });
-                foreach ($shorthands as $shorthand) {
-                    if (array_key_exists($shorthand, $this->_props) && $this->_props[$shorthand] === "inherit") {
-                        unset($this->_props[$shorthand]);
-                    }
-                } 
-            }
+        // Fall back on defaults if property is not set
+        if (!isset($this->_props[$prop])) {
+            $this->_props[$prop] = self::$_defaults[$prop];
         }
 
-        if (isset($style->_props["font_size"])) {
-            $this->__font_size_calculated = false;
+        if (!isset(self::$_methods_cache[$method])) {
+            self::$_methods_cache[$method] = method_exists($this, $method);
         }
-    }
 
-    /**
-     * Returns an array(r, g, b, "r"=> r, "g"=>g, "b"=>b, "hex"=>"#rrggbb")
-     * based on the provided CSS color value.
-     *
-     * @param string $color
-     * @return array
-     */
-    function munge_color($color)
-    {
-        return Color::parse($color);
+        if (self::$_methods_cache[$method]) {
+            return $this->_prop_cache[$prop] = $this->$method();
+        }
+
+        return $this->_prop_cache[$prop] = $this->_props[$prop];
     }
 
     /* direct access to _important_props array from outside would work only when declared as
@@ -742,20 +779,6 @@ class Style
      * Assume that __set will be also called when this is called, so do not check validity again.
      * Only created, if !important exists -> always set true.
      */
-    function important_set($prop)
-    {
-        $prop = str_replace("-", "_", $prop);
-        $this->_important_props[$prop] = true;
-    }
-
-    /**
-     * @param $prop
-     * @return bool
-     */
-    function important_get($prop)
-    {
-        return isset($this->_important_props[$prop]);
-    }
 
     /**
      * PHP5 overloaded setter
@@ -814,44 +837,60 @@ class Style
     }
 
     /**
-     * PHP5 overloaded getter
-     * Along with {@link Style::__set()} __get() provides access to all CSS
-     * properties directly.  Typically __get() is not called directly outside
-     * of this class.
-     * On each modification clear cache to return accurate setting.
-     * Also affects direct settings not using __set
+     * Override properties in this style with those in $style
      *
-     * @param string $prop
-     *
-     * @throws Exception
-     * @return mixed
+     * @param Style $style
      */
-    function __get($prop)
+    function merge(Style $style)
     {
-        if (!isset(self::$_defaults[$prop])) {
-            throw new Exception("'$prop' is not a valid CSS2 property.");
+        $shorthand_properties = array("background", "border", "border_bottom", "border_color", "border_left", "border_radius", "border_right", "border_style", "border_top", "border_width", "flex", "font", "list_style", "margin", "padding", "transform");
+        //treat the !important attribute
+        //if old rule has !important attribute, override with new rule only if
+        //the new rule is also !important
+        foreach ($style->_props as $prop => $val) {
+            $can_merge = false;
+            if (isset($style->_important_props[$prop])) {
+                $this->_important_props[$prop] = true;
+                $can_merge = true;
+            } else if (!isset($this->_important_props[$prop])) {
+                $can_merge = true;
+            }
+
+            if ($can_merge) {
+                //see __set and __get, on all assignments clear cache!
+                $this->_prop_cache[$prop] = null;
+                $this->_props[$prop] = $val;
+
+                // Clear out "inherit" shorthand properties if specific properties have been set
+                $shorthands = array_filter($shorthand_properties, function ($el) use ($prop) {
+                    return (strpos($prop, $el . "_") !== false);
+                });
+                foreach ($shorthands as $shorthand) {
+                    if (array_key_exists($shorthand, $this->_props) && $this->_props[$shorthand] === "inherit") {
+                        unset($this->_props[$shorthand]);
+                    }
+                }
+            }
         }
 
-        if (isset($this->_prop_cache[$prop]) && $this->_prop_cache[$prop] != null) {
-            return $this->_prop_cache[$prop];
+        if (isset($style->_props["font_size"])) {
+            $this->__font_size_calculated = false;
         }
+    }
 
-        $method = "get_$prop";
+    function important_set($prop)
+    {
+        $prop = str_replace("-", "_", $prop);
+        $this->_important_props[$prop] = true;
+    }
 
-        // Fall back on defaults if property is not set
-        if (!isset($this->_props[$prop])) {
-            $this->_props[$prop] = self::$_defaults[$prop];
-        }
-
-        if (!isset(self::$_methods_cache[$method])) {
-            self::$_methods_cache[$method] = method_exists($this, $method);
-        }
-
-        if (self::$_methods_cache[$method]) {
-            return $this->_prop_cache[$prop] = $this->$method();
-        }
-
-        return $this->_prop_cache[$prop] = $this->_props[$prop];
+    /**
+     * @param $prop
+     * @return bool
+     */
+    function important_get($prop)
+    {
+        return isset($this->_important_props[$prop]);
     }
 
     /**
@@ -999,66 +1038,21 @@ class Style
     }
 
     /**
-     * Returns the resolved font size, in points
-     *
-     * @link http://www.w3.org/TR/CSS21/fonts.html#propdef-font-size
-     * @return float
+     * @return FontMetrics
      */
-    function get_font_size()
+    public function getFontMetrics()
     {
+        return $this->fontMetrics;
+    }
 
-        if ($this->__font_size_calculated) {
-            return $this->_props["font_size"];
-        }
-
-        if (!isset($this->_props["font_size"])) {
-            $fs = self::$_defaults["font_size"];
-        } else {
-            $fs = $this->_props["font_size"];
-        }
-
-        if (!isset($this->_parent_font_size)) {
-            $this->_parent_font_size = self::$default_font_size;
-        }
-
-        switch ((string)$fs) {
-            case "xx-small":
-            case "x-small":
-            case "small":
-            case "medium":
-            case "large":
-            case "x-large":
-            case "xx-large":
-                $fs = self::$default_font_size * self::$font_size_keywords[$fs];
-                break;
-
-            case "smaller":
-                $fs = 8 / 9 * $this->_parent_font_size;
-                break;
-
-            case "larger":
-                $fs = 6 / 5 * $this->_parent_font_size;
-                break;
-
-            default:
-                break;
-        }
-
-        // Ensure relative sizes resolve to something
-        if (($i = mb_strpos($fs, "em")) !== false) {
-            $fs = (float)mb_substr($fs, 0, $i) * $this->_parent_font_size;
-        } else if (($i = mb_strpos($fs, "ex")) !== false) {
-            $fs = (float)mb_substr($fs, 0, $i) * $this->_parent_font_size;
-        } else {
-            $fs = (float)$this->length_in_pt($fs);
-        }
-
-        //see __set and __get, on all assignments clear cache!
-        $this->_prop_cache["font_size"] = null;
-        $this->_props["font_size"] = $fs;
-        $this->__font_size_calculated = true;
-        return $this->_props["font_size"];
-
+    /**
+     * @param FontMetrics $fontMetrics
+     * @return $this
+     */
+    public function setFontMetrics(FontMetrics $fontMetrics)
+    {
+        $this->fontMetrics = $fontMetrics;
+        return $this;
     }
 
     /**
@@ -1121,6 +1115,18 @@ class Style
     function get_color()
     {
         return $this->munge_color($this->_props["color"]);
+    }
+
+    /**
+     * Returns an array(r, g, b, "r"=> r, "g"=>g, "b"=>b, "hex"=>"#rrggbb")
+     * based on the provided CSS color value.
+     *
+     * @param string $color
+     * @return array
+     */
+    function munge_color($color)
+    {
+        return Color::parse($color);
     }
 
     /**
@@ -1224,7 +1230,6 @@ class Style
         );
     }
 
-
     /**
      * Returns the background as it is currently stored
      *
@@ -1238,7 +1243,6 @@ class Style
     {
         return $this->_props["background_attachment"];
     }
-
 
     /**
      * Returns the background_repeat as it is currently stored
@@ -1254,7 +1258,6 @@ class Style
         return $this->_props["background_repeat"];
     }
 
-
     /**
      * Returns the background as it is currently stored
      *
@@ -1268,7 +1271,6 @@ class Style
     {
         return $this->_props["background"];
     }
-
 
     /**#@+
      * Returns the border color as an array
@@ -1303,6 +1305,8 @@ class Style
         return $this->munge_color($this->_props["border_right_color"]);
     }
 
+    /**#@-*/
+
     /**
      * @return array
      */
@@ -1331,8 +1335,6 @@ class Style
         return $this->munge_color($this->_props["border_left_color"]);
     }
 
-    /**#@-*/
-
     /**#@+
      * Returns the border width, as it is currently stored
      *
@@ -1353,6 +1355,7 @@ class Style
         $style = $this->__get("border_right_style");
         return $style !== "none" && $style !== "hidden" ? $this->length_in_pt($this->_props["border_right_width"]) : 0;
     }
+    /**#@-*/
 
     /**
      * @return float|int|string
@@ -1371,7 +1374,6 @@ class Style
         $style = $this->__get("border_left_style");
         return $style !== "none" && $style !== "hidden" ? $this->length_in_pt($this->_props["border_left_width"]) : 0;
     }
-    /**#@-*/
 
     /**
      * Return an array of all border properties.
@@ -1412,21 +1414,6 @@ class Style
         );
     }
 
-    /**
-     * Return a single border property
-     *
-     * @param string $side
-     *
-     * @return mixed
-     */
-    protected function _get_border($side)
-    {
-        $color = $this->__get("border_" . $side . "_color");
-
-        return $this->__get("border_" . $side . "_width") . " " .
-        $this->__get("border_" . $side . "_style") . " " . $color["hex"];
-    }
-
     /**#@+
      * Return full border properties as a string
      *
@@ -1440,6 +1427,21 @@ class Style
     function get_border_top()
     {
         return $this->_get_border("top");
+    }
+
+    /**
+     * Return a single border property
+     *
+     * @param string $side
+     *
+     * @return mixed
+     */
+    protected function _get_border($side)
+    {
+        $color = $this->__get("border_" . $side . "_color");
+
+        return $this->__get("border_" . $side . "_width") . " " .
+            $this->__get("border_" . $side . "_style") . " " . $color["hex"];
     }
 
     /**
@@ -1531,6 +1533,7 @@ class Style
 
         return $this->munge_color($this->_props["outline_color"]);
     }
+    /**#@-*/
 
     /**#@+
      * Returns the outline width, as it is currently stored
@@ -1540,43 +1543,6 @@ class Style
     {
         $style = $this->__get("outline_style");
         return $style !== "none" && $style !== "hidden" ? $this->length_in_pt($this->_props["outline_width"]) : 0;
-    }
-
-    /**#@+
-     * Return full outline properties as a string
-     *
-     * Outline properties are returned just as specified in CSS:
-     * <pre>[width] [style] [color]</pre>
-     * e.g. "1px solid blue"
-     *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-shorthand-properties
-     * @return string
-     */
-    function get_outline()
-    {
-        $color = $this->__get("outline_color");
-        return
-            $this->__get("outline_width") . " " .
-            $this->__get("outline_style") . " " .
-            $color["hex"];
-    }
-    /**#@-*/
-
-    /**
-     * Returns border spacing as an array
-     *
-     * The array has the format (h_space,v_space)
-     *
-     * @link http://www.w3.org/TR/CSS21/tables.html#propdef-border-spacing
-     * @return array
-     */
-    function get_border_spacing()
-    {
-        $arr = explode(" ", $this->_props["border_spacing"]);
-        if (count($arr) == 1) {
-            $arr[1] = $arr[0];
-        }
-        return $arr;
     }
 
     /*==============================*/
@@ -1623,175 +1589,41 @@ class Style
      Related functionality for background, padding, margin, font, list_style
     */
 
-    /**
-     * Generalized set function for individual attribute of combined style.
-     * With check for !important
-     * Applicable for background, border, padding, margin, font, list_style
+    /**#@+
+     * Return full outline properties as a string
      *
-     * Note: $type has a leading underscore (or is empty), the others not.
+     * Outline properties are returned just as specified in CSS:
+     * <pre>[width] [style] [color]</pre>
+     * e.g. "1px solid blue"
      *
-     * @param $style
-     * @param $side
-     * @param $type
-     * @param $val
-     * @param $important
-     */
-    protected function _set_style_side_type($style, $side, $type, $val, $important)
-    {
-        $prop = $style . '_' . $side . $type;
-
-        if (!isset($this->_important_props[$prop]) || $important) {
-            if ($side === "bottom") {
-                $this->_computed_bottom_spacing = null; //reset computed cache, border style can disable/enable border calculations
-            }
-            //see __set and __get, on all assignments clear cache!
-            $this->_prop_cache[$prop] = null;
-            if ($important) {
-                $this->_important_props[$prop] = true;
-            }
-            $this->_props[$prop] = $val;
-        }
-    }
-
-    /**
-     * @param $style
-     * @param $top
-     * @param $right
-     * @param $bottom
-     * @param $left
-     * @param $type
-     * @param $important
-     */
-    protected function _set_style_sides_type($style, $top, $right, $bottom, $left, $type, $important)
-    {
-        $this->_set_style_side_type($style, 'top', $type, $top, $important);
-        $this->_set_style_side_type($style, 'right', $type, $right, $important);
-        $this->_set_style_side_type($style, 'bottom', $type, $bottom, $important);
-        $this->_set_style_side_type($style, 'left', $type, $left, $important);
-    }
-
-    /**
-     * @param $style
-     * @param $type
-     * @param $val
-     * @param $important
-     */
-    protected function _set_style_type($style, $type, $val, $important)
-    {
-        $val = preg_replace("/\s*\,\s*/", ",", $val); // when rgb() has spaces
-        $arr = explode(" ", $val);
-
-        switch (count($arr)) {
-            case 1:
-                $this->_set_style_sides_type($style, $arr[0], $arr[0], $arr[0], $arr[0], $type, $important);
-                break;
-            case 2:
-                $this->_set_style_sides_type($style, $arr[0], $arr[1], $arr[0], $arr[1], $type, $important);
-                break;
-            case 3:
-                $this->_set_style_sides_type($style, $arr[0], $arr[1], $arr[2], $arr[1], $type, $important);
-                break;
-            case 4:
-                $this->_set_style_sides_type($style, $arr[0], $arr[1], $arr[2], $arr[3], $type, $important);
-                break;
-        }
-
-        //see __set and __get, on all assignments clear cache!
-        $this->_prop_cache[$style . $type] = null;
-        $this->_props[$style . $type] = $val;
-    }
-
-    /**
-     * @param $style
-     * @param $type
-     * @param $val
-     */
-    protected function _set_style_type_important($style, $type, $val)
-    {
-        $this->_set_style_type($style, $type, $val, isset($this->_important_props[$style . $type]));
-    }
-
-    /**
-     * Anyway only called if _important matches and is assigned
-     * E.g. _set_style_side_type($style,$side,'',str_replace("none", "0px", $val),isset($this->_important_props[$style.'_'.$side]));
-     *
-     * @param $style
-     * @param $side
-     * @param $val
-     */
-    protected function _set_style_side_width_important($style, $side, $val)
-    {
-        if ($side === "bottom") {
-            $this->_computed_bottom_spacing = null; //reset cache for any bottom width changes
-        }
-        //see __set and __get, on all assignments clear cache!
-        $this->_prop_cache[$style . '_' . $side] = null;
-        $this->_props[$style . '_' . $side] = str_replace("none", "0px", $val);
-    }
-
-    /**
-     * @param $style
-     * @param $val
-     * @param $important
-     */
-    protected function _set_style($style, $val, $important)
-    {
-        if (!isset($this->_important_props[$style]) || $important) {
-            if ($important) {
-                $this->_important_props[$style] = true;
-            }
-            //see __set and __get, on all assignments clear cache!
-            $this->_prop_cache[$style] = null;
-            $this->_props[$style] = $val;
-        }
-    }
-
-    /**
-     * @param $val
+     * @link http://www.w3.org/TR/CSS21/box.html#border-shorthand-properties
      * @return string
      */
-    protected function _image($val)
+    function get_outline()
     {
-        $DEBUGCSS = $this->_stylesheet->get_dompdf()->getOptions()->getDebugCss();
-        $parsed_url = "none";
-
-        if (mb_strpos($val, "url") === false) {
-            $path = "none"; //Don't resolve no image -> otherwise would prefix path and no longer recognize as none
-        } else {
-            $val = preg_replace("/url\(\s*['\"]?([^'\")]+)['\"]?\s*\)/", "\\1", trim($val));
-
-            // Resolve the url now in the context of the current stylesheet
-            $parsed_url = Helpers::explode_url($val);
-            if ($parsed_url["protocol"] == "" && $this->_stylesheet->get_protocol() == "") {
-                if ($parsed_url["path"][0] === '/' || $parsed_url["path"][0] === '\\') {
-                    $path = $_SERVER["DOCUMENT_ROOT"] . '/';
-                } else {
-                    $path = $this->_stylesheet->get_base_path();
-                }
-
-                $path .= $parsed_url["path"] . $parsed_url["file"];
-                $path = realpath($path);
-                // If realpath returns FALSE then specifically state that there is no background image
-                if (!$path) {
-                    $path = 'none';
-                }
-            } else {
-                $path = Helpers::build_url($this->_stylesheet->get_protocol(),
-                    $this->_stylesheet->get_host(),
-                    $this->_stylesheet->get_base_path(),
-                    $val);
-            }
-        }
-        if ($DEBUGCSS) {
-            print "<pre>[_image\n";
-            print_r($parsed_url);
-            print $this->_stylesheet->get_protocol() . "\n" . $this->_stylesheet->get_base_path() . "\n" . $path . "\n";
-            print "_image]</pre>";;
-        }
-        return $path;
+        $color = $this->__get("outline_color");
+        return
+            $this->__get("outline_width") . " " .
+            $this->__get("outline_style") . " " .
+            $color["hex"];
     }
 
-    /*======================*/
+    /**
+     * Returns border spacing as an array
+     *
+     * The array has the format (h_space,v_space)
+     *
+     * @link http://www.w3.org/TR/CSS21/tables.html#propdef-border-spacing
+     * @return array
+     */
+    function get_border_spacing()
+    {
+        $arr = explode(" ", $this->_props["border_spacing"]);
+        if (count($arr) == 1) {
+            $arr[1] = $arr[0];
+        }
+        return $arr;
+    }
 
     /**
      * Sets color
@@ -1850,6 +1682,51 @@ class Style
     }
 
     /**
+     * @param $val
+     * @return string
+     */
+    protected function _image($val)
+    {
+        $DEBUGCSS = $this->_stylesheet->get_dompdf()->getOptions()->getDebugCss();
+        $parsed_url = "none";
+
+        if (mb_strpos($val, "url") === false) {
+            $path = "none"; //Don't resolve no image -> otherwise would prefix path and no longer recognize as none
+        } else {
+            $val = preg_replace("/url\(\s*['\"]?([^'\")]+)['\"]?\s*\)/", "\\1", trim($val));
+
+            // Resolve the url now in the context of the current stylesheet
+            $parsed_url = Helpers::explode_url($val);
+            if ($parsed_url["protocol"] == "" && $this->_stylesheet->get_protocol() == "") {
+                if ($parsed_url["path"][0] === '/' || $parsed_url["path"][0] === '\\') {
+                    $path = $_SERVER["DOCUMENT_ROOT"] . '/';
+                } else {
+                    $path = $this->_stylesheet->get_base_path();
+                }
+
+                $path .= $parsed_url["path"] . $parsed_url["file"];
+                $path = realpath($path);
+                // If realpath returns FALSE then specifically state that there is no background image
+                if (!$path) {
+                    $path = 'none';
+                }
+            } else {
+                $path = Helpers::build_url($this->_stylesheet->get_protocol(),
+                    $this->_stylesheet->get_host(),
+                    $this->_stylesheet->get_base_path(),
+                    $val);
+            }
+        }
+        if ($DEBUGCSS) {
+            print "<pre>[_image\n";
+            print_r($parsed_url);
+            print $this->_stylesheet->get_protocol() . "\n" . $this->_stylesheet->get_base_path() . "\n" . $path . "\n";
+            print "_image]</pre>";;
+        }
+        return $path;
+    }
+
+    /**
      * Sets the background repeat
      *
      * @link http://www.w3.org/TR/CSS21/colors.html#propdef-background-repeat
@@ -1865,6 +1742,8 @@ class Style
         $this->_prop_cache["background_repeat"] = null;
         $this->_props["background_repeat"] = $val;
     }
+
+    /*======================*/
 
     /**
      * Sets the background attachment
@@ -1941,6 +1820,23 @@ class Style
         //see __set and __get, on all assignments clear cache, not needed on direct set through __set
         $this->_prop_cache["background"] = null;
         $this->_props["background"] = $val;
+    }
+
+    /**
+     * @param $style
+     * @param $val
+     * @param $important
+     */
+    protected function _set_style($style, $val, $important)
+    {
+        if (!isset($this->_important_props[$style]) || $important) {
+            if ($important) {
+                $this->_important_props[$style] = true;
+            }
+            //see __set and __get, on all assignments clear cache!
+            $this->_prop_cache[$style] = null;
+            $this->_props[$style] = $val;
+        }
     }
 
     /**
@@ -2080,6 +1976,24 @@ class Style
     }
 
     /**
+     * Anyway only called if _important matches and is assigned
+     * E.g. _set_style_side_type($style,$side,'',str_replace("none", "0px", $val),isset($this->_important_props[$style.'_'.$side]));
+     *
+     * @param $style
+     * @param $side
+     * @param $val
+     */
+    protected function _set_style_side_width_important($style, $side, $val)
+    {
+        if ($side === "bottom") {
+            $this->_computed_bottom_spacing = null; //reset cache for any bottom width changes
+        }
+        //see __set and __get, on all assignments clear cache!
+        $this->_prop_cache[$style . '_' . $side] = null;
+        $this->_props[$style . '_' . $side] = str_replace("none", "0px", $val);
+    }
+
+    /**
      * @param $val
      */
     function set_margin_right($val)
@@ -2113,6 +2027,94 @@ class Style
     }
 
     /**
+     * @param $style
+     * @param $type
+     * @param $val
+     */
+    protected function _set_style_type_important($style, $type, $val)
+    {
+        $this->_set_style_type($style, $type, $val, isset($this->_important_props[$style . $type]));
+    }
+
+    /**
+     * @param $style
+     * @param $type
+     * @param $val
+     * @param $important
+     */
+    protected function _set_style_type($style, $type, $val, $important)
+    {
+        $val = preg_replace("/\s*\,\s*/", ",", $val); // when rgb() has spaces
+        $arr = explode(" ", $val);
+
+        switch (count($arr)) {
+            case 1:
+                $this->_set_style_sides_type($style, $arr[0], $arr[0], $arr[0], $arr[0], $type, $important);
+                break;
+            case 2:
+                $this->_set_style_sides_type($style, $arr[0], $arr[1], $arr[0], $arr[1], $type, $important);
+                break;
+            case 3:
+                $this->_set_style_sides_type($style, $arr[0], $arr[1], $arr[2], $arr[1], $type, $important);
+                break;
+            case 4:
+                $this->_set_style_sides_type($style, $arr[0], $arr[1], $arr[2], $arr[3], $type, $important);
+                break;
+        }
+
+        //see __set and __get, on all assignments clear cache!
+        $this->_prop_cache[$style . $type] = null;
+        $this->_props[$style . $type] = $val;
+    }
+
+    /**
+     * @param $style
+     * @param $top
+     * @param $right
+     * @param $bottom
+     * @param $left
+     * @param $type
+     * @param $important
+     */
+    protected function _set_style_sides_type($style, $top, $right, $bottom, $left, $type, $important)
+    {
+        $this->_set_style_side_type($style, 'top', $type, $top, $important);
+        $this->_set_style_side_type($style, 'right', $type, $right, $important);
+        $this->_set_style_side_type($style, 'bottom', $type, $bottom, $important);
+        $this->_set_style_side_type($style, 'left', $type, $left, $important);
+    }
+
+    /**
+     * Generalized set function for individual attribute of combined style.
+     * With check for !important
+     * Applicable for background, border, padding, margin, font, list_style
+     *
+     * Note: $type has a leading underscore (or is empty), the others not.
+     *
+     * @param $style
+     * @param $side
+     * @param $type
+     * @param $val
+     * @param $important
+     */
+    protected function _set_style_side_type($style, $side, $type, $val, $important)
+    {
+        $prop = $style . '_' . $side . $type;
+
+        if (!isset($this->_important_props[$prop]) || $important) {
+            if ($side === "bottom") {
+                $this->_computed_bottom_spacing = null; //reset computed cache, border style can disable/enable border calculations
+            }
+            //see __set and __get, on all assignments clear cache!
+            $this->_prop_cache[$prop] = null;
+            if ($important) {
+                $this->_important_props[$prop] = true;
+            }
+            $this->_props[$prop] = $val;
+        }
+    }
+
+    /**
      * Sets the padding size
      *
      * @link http://www.w3.org/TR/CSS21/box.html#padding-properties
@@ -2138,6 +2140,7 @@ class Style
     {
         $this->_set_style_side_width_important('padding', 'bottom', $val);
     }
+    /**#@-*/
 
     /**
      * @param $val
@@ -2155,7 +2158,17 @@ class Style
         $val = str_replace("none", "0px", $val);
         $this->_set_style_type_important('padding', '', $val);
     }
-    /**#@-*/
+
+    /**
+     * Sets the border styles
+     *
+     * @link http://www.w3.org/TR/CSS21/box.html#border-properties
+     * @param string $val
+     */
+    function set_border_top($val)
+    {
+        $this->_set_border("top", $val, isset($this->_important_props['border_top']));
+    }
 
     /**
      * Sets a single border
@@ -2193,17 +2206,6 @@ class Style
         //see __set and __get, on all assignments clear cache!
         $this->_prop_cache['border_' . $side] = null;
         $this->_props['border_' . $side] = $border_spec;
-    }
-
-    /**
-     * Sets the border styles
-     *
-     * @link http://www.w3.org/TR/CSS21/box.html#border-properties
-     * @param string $val
-     */
-    function set_border_top($val)
-    {
-        $this->_set_border("top", $val, isset($this->_important_props['border_top']));
     }
 
     /**
@@ -2283,6 +2285,20 @@ class Style
 
     /**
      * @param $val
+     * @param $corner
+     */
+    protected function _set_border_radius_corner($val, $corner)
+    {
+        $this->_has_border_radius = true;
+
+        //see __set and __get, on all assignments clear cache!
+        $this->_prop_cache["border_" . $corner . "_radius"] = null;
+
+        $this->_props["border_" . $corner . "_radius"] = $val;
+    }
+
+    /**
+     * @param $val
      */
     function set_border_top_right_radius($val)
     {
@@ -2344,25 +2360,24 @@ class Style
     }
 
     /**
-     * @param $val
-     * @param $corner
-     */
-    protected function _set_border_radius_corner($val, $corner)
-    {
-        $this->_has_border_radius = true;
-
-        //see __set and __get, on all assignments clear cache!
-        $this->_prop_cache["border_" . $corner . "_radius"] = null;
-
-        $this->_props["border_" . $corner . "_radius"] = $val;
-    }
-
-    /**
      * @return float|int|string
      */
     function get_border_top_left_radius()
     {
         return $this->_get_border_radius_corner("top_left");
+    }
+
+    /**
+     * @param $corner
+     * @return float|int|string
+     */
+    protected function _get_border_radius_corner($corner)
+    {
+        if (!isset($this->_props["border_" . $corner . "_radius"]) || empty($this->_props["border_" . $corner . "_radius"])) {
+            return 0;
+        }
+
+        return $this->length_in_pt($this->_props["border_" . $corner . "_radius"]);
     }
 
     /**
@@ -2387,19 +2402,6 @@ class Style
     function get_border_bottom_right_radius()
     {
         return $this->_get_border_radius_corner("bottom_right");
-    }
-
-    /**
-     * @param $corner
-     * @return float|int|string
-     */
-    protected function _get_border_radius_corner($corner)
-    {
-        if (!isset($this->_props["border_" . $corner . "_radius"]) || empty($this->_props["border_" . $corner . "_radius"])) {
-            return 0;
-        }
-
-        return $this->length_in_pt($this->_props["border_" . $corner . "_radius"]);
     }
 
     /**
@@ -2454,6 +2456,14 @@ class Style
     /**
      * @param $val
      */
+    function set_outline_style($val)
+    {
+        $this->_set_style_type_important('outline', '_style', $val);
+    }
+
+    /**
+     * @param $val
+     */
     function set_outline_width($val)
     {
         $this->_set_style_type_important('outline', '_width', $val);
@@ -2465,14 +2475,6 @@ class Style
     function set_outline_color($val)
     {
         $this->_set_style_type_important('outline', '_color', $val);
-    }
-
-    /**
-     * @param $val
-     */
-    function set_outline_style($val)
-    {
-        $this->_set_style_type_important('outline', '_style', $val);
     }
 
     /**
@@ -2733,19 +2735,19 @@ class Style
     /**
      * @param $val
      */
-    function set_transform($val)
+    function set__webkit_transform($val)
     {
-        //see __set and __get, on all assignments clear cache, not needed on direct set through __set
-        $this->_prop_cache["transform"] = null;
-        $this->_props["transform"] = $val;
+        $this->set_transform($val);
     }
 
     /**
      * @param $val
      */
-    function set__webkit_transform($val)
+    function set_transform($val)
     {
-        $this->set_transform($val);
+        //see __set and __get, on all assignments clear cache, not needed on direct set through __set
+        $this->_prop_cache["transform"] = null;
+        $this->_props["transform"] = $val;
     }
 
     /**
@@ -2801,6 +2803,27 @@ class Style
 
     /**
      * @param $val
+     */
+    function set__dompdf_background_image_resolution($val)
+    {
+        $this->set_background_image_resolution($val);
+    }
+
+    /**
+     * auto | normal | dpi
+     *
+     * @param $val
+     */
+    function set_background_image_resolution($val)
+    {
+        $parsed = $this->parse_image_resolution($val);
+
+        $this->_prop_cache["background_image_resolution"] = null;
+        $this->_props["background_image_resolution"] = $parsed;
+    }
+
+    /**
+     * @param $val
      * @return null
      */
     protected function parse_image_resolution($val)
@@ -2818,16 +2841,11 @@ class Style
     }
 
     /**
-     * auto | normal | dpi
-     *
      * @param $val
      */
-    function set_background_image_resolution($val)
+    function set__dompdf_image_resolution($val)
     {
-        $parsed = $this->parse_image_resolution($val);
-
-        $this->_prop_cache["background_image_resolution"] = null;
-        $this->_props["background_image_resolution"] = $parsed;
+        $this->set_image_resolution($val);
     }
 
     /**
@@ -2841,22 +2859,6 @@ class Style
 
         $this->_prop_cache["image_resolution"] = null;
         $this->_props["image_resolution"] = $parsed;
-    }
-
-    /**
-     * @param $val
-     */
-    function set__dompdf_background_image_resolution($val)
-    {
-        $this->set_background_image_resolution($val);
-    }
-
-    /**
-     * @param $val
-     */
-    function set__dompdf_image_resolution($val)
-    {
-        $this->set_image_resolution($val);
     }
 
     /**
@@ -2896,24 +2898,6 @@ class Style
     }
 
     /**
-     * @param FontMetrics $fontMetrics
-     * @return $this
-     */
-    public function setFontMetrics(FontMetrics $fontMetrics)
-    {
-        $this->fontMetrics = $fontMetrics;
-        return $this;
-    }
-
-    /**
-     * @return FontMetrics
-     */
-    public function getFontMetrics()
-    {
-        return $this->fontMetrics;
-    }
-
-    /**
      * Generate a string representation of the Style
      *
      * This dumps the entire property array into a string via print_r.  Useful
@@ -2922,6 +2906,7 @@ class Style
      * @return string
      */
     /*DEBUGCSS print: see below additional debugging util*/
+
     function __toString()
     {
         return print_r(array_merge(array("parent_font_size" => $this->_parent_font_size),

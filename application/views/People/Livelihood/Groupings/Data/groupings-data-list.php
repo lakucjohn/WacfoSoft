@@ -35,7 +35,8 @@ if(isset($group_list)){
             <i class="fa fa-table"></i> List of all Livelihood Groups</div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: 12px;">
+                <table class="table table-bordered js-exportable" id="dataTable" width="100%" cellspacing="0"
+                       style="font-size: 12px;">
                     <thead>
                     <tr>
                         <th>Group Id</th>
@@ -53,7 +54,7 @@ if(isset($group_list)){
                             echo '
                                 <tr title="'.$row -> GROUP_ID.'" style="white-space: nowrap;">
                                     <td>'.$row -> GROUP_ID.'</td>
-                                    <td>'.$row -> NAME.'</td>
+                                    <td>' . $row->GROUP_NAME . '</td>
                                     <td>
                                     ';
 

@@ -190,97 +190,6 @@ class CI_DB_postgre_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set client character set
-	 *
-	 * @param	string	$charset
-	 * @return	bool
-	 */
-	protected function _db_set_charset($charset)
-	{
-		return (pg_set_client_encoding($this->conn_id, $charset) === 0);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Database version number
-	 *
-	 * @return	string
-	 */
-	public function version()
-	{
-		if (isset($this->data_cache['version']))
-		{
-			return $this->data_cache['version'];
-		}
-
-		if ( ! $this->conn_id OR ($pg_version = pg_version($this->conn_id)) === FALSE)
-		{
-			return FALSE;
-		}
-
-		/* If PHP was compiled with PostgreSQL lib versions earlier
-		 * than 7.4, pg_version() won't return the server version
-		 * and so we'll have to fall back to running a query in
-		 * order to get it.
-		 */
-		return (isset($pg_version['server']) && preg_match('#^(\d+\.\d+)#', $pg_version['server'], $match))
-			? $this->data_cache['version'] = $match[1]
-			: parent::version();
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Execute the query
-	 *
-	 * @param	string	$sql	an SQL query
-	 * @return	resource
-	 */
-	protected function _execute($sql)
-	{
-		return pg_query($this->conn_id, $sql);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Begin Transaction
-	 *
-	 * @return	bool
-	 */
-	protected function _trans_begin()
-	{
-		return (bool) pg_query($this->conn_id, 'BEGIN');
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Commit Transaction
-	 *
-	 * @return	bool
-	 */
-	protected function _trans_commit()
-	{
-		return (bool) pg_query($this->conn_id, 'COMMIT');
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Rollback Transaction
-	 *
-	 * @return	bool
-	 */
-	protected function _trans_rollback()
-	{
-		return (bool) pg_query($this->conn_id, 'ROLLBACK');
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Determines if a query is a "write" type.
 	 *
 	 * @param	string	An SQL query string
@@ -294,43 +203,6 @@ class CI_DB_postgre_driver extends CI_DB {
 		}
 
 		return parent::is_write_type($sql);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Platform-dependent string escape
-	 *
-	 * @param	string
-	 * @return	string
-	 */
-	protected function _escape_str($str)
-	{
-		return pg_escape_string($this->conn_id, $str);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * "Smart" Escape String
-	 *
-	 * Escapes data based on type
-	 *
-	 * @param	string	$str
-	 * @return	mixed
-	 */
-	public function escape($str)
-	{
-		if (is_php('5.4.4') && (is_string($str) OR (is_object($str) && method_exists($str, '__toString'))))
-		{
-			return pg_escape_literal($this->conn_id, $str);
-		}
-		elseif (is_bool($str))
-		{
-			return ($str) ? 'TRUE' : 'FALSE';
-		}
-
-		return parent::escape($str);
 	}
 
 	// --------------------------------------------------------------------
@@ -393,42 +265,29 @@ class CI_DB_postgre_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Show table query
+     * Database version number
 	 *
-	 * Generates a platform-specific query string so that the table names can be fetched
-	 *
-	 * @param	bool	$prefix_limit
 	 * @return	string
 	 */
-	protected function _list_tables($prefix_limit = FALSE)
+    public function version()
 	{
-		$sql = 'SELECT "table_name" FROM "information_schema"."tables" WHERE "table_schema" = \''.$this->schema."'";
+        if (isset($this->data_cache['version'])) {
+            return $this->data_cache['version'];
+        }
 
-		if ($prefix_limit !== FALSE && $this->dbprefix !== '')
+        if (!$this->conn_id OR ($pg_version = pg_version($this->conn_id)) === FALSE)
 		{
-			return $sql.' AND "table_name" LIKE \''
-				.$this->escape_like_str($this->dbprefix)."%' "
-				.sprintf($this->_like_escape_str, $this->_like_escape_chr);
+            return FALSE;
 		}
 
-		return $sql;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * List column query
-	 *
-	 * Generates a platform-specific query string so that the column names can be fetched
-	 *
-	 * @param	string	$table
-	 * @return	string
-	 */
-	protected function _list_columns($table = '')
-	{
-		return 'SELECT "column_name"
-			FROM "information_schema"."columns"
-			WHERE LOWER("table_name") = '.$this->escape(strtolower($table));
+        /* If PHP was compiled with PostgreSQL lib versions earlier
+         * than 7.4, pg_version() won't return the server version
+         * and so we'll have to fall back to running a query in
+         * order to get it.
+         */
+        return (isset($pg_version['server']) && preg_match('#^(\d+\.\d+)#', $pg_version['server'], $match))
+            ? $this->data_cache['version'] = $match[1]
+            : parent::version();
 	}
 
 	// --------------------------------------------------------------------
@@ -513,6 +372,142 @@ class CI_DB_postgre_driver extends CI_DB {
 
 		return parent::order_by($orderby, $direction, $escape);
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set client character set
+     *
+     * @param    string $charset
+     * @return    bool
+     */
+    protected function _db_set_charset($charset)
+    {
+        return (pg_set_client_encoding($this->conn_id, $charset) === 0);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Execute the query
+     *
+     * @param    string $sql an SQL query
+     * @return    resource
+     */
+    protected function _execute($sql)
+    {
+        return pg_query($this->conn_id, $sql);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Begin Transaction
+     *
+     * @return    bool
+     */
+    protected function _trans_begin()
+    {
+        return (bool)pg_query($this->conn_id, 'BEGIN');
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Commit Transaction
+     *
+     * @return    bool
+     */
+    protected function _trans_commit()
+    {
+        return (bool)pg_query($this->conn_id, 'COMMIT');
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Rollback Transaction
+     *
+     * @return    bool
+     */
+    protected function _trans_rollback()
+    {
+        return (bool)pg_query($this->conn_id, 'ROLLBACK');
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Platform-dependent string escape
+     *
+     * @param    string
+     * @return    string
+     */
+    protected function _escape_str($str)
+    {
+        return pg_escape_string($this->conn_id, $str);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Show table query
+     *
+     * Generates a platform-specific query string so that the table names can be fetched
+     *
+     * @param    bool $prefix_limit
+     * @return    string
+     */
+    protected function _list_tables($prefix_limit = FALSE)
+    {
+        $sql = 'SELECT "table_name" FROM "information_schema"."tables" WHERE "table_schema" = \'' . $this->schema . "'";
+
+        if ($prefix_limit !== FALSE && $this->dbprefix !== '') {
+            return $sql . ' AND "table_name" LIKE \''
+                . $this->escape_like_str($this->dbprefix) . "%' "
+                . sprintf($this->_like_escape_str, $this->_like_escape_chr);
+        }
+
+        return $sql;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * List column query
+     *
+     * Generates a platform-specific query string so that the column names can be fetched
+     *
+     * @param    string $table
+     * @return    string
+     */
+    protected function _list_columns($table = '')
+    {
+        return 'SELECT "column_name"
+			FROM "information_schema"."columns"
+			WHERE LOWER("table_name") = ' . $this->escape(strtolower($table));
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * "Smart" Escape String
+     *
+     * Escapes data based on type
+     *
+     * @param    string $str
+     * @return    mixed
+     */
+    public function escape($str)
+    {
+        if (is_php('5.4.4') && (is_string($str) OR (is_object($str) && method_exists($str, '__toString')))) {
+            return pg_escape_literal($this->conn_id, $str);
+        } elseif (is_bool($str)) {
+            return ($str) ? 'TRUE' : 'FALSE';
+        }
+
+        return parent::escape($str);
+    }
 
 	// --------------------------------------------------------------------
 

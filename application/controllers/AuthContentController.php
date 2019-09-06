@@ -17,6 +17,16 @@ class AuthContentController extends MainController{
         if(!$username) {
 
             redirect('auth/login');
+        } else {
+            $this->load->model('People/Other/Visits/visit_model');
+
+            $close_visits = $this->visit_model->get_close_visitation_dates();
+
+            $data['number_of_close_visits'] = $close_visits->num_rows();
+
+            if ($close_visits->num_rows() != 0) {
+                $data['list_of_close_visits'] = $close_visits;
+            }
         }
     }
 

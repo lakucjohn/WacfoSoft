@@ -164,7 +164,7 @@
                                                 <tr title="' . $row->ID . '" style="white-space: nowrap;">
                                                     <td>' . $row->COUNTY . '</td>
                                                     <td>
-                                                        <a href="' . site_url("county-details/edit/1") . '" class="btn btn-link" title="Edit County Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                                        <a href="' . site_url("settings/county-details/edit/" . $row->ID) . '" class="btn btn-link" title="Edit County Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                                         <a class="btn btn-link" title="Delete This County" href="' . base_url('delete_data/delete_row/COUNTY/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
@@ -208,7 +208,7 @@
                                                     <td>' . $county_name . '</td>
                                                     <td>' . $row->SUBCOUNTY . '</td>
                                                     <td>
-                                                        <a href="' . site_url("subcounty-details/edit/1") . '" class="btn btn-link" title="Edit Sub-County Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                                        <a href="' . site_url("settings/subcounty-details/edit/" . $row->ID) . '" class="btn btn-link" title="Edit Sub-County Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                                         <a class="btn btn-link" title="Delete This Sub-County" href="' . base_url('delete_data/delete_row/SUBCOUNTY/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
@@ -263,7 +263,7 @@
                                                     <td>' . $subcounty_name . '</td>
                                                     <td>' . $row->PARISH . '</td>
                                                     <td>
-                                                        <a href="' . site_url("parish-details/edit/1") . '" class="btn btn-link" title="Edit Parish Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                                        <a href="' . site_url("settings/parish-details/edit/" . $row->ID) . '" class="btn btn-link" title="Edit Parish Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                                         <a class="btn btn-link" title="Delete This Parish" href="' . base_url('delete_data/delete_row/PARISH/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
@@ -329,7 +329,7 @@
                                                     <td>' . $row->VILLAGE . '</td>
                                                     <td>' . $row->PREFIX_CODE . '</td>
                                                     <td>
-                                                        <a href="' . site_url("village-details/edit/1") . '" class="btn btn-link" title="Edit Village Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                                        <a href="' . site_url("settings/village-details/edit/" . $row->ID) . '" class="btn btn-link" title="Edit Village Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                                         <a class="btn btn-link" title="Delete This Village" href="' . base_url('delete_data/delete_row/VILLAGE/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
@@ -407,7 +407,7 @@
                                                     <td>' . $row->DISABILITY_PREFIX . '</td>
                                                     <td>' . $row->DISABILITY_ID . '</td>
                                                     <td>
-                                                        <a href="' . site_url("disability-details/edit/1") . '" class="btn btn-link" title="Edit DIsability Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                                        <a href="' . site_url("settings/disability-details/edit/" . $row->ID) . '" class="btn btn-link" title="Edit DIsability Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                                         <a class="btn btn-link" title="Delete This Disability" href="' . base_url('delete_data/delete_row/DISABILITIES/' . $row->ID) . '"><i class="fa fa-remove fa-1x" style="color: red;"></i></a>
                                                     </td>
                                                 </tr>
@@ -475,7 +475,7 @@
                                                     <td>' . $row->USERNAME . '</td>
                                                     <td>*********************************</td>
                                                     <td>
-                                                        <a href="' . site_url("user-details/edit/1") . '" class="btn btn-link" title="Edit User Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
+                                                        <a href="' . site_url("user-details/edit/" . $row->ID) . '" class="btn btn-link" title="Edit User Information"><i class="fa fa-edit fa-1x" style="color: green;"></i></a>
                                                 <!--        <button class="btn btn-link" title="Delete This User" data-toggle="modal" data-target="#deleteUserModal"><i class="fa fa-remove fa-1x" style="color: red;"></i></button>    -->
                                                     </td>
                                                 </tr>

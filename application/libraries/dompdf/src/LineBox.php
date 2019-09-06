@@ -22,59 +22,49 @@ class LineBox
 {
 
     /**
-     * @var Block
-     */
-    protected $_block_frame;
-
-    /**
-     * @var Frame[]
-     */
-    protected $_frames = array();
-
-    /**
      * @var integer
      */
     public $wc = 0;
-
     /**
      * @var float
      */
     public $y = null;
-
     /**
      * @var float
      */
     public $w = 0.0;
-
     /**
      * @var float
      */
     public $h = 0.0;
-
     /**
      * @var float
      */
     public $left = 0.0;
-
     /**
      * @var float
      */
     public $right = 0.0;
-
     /**
      * @var Frame
      */
     public $tallest_frame = null;
-
     /**
      * @var bool[]
      */
     public $floating_blocks = array();
-
     /**
      * @var bool
      */
     public $br = false;
+    /**
+     * @var Block
+     */
+    protected $_block_frame;
+    /**
+     * @var Frame[]
+     */
+    protected $_frames = array();
 
     /**
      * Class constructor
@@ -89,54 +79,6 @@ class LineBox
         $this->y = $y;
 
         $this->get_float_offsets();
-    }
-
-    /**
-     * Returns the floating elements inside the first floating parent
-     *
-     * @param Page $root
-     *
-     * @return Frame[]
-     */
-    public function get_floats_inside(Page $root)
-    {
-        $floating_frames = $root->get_floating_frames();
-
-        if (count($floating_frames) == 0) {
-            return $floating_frames;
-        }
-
-        // Find nearest floating element
-        $p = $this->_block_frame;
-        while ($p->get_style()->float === "none") {
-            $parent = $p->get_parent();
-
-            if (!$parent) {
-                break;
-            }
-
-            $p = $parent;
-        }
-
-        if ($p == $root) {
-            return $floating_frames;
-        }
-
-        $parent = $p;
-
-        $childs = array();
-
-        foreach ($floating_frames as $_floating) {
-            $p = $_floating->get_parent();
-
-            while (($p = $p->get_parent()) && $p !== $parent);
-
-            if ($p) {
-                $childs[] = $p;
-            }
-        }
-
-        return $childs;
     }
 
     /**
@@ -227,6 +169,54 @@ class LineBox
     }
 
     /**
+     * Returns the floating elements inside the first floating parent
+     *
+     * @param Page $root
+     *
+     * @return Frame[]
+     */
+    public function get_floats_inside(Page $root)
+    {
+        $floating_frames = $root->get_floating_frames();
+
+        if (count($floating_frames) == 0) {
+            return $floating_frames;
+        }
+
+        // Find nearest floating element
+        $p = $this->_block_frame;
+        while ($p->get_style()->float === "none") {
+            $parent = $p->get_parent();
+
+            if (!$parent) {
+                break;
+            }
+
+            $p = $parent;
+        }
+
+        if ($p == $root) {
+            return $floating_frames;
+        }
+
+        $parent = $p;
+
+        $childs = array();
+
+        foreach ($floating_frames as $_floating) {
+            $p = $_floating->get_parent();
+
+            while (($p = $p->get_parent()) && $p !== $parent) ;
+
+            if ($p) {
+                $childs[] = $p;
+            }
+        }
+
+        return $childs;
+    }
+
+    /**
      * @return float
      */
     public function get_width()
@@ -240,14 +230,6 @@ class LineBox
     public function get_block_frame()
     {
         return $this->_block_frame;
-    }
-
-    /**
-     * @return Frame[]
-     */
-    function &get_frames()
-    {
-        return $this->_frames;
     }
 
     /**
@@ -272,6 +254,14 @@ class LineBox
         }
 
         return $this->w = $width;
+    }
+
+    /**
+     * @return Frame[]
+     */
+    function &get_frames()
+    {
+        return $this->_frames;
     }
 
     /**

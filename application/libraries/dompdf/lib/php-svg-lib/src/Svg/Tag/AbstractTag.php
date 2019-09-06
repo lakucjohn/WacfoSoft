@@ -2,7 +2,7 @@
 /**
  * @package php-svg-lib
  * @link    http://github.com/PhenX/php-svg-lib
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mï¿½nager <fabien.menager@gmail.com>
  * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -13,11 +13,9 @@ use Svg\Style;
 
 abstract class AbstractTag
 {
+    public $tagName;
     /** @var Document */
     protected $document;
-
-    public $tagName;
-
     /** @var Style */
     protected $style;
 
@@ -32,10 +30,6 @@ abstract class AbstractTag
     {
         $this->document = $document;
         $this->tagName = $tagName;
-    }
-
-    public function getDocument(){
-        return $this->document;
     }
 
     /**
@@ -54,6 +48,11 @@ abstract class AbstractTag
         return null;
     }
 
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
     public function handle($attributes)
     {
         $this->attributes = $attributes;
@@ -64,20 +63,20 @@ abstract class AbstractTag
         }
     }
 
-    public function handleEnd()
-    {
-        if (!$this->getDocument()->inDefs) {
-            $this->end();
-            $this->after();
-        }
-    }
-
     protected function before($attributes)
     {
     }
 
     protected function start($attributes)
     {
+    }
+
+    public function handleEnd()
+    {
+        if (!$this->getDocument()->inDefs) {
+            $this->end();
+            $this->after();
+        }
     }
 
     protected function end()
@@ -93,6 +92,14 @@ abstract class AbstractTag
         return $this->attributes;
     }
 
+    /**
+     * @return Style
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
     protected function setStyle(Style $style)
     {
         $this->style = $style;
@@ -100,14 +107,6 @@ abstract class AbstractTag
         if ($style->display === "none") {
             $this->hasShape = false;
         }
-    }
-
-    /**
-     * @return Style
-     */
-    public function getStyle()
-    {
-        return $this->style;
     }
 
     /**

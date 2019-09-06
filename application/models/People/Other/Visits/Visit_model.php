@@ -71,10 +71,6 @@ class Visit_model extends CI_Model{
                                 <td>ID: ' . $row->CHILD_ID_VISITED . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NAME:' . $row->CHILD_ID_VISITED . '</td>
                             </tr>
                             <tr style="white-space: nowrap; height: 40px;">
-                                <td style="width:20%; text-align: right;">Project :</td>
-                                <td>'.$row->PROJECT.'</td>
-                            </tr>
-                            <tr style="white-space: nowrap; height: 40px;">
                                 <td style="width:20%; text-align: right;">Village :</td>
                                 <td>'.$row->VILLAGE.'</td>
                             </tr>
@@ -137,6 +133,14 @@ class Visit_model extends CI_Model{
         } else {
             return false;
         }
+    }
+
+    public function get_close_visitation_dates()
+    {
+        $query = $this->db->query("SELECT * FROM VISIT_RECORDS WHERE WEEK(NOW())=WEEK(NEXT_VISIT_DATE)");
+
+        return $query;
+
     }
 
 

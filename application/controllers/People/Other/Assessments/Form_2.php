@@ -143,6 +143,21 @@ class Form_2 extends AuthContentController {
 
     }
 
+    public function show_create_for_specific_child()
+    {
+        $child_row_id = $this->uri->segment(4);
+        $child_data = $this->children_model->fetch_child_by_row($child_row_id);
+        foreach ($child_data->result() as $row) {
+            $child_id = $row->CHILD_ID;
+            $child_name = $row->NAME;
+        }
+        $data['selected_child_id'] = $child_id;
+        $data['child_name'] = $child_name;
+        $data['title'] = 'Assessment Form 2 for particular child';
+
+        $this->template->load('default', 'People/Other/Assessments/Registration/new-assessment-2-record-form', $data);
+    }
+
     public function details()
     {
 

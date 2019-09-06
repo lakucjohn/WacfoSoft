@@ -138,6 +138,19 @@ foreach ($default_value_array->result() as $default) {
 
                 </p>
                 <p>
+                    <label for="project_visit_type">Project: </label>
+                    <select name="project_visit_type" id="project_visit_type" class="form-control">
+                        <option value="">Select a project</option>
+                        <option value="DSP" <?php if ($default->PROJECT == 'DSP'){ ?>selected<?php } ?>>DSP</option>
+                        <option value="Porticus" <?php if ($default->PROJECT == 'Porticus'){ ?>selected<?php } ?>>
+                            Porticus
+                        </option>
+                        <option value="Victorbraun" <?php if ($default->PROJECT == 'Victorbraun'){ ?>selected<?php } ?>>
+                            Victorbraun
+                        </option>
+                    </select>
+                </p>
+                <p>
                     <label for="child_date_of_joining">Date of joining: </label>
                     <input value="<?php echo $default->DATE_OF_JOINING; ?>" type="date" name="child_date_of_joining"
                            id="child_date_of_joining"

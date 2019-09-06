@@ -54,48 +54,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class CI_Zip {
 
+    /**
+     * mbstring.func_overload flag
+     *
+     * @var    bool
+     */
+    protected static $func_overload;
 	/**
 	 * Zip data in string form
 	 *
 	 * @var string
 	 */
 	public $zipdata = '';
-
 	/**
 	 * Zip data for a directory in string form
 	 *
 	 * @var string
 	 */
 	public $directory = '';
-
 	/**
 	 * Number of files/folder in zip file
 	 *
 	 * @var int
 	 */
 	public $entries = 0;
-
 	/**
 	 * Number of files in zip
 	 *
 	 * @var int
 	 */
 	public $file_num = 0;
-
 	/**
 	 * relative offset of local header
 	 *
 	 * @var int
 	 */
 	public $offset = 0;
-
 	/**
 	 * Reference to time at init
 	 *
 	 * @var int
 	 */
 	public $now;
-
 	/**
 	 * The level of compression
 	 *
@@ -104,13 +104,6 @@ class CI_Zip {
 	 * @var	int
 	 */
 	public $compression_level = 2;
-
-	/**
-	 * mbstring.func_overload flag
-	 *
-	 * @var	bool
-	 */
-	protected static $func_overload;
 
 	/**
 	 * Initialize zip compression class
@@ -221,6 +214,50 @@ class CI_Zip {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Byte-safe strlen()
+     *
+     * @param    string $str
+     * @return    int
+     */
+    protected static function strlen($str)
+    {
+        return (self::$func_overload)
+            ? mb_strlen($str, '8bit')
+            : strlen($str);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Read the contents of a file and add it to the zip
+     *
+     * @param    string $path
+     * @param    bool $archive_filepath
+     * @return    bool
+     */
+    public function read_file($path, $archive_filepath = FALSE)
+    {
+        if (file_exists($path) && FALSE !== ($data = file_get_contents($path))) {
+            if (is_string($archive_filepath)) {
+                $name = str_replace('\\', '/', $archive_filepath);
+            } else {
+                $name = str_replace('\\', '/', $path);
+
+                if ($archive_filepath === FALSE) {
+                    $name = preg_replace('|.*/(.+)|', '\\1', $name);
+                }
+            }
+
+            $this->add_data($name, $data);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Add Data to Zip
 	 *
@@ -249,7 +286,7 @@ class CI_Zip {
 		}
 	}
 
-	// --------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
 	/**
 	 * Add Data to Zip
@@ -305,38 +342,29 @@ class CI_Zip {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Read the contents of a file and add it to the zip
+     * Byte-safe substr()
 	 *
-	 * @param	string	$path
-	 * @param	bool	$archive_filepath
-	 * @return	bool
+     * @param    string $str
+     * @param    int $start
+     * @param    int $length
+     * @return    string
 	 */
-	public function read_file($path, $archive_filepath = FALSE)
+    protected static function substr($str, $start, $length = NULL)
 	{
-		if (file_exists($path) && FALSE !== ($data = file_get_contents($path)))
+        if (self::$func_overload)
 		{
-			if (is_string($archive_filepath))
-			{
-				$name = str_replace('\\', '/', $archive_filepath);
-			}
-			else
-			{
-				$name = str_replace('\\', '/', $path);
+            // mb_substr($str, $start, null, '8bit') returns an empty
+            // string on PHP 5.3
+            isset($length) OR $length = ($start >= 0 ? self::strlen($str) - $start : -$start);
+            return mb_substr($str, $start, $length, '8bit');
+        }
 
-				if ($archive_filepath === FALSE)
-				{
-					$name = preg_replace('|.*/(.+)|', '\\1', $name);
-				}
-			}
+        return isset($length)
+            ? substr($str, $start, $length)
+            : substr($str, $start);
+    }
 
-			$this->add_data($name, $data);
-			return TRUE;
-		}
-
-		return FALSE;
-	}
-
-	// ------------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
 	/**
 	 * Read a directory and add it to the zip.
@@ -394,30 +422,6 @@ class CI_Zip {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Get the Zip file
-	 *
-	 * @return	string	(binary encoded)
-	 */
-	public function get_zip()
-	{
-		// Is there any data to return?
-		if ($this->entries === 0)
-		{
-			return FALSE;
-		}
-
-		return $this->zipdata
-			.$this->directory."\x50\x4b\x05\x06\x00\x00\x00\x00"
-			.pack('v', $this->entries) // total # of entries "on this disk"
-			.pack('v', $this->entries) // total # of entries overall
-			.pack('V', self::strlen($this->directory)) // size of central dir
-			.pack('V', self::strlen($this->zipdata)) // offset to start of central dir
-			."\x00\x00"; // .zip file comment length
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Write File to the specified directory
 	 *
 	 * Lets you write a file
@@ -449,6 +453,29 @@ class CI_Zip {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Get the Zip file
+     *
+     * @return    string    (binary encoded)
+     */
+    public function get_zip()
+    {
+        // Is there any data to return?
+        if ($this->entries === 0) {
+            return FALSE;
+        }
+
+        return $this->zipdata
+            . $this->directory . "\x50\x4b\x05\x06\x00\x00\x00\x00"
+            . pack('v', $this->entries) // total # of entries "on this disk"
+            . pack('v', $this->entries) // total # of entries overall
+            . pack('V', self::strlen($this->directory)) // size of central dir
+            . pack('V', self::strlen($this->zipdata)) // offset to start of central dir
+            . "\x00\x00"; // .zip file comment length
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Download
@@ -488,45 +515,5 @@ class CI_Zip {
 		$this->file_num = 0;
 		$this->offset = 0;
 		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Byte-safe strlen()
-	 *
-	 * @param	string	$str
-	 * @return	int
-	 */
-	protected static function strlen($str)
-	{
-		return (self::$func_overload)
-			? mb_strlen($str, '8bit')
-			: strlen($str);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Byte-safe substr()
-	 *
-	 * @param	string	$str
-	 * @param	int	$start
-	 * @param	int	$length
-	 * @return	string
-	 */
-	protected static function substr($str, $start, $length = NULL)
-	{
-		if (self::$func_overload)
-		{
-			// mb_substr($str, $start, null, '8bit') returns an empty
-			// string on PHP 5.3
-			isset($length) OR $length = ($start >= 0 ? self::strlen($str) - $start : -$start);
-			return mb_substr($str, $start, $length, '8bit');
-		}
-
-		return isset($length)
-			? substr($str, $start, $length)
-			: substr($str, $start);
 	}
 }

@@ -10,8 +10,8 @@
 namespace Dompdf\Image;
 
 use Dompdf\Dompdf;
-use Dompdf\Helpers;
 use Dompdf\Exception\ImageException;
+use Dompdf\Helpers;
 
 /**
  * Static class that resolves image urls and downloads and caches
@@ -22,22 +22,19 @@ use Dompdf\Exception\ImageException;
 class Cache
 {
     /**
+     * The url to the "broken image" used when images can't be loaded
+     *
+     * @var string
+     */
+    public static $broken_image = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0'?%3E%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect stroke='%23666666' id='svg_1' height='60.499994' width='60.166667' y='1.666669' x='1.999998' stroke-width='1.5' fill='none'/%3E%3Cline stroke-linecap='null' stroke-linejoin='null' id='svg_3' y2='59.333253' x2='59.749916' y1='4.333415' x1='4.250079' stroke-width='1.5' stroke='%23999999' fill='none'/%3E%3Cline stroke-linecap='null' stroke-linejoin='null' id='svg_4' y2='59.999665' x2='4.062838' y1='3.750342' x1='60.062164' stroke-width='1.5' stroke='%23999999' fill='none'/%3E%3C/g%3E%3C/svg%3E";
+    public static $error_message = "Image not found or type unknown";
+    /**
      * Array of downloaded images.  Cached so that identical images are
      * not needlessly downloaded.
      *
      * @var array
      */
     protected static $_cache = array();
-
-    /**
-     * The url to the "broken image" used when images can't be loaded
-     *
-     * @var string
-     */
-    public static $broken_image = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0'?%3E%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect stroke='%23666666' id='svg_1' height='60.499994' width='60.166667' y='1.666669' x='1.999998' stroke-width='1.5' fill='none'/%3E%3Cline stroke-linecap='null' stroke-linejoin='null' id='svg_3' y2='59.333253' x2='59.749916' y1='4.333415' x1='4.250079' stroke-width='1.5' stroke='%23999999' fill='none'/%3E%3Cline stroke-linecap='null' stroke-linejoin='null' id='svg_4' y2='59.999665' x2='4.062838' y1='3.750342' x1='60.062164' stroke-width='1.5' stroke='%23999999' fill='none'/%3E%3C/g%3E%3C/svg%3E";
-
-    public static $error_message = "Image not found or type unknown";
-    
     /**
      * Current dompdf instance
      *

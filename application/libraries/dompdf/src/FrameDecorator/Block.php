@@ -58,14 +58,6 @@ class Block extends AbstractFrameDecorator
     }
 
     /**
-     * @return LineBox
-     */
-    function get_current_line_box()
-    {
-        return $this->_line_boxes[$this->_cl];
-    }
-
-    /**
      * @return integer
      */
     function get_current_line_number()
@@ -197,6 +189,51 @@ class Block extends AbstractFrameDecorator
     }
 
     /**
+     * @param $val
+     * @param Frame $frame
+     */
+    function maximize_line_height($val, Frame $frame)
+    {
+        if ($val > $this->_line_boxes[$this->_cl]->h) {
+            $this->_line_boxes[$this->_cl]->tallest_frame = $frame;
+            $this->_line_boxes[$this->_cl]->h = $val;
+        }
+    }
+
+    /**
+     * @param bool $br
+     */
+    function add_line($br = false)
+    {
+
+//     if ( $this->_line_boxes[$this->_cl]["h"] == 0 ) //count($this->_line_boxes[$i]["frames"]) == 0 ||
+//       return;
+
+        $this->_line_boxes[$this->_cl]->br = $br;
+        $y = $this->_line_boxes[$this->_cl]->y + $this->_line_boxes[$this->_cl]->h;
+
+        $new_line = new LineBox($this, $y);
+
+        $this->_line_boxes[++$this->_cl] = $new_line;
+    }
+
+    /**
+     * @return LineBox
+     */
+    function get_current_line_box()
+    {
+        return $this->_line_boxes[$this->_cl];
+    }
+
+    /**
+     * @param float $w
+     */
+    function increase_line_width($w)
+    {
+        $this->_line_boxes[$this->_cl]->w += $w;
+    }
+
+    /**
      * @param Frame $frame
      */
     function remove_frames_from_line(Frame $frame)
@@ -241,43 +278,6 @@ class Block extends AbstractFrameDecorator
             unset($this->_line_boxes[$this->_cl]);
             $this->_cl--;
         }
-    }
-
-    /**
-     * @param float $w
-     */
-    function increase_line_width($w)
-    {
-        $this->_line_boxes[$this->_cl]->w += $w;
-    }
-
-    /**
-     * @param $val
-     * @param Frame $frame
-     */
-    function maximize_line_height($val, Frame $frame)
-    {
-        if ($val > $this->_line_boxes[$this->_cl]->h) {
-            $this->_line_boxes[$this->_cl]->tallest_frame = $frame;
-            $this->_line_boxes[$this->_cl]->h = $val;
-        }
-    }
-
-    /**
-     * @param bool $br
-     */
-    function add_line($br = false)
-    {
-
-//     if ( $this->_line_boxes[$this->_cl]["h"] == 0 ) //count($this->_line_boxes[$i]["frames"]) == 0 ||
-//       return;
-
-        $this->_line_boxes[$this->_cl]->br = $br;
-        $y = $this->_line_boxes[$this->_cl]->y + $this->_line_boxes[$this->_cl]->h;
-
-        $new_line = new LineBox($this, $y);
-
-        $this->_line_boxes[++$this->_cl] = $new_line;
     }
 
     //........................................................................

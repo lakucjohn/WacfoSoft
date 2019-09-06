@@ -184,6 +184,76 @@ class CI_Migration {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Sets the schema to the latest migration
+     *
+     * @return    mixed    Current version string on success, FALSE on failure
+     */
+    public function latest()
+    {
+        $migrations = $this->find_migrations();
+
+        if (empty($migrations)) {
+            $this->_error_string = $this->lang->line('migration_none_found');
+            return FALSE;
+        }
+
+        $last_migration = basename(end($migrations));
+
+        // Calculate the last migration step from existing migration
+        // filenames and proceed to the standard version migration
+        return $this->version($this->_get_migration_number($last_migration));
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Retrieves list of available migration scripts
+     *
+     * @return    array    list of migration file paths sorted by version
+     */
+    public function find_migrations()
+    {
+        $migrations = array();
+
+        // Load all *_*.php files in the migrations path
+        foreach (glob($this->_migration_path . '*_*.php') as $file) {
+            $name = basename($file, '.php');
+
+            // Filter out non-migration files
+            if (preg_match($this->_migration_regex, $name)) {
+                $number = $this->_get_migration_number($name);
+
+                // There cannot be duplicate migration numbers
+                if (isset($migrations[$number])) {
+                    $this->_error_string = sprintf($this->lang->line('migration_multiple_version'), $number);
+                    show_error($this->_error_string);
+                }
+
+                $migrations[$number] = $file;
+            }
+        }
+
+        ksort($migrations);
+        return $migrations;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Extracts the migration number from a filename
+     *
+     * @param    string $migration
+     * @return    string    Numeric portion of a migration filename
+     */
+    protected function _get_migration_number($migration)
+    {
+        return sscanf($migration, '%[0-9]+', $number)
+            ? $number : '0';
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Migrate to a schema version
 	 *
@@ -323,99 +393,14 @@ class CI_Migration {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Sets the schema to the latest migration
+     * Retrieves current schema version
 	 *
-	 * @return	mixed	Current version string on success, FALSE on failure
+     * @return    string    Current migration version
 	 */
-	public function latest()
+    protected function _get_version()
 	{
-		$migrations = $this->find_migrations();
-
-		if (empty($migrations))
-		{
-			$this->_error_string = $this->lang->line('migration_none_found');
-			return FALSE;
-		}
-
-		$last_migration = basename(end($migrations));
-
-		// Calculate the last migration step from existing migration
-		// filenames and proceed to the standard version migration
-		return $this->version($this->_get_migration_number($last_migration));
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Sets the schema to the migration version set in config
-	 *
-	 * @return	mixed	TRUE if no migrations are found, current version string on success, FALSE on failure
-	 */
-	public function current()
-	{
-		return $this->version($this->_migration_version);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Error string
-	 *
-	 * @return	string	Error message returned as a string
-	 */
-	public function error_string()
-	{
-		return $this->_error_string;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Retrieves list of available migration scripts
-	 *
-	 * @return	array	list of migration file paths sorted by version
-	 */
-	public function find_migrations()
-	{
-		$migrations = array();
-
-		// Load all *_*.php files in the migrations path
-		foreach (glob($this->_migration_path.'*_*.php') as $file)
-		{
-			$name = basename($file, '.php');
-
-			// Filter out non-migration files
-			if (preg_match($this->_migration_regex, $name))
-			{
-				$number = $this->_get_migration_number($name);
-
-				// There cannot be duplicate migration numbers
-				if (isset($migrations[$number]))
-				{
-					$this->_error_string = sprintf($this->lang->line('migration_multiple_version'), $number);
-					show_error($this->_error_string);
-				}
-
-				$migrations[$number] = $file;
-			}
-		}
-
-		ksort($migrations);
-		return $migrations;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Extracts the migration number from a filename
-	 *
-	 * @param	string	$migration
-	 * @return	string	Numeric portion of a migration filename
-	 */
-	protected function _get_migration_number($migration)
-	{
-		return sscanf($migration, '%[0-9]+', $number)
-			? $number : '0';
+        $row = $this->db->select('version')->get($this->_migration_table)->row();
+        return $row ? $row->version : '0';
 	}
 
 	// --------------------------------------------------------------------
@@ -436,19 +421,6 @@ class CI_Migration {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Retrieves current schema version
-	 *
-	 * @return	string	Current migration version
-	 */
-	protected function _get_version()
-	{
-		$row = $this->db->select('version')->get($this->_migration_table)->row();
-		return $row ? $row->version : '0';
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Stores the current schema version
 	 *
 	 * @param	string	$migration	Migration reached
@@ -460,6 +432,30 @@ class CI_Migration {
 			'version' => $migration
 		));
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Error string
+     *
+     * @return    string    Error message returned as a string
+     */
+    public function error_string()
+    {
+        return $this->_error_string;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Sets the schema to the migration version set in config
+     *
+     * @return    mixed    TRUE if no migrations are found, current version string on success, FALSE on failure
+     */
+    public function current()
+    {
+        return $this->version($this->_migration_version);
+    }
 
 	// --------------------------------------------------------------------
 

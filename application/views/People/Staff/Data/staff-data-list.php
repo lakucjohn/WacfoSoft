@@ -28,7 +28,8 @@
         <i class="fa fa-table"></i> Staff Members of WACFO</div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: 12px;">
+            <table class="table table-bordered js-exportable" id="dataTable" width="100%" cellspacing="0"
+                   style="font-size: 12px;">
                 <thead>
                 <tr>
                     <th>Staff Id</th>

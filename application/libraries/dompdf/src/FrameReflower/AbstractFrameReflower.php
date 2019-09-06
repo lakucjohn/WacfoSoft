@@ -10,10 +10,10 @@ namespace Dompdf\FrameReflower;
 use Dompdf\Adapter\CPDF;
 use Dompdf\Css\Style;
 use Dompdf\Dompdf;
-use Dompdf\Helpers;
 use Dompdf\Frame;
-use Dompdf\FrameDecorator\Block;
 use Dompdf\Frame\Factory;
+use Dompdf\FrameDecorator\Block;
+use Dompdf\Helpers;
 
 /**
  * Base reflower class
@@ -60,6 +60,114 @@ abstract class AbstractFrameReflower
     function get_dompdf()
     {
         return $this->_frame->get_dompdf();
+    }
+
+    /**
+     * @param Block|null $block
+     * @return mixed
+     */
+    abstract function reflow(Block $block = null);
+
+    /**
+     * Required for table layout: Returns an array(0 => min, 1 => max, "min"
+     * => min, "max" => max) of the minimum and maximum widths of this frame.
+     * This provides a basic implementation.  Child classes should override
+     * this if necessary.
+     *
+     * @return array|null
+     */
+    function get_min_max_width()
+    {
+        if (!is_null($this->_min_max_cache)) {
+            return $this->_min_max_cache;
+        }
+
+        $style = $this->_frame->get_style();
+
+        // Account for margins & padding
+        $dims = array($style->padding_left,
+            $style->padding_right,
+            $style->border_left_width,
+            $style->border_right_width,
+            $style->margin_left,
+            $style->margin_right);
+
+        $cb_w = $this->_frame->get_containing_block("w");
+        $delta = (float)$style->length_in_pt($dims, $cb_w);
+
+        // Handle degenerate case
+        if (!$this->_frame->get_first_child()) {
+            return $this->_min_max_cache = array(
+                $delta, $delta,
+                "min" => $delta,
+                "max" => $delta,
+            );
+        }
+
+        $low = array();
+        $high = array();
+
+        for ($iter = $this->_frame->get_children()->getIterator(); $iter->valid(); $iter->next()) {
+            $inline_min = 0;
+            $inline_max = 0;
+
+            // Add all adjacent inline widths together to calculate max width
+            while ($iter->valid() && in_array($iter->current()->get_style()->display, Style::$INLINE_TYPES)) {
+                $child = $iter->current();
+
+                $minmax = $child->get_min_max_width();
+
+                if (in_array($iter->current()->get_style()->white_space, array("pre", "nowrap"))) {
+                    $inline_min += $minmax["min"];
+                } else {
+                    $low[] = $minmax["min"];
+                }
+
+                $inline_max += $minmax["max"];
+                $iter->next();
+            }
+
+            if ($inline_max > 0) {
+                $high[] = $inline_max;
+            }
+            if ($inline_min > 0) {
+                $low[] = $inline_min;
+            }
+
+            if ($iter->valid()) {
+                list($low[], $high[]) = $iter->current()->get_min_max_width();
+                continue;
+            }
+        }
+        $min = count($low) ? max($low) : 0;
+        $max = count($high) ? max($high) : 0;
+
+        // Use specified width if it is greater than the minimum defined by the
+        // content.  If the width is a percentage ignore it for now.
+        $width = $style->width;
+        if ($width !== "auto" && !Helpers::is_percent($width)) {
+            $width = (float)$style->length_in_pt($width, $cb_w);
+            if ($min < $width) {
+                $min = $width;
+            }
+            if ($max < $width) {
+                $max = $width;
+            }
+        }
+
+        $min += $delta;
+        $max += $delta;
+        return $this->_min_max_cache = array($min, $max, "min" => $min, "max" => $max);
+    }
+
+    /**
+     * Determine current frame width based on contents
+     *
+     * @return float
+     */
+    public function calculate_auto_width()
+    {
+        return $this->_frame->get_margin_width();
     }
 
     /**
@@ -172,9 +280,9 @@ abstract class AbstractFrameReflower
 
     /**
      * Get the combined (collapsed) length of two adjoining margins.
-     * 
+     *
      * See http://www.w3.org/TR/CSS2/box.html#collapsing-margins.
-     * 
+     *
      * @param number $length1
      * @param number $length2
      * @return number
@@ -184,165 +292,52 @@ abstract class AbstractFrameReflower
         if ($length1 < 0 && $length2 < 0) {
             return min($length1, $length2); // min(x, y) = - max(abs(x), abs(y)), if x < 0 && y < 0
         }
-        
+
         if ($length1 < 0 || $length2 < 0) {
             return $length1 + $length2; // x + y = x - abs(y), if y < 0
         }
-        
+
         return max($length1, $length2);
     }
 
     /**
-     * @param Block|null $block
-     * @return mixed
+     * Sets the generated content of a generated frame
      */
-    abstract function reflow(Block $block = null);
-
-    /**
-     * Required for table layout: Returns an array(0 => min, 1 => max, "min"
-     * => min, "max" => max) of the minimum and maximum widths of this frame.
-     * This provides a basic implementation.  Child classes should override
-     * this if necessary.
-     *
-     * @return array|null
-     */
-    function get_min_max_width()
+    protected function _set_content()
     {
-        if (!is_null($this->_min_max_cache)) {
-            return $this->_min_max_cache;
+        $frame = $this->_frame;
+        $style = $frame->get_style();
+
+        // if the element was pushed to a new page use the saved counter value, otherwise use the CSS reset value
+        if ($style->counter_reset && ($reset = $style->counter_reset) !== "none") {
+            $vars = preg_split('/\s+/', trim($reset), 2);
+            $frame->reset_counter($vars[0], (isset($frame->_counters['__' . $vars[0]]) ? $frame->_counters['__' . $vars[0]] : (isset($vars[1]) ? $vars[1] : 0)));
         }
 
-        $style = $this->_frame->get_style();
-
-        // Account for margins & padding
-        $dims = array($style->padding_left,
-            $style->padding_right,
-            $style->border_left_width,
-            $style->border_right_width,
-            $style->margin_left,
-            $style->margin_right);
-
-        $cb_w = $this->_frame->get_containing_block("w");
-        $delta = (float)$style->length_in_pt($dims, $cb_w);
-
-        // Handle degenerate case
-        if (!$this->_frame->get_first_child()) {
-            return $this->_min_max_cache = array(
-                $delta, $delta,
-                "min" => $delta,
-                "max" => $delta,
-            );
+        if ($style->counter_increment && ($increment = $style->counter_increment) !== "none") {
+            $frame->increment_counters($increment);
         }
 
-        $low = array();
-        $high = array();
-
-        for ($iter = $this->_frame->get_children()->getIterator(); $iter->valid(); $iter->next()) {
-            $inline_min = 0;
-            $inline_max = 0;
-
-            // Add all adjacent inline widths together to calculate max width
-            while ($iter->valid() && in_array($iter->current()->get_style()->display, Style::$INLINE_TYPES)) {
-                $child = $iter->current();
-
-                $minmax = $child->get_min_max_width();
-
-                if (in_array($iter->current()->get_style()->white_space, array("pre", "nowrap"))) {
-                    $inline_min += $minmax["min"];
-                } else {
-                    $low[] = $minmax["min"];
-                }
-
-                $inline_max += $minmax["max"];
-                $iter->next();
+        if ($style->content && $frame->get_node()->nodeName === "dompdf_generated") {
+            $content = $this->_parse_content();
+            // add generated content to the font subset
+            // FIXME: This is currently too late because the font subset has already been generated.
+            //        See notes in issue #750.
+            if ($frame->get_dompdf()->getOptions()->getIsFontSubsettingEnabled() && $frame->get_dompdf()->get_canvas() instanceof CPDF) {
+                $frame->get_dompdf()->get_canvas()->register_string_subset($style->font_family, $content);
             }
 
-            if ($inline_max > 0) {
-                $high[] = $inline_max;
-            }
-            if ($inline_min > 0) {
-                $low[] = $inline_min;
-            }
+            $node = $frame->get_node()->ownerDocument->createTextNode($content);
 
-            if ($iter->valid()) {
-                list($low[], $high[]) = $iter->current()->get_min_max_width();
-                continue;
-            }
+            $new_style = $style->get_stylesheet()->create_style();
+            $new_style->inherit($style);
+
+            $new_frame = new Frame($node);
+            $new_frame->set_style($new_style);
+
+            Factory::decorate_frame($new_frame, $frame->get_dompdf(), $frame->get_root());
+            $frame->append_child($new_frame);
         }
-        $min = count($low) ? max($low) : 0;
-        $max = count($high) ? max($high) : 0;
-
-        // Use specified width if it is greater than the minimum defined by the
-        // content.  If the width is a percentage ignore it for now.
-        $width = $style->width;
-        if ($width !== "auto" && !Helpers::is_percent($width)) {
-            $width = (float)$style->length_in_pt($width, $cb_w);
-            if ($min < $width) {
-                $min = $width;
-            }
-            if ($max < $width) {
-                $max = $width;
-            }
-        }
-
-        $min += $delta;
-        $max += $delta;
-        return $this->_min_max_cache = array($min, $max, "min" => $min, "max" => $max);
-    }
-
-    /**
-     * Parses a CSS string containing quotes and escaped hex characters
-     *
-     * @param $string string The CSS string to parse
-     * @param $single_trim
-     * @return string
-     */
-    protected function _parse_string($string, $single_trim = false)
-    {
-        if ($single_trim) {
-            $string = preg_replace('/^[\"\']/', "", $string);
-            $string = preg_replace('/[\"\']$/', "", $string);
-        } else {
-            $string = trim($string, "'\"");
-        }
-
-        $string = str_replace(array("\\\n", '\\"', "\\'"),
-            array("", '"', "'"), $string);
-
-        // Convert escaped hex characters into ascii characters (e.g. \A => newline)
-        $string = preg_replace_callback("/\\\\([0-9a-fA-F]{0,6})/",
-            function ($matches) { return \Dompdf\Helpers::unichr(hexdec($matches[1])); },
-            $string);
-        return $string;
-    }
-
-    /**
-     * Parses a CSS "quotes" property
-     *
-     * @return array|null An array of pairs of quotes
-     */
-    protected function _parse_quotes()
-    {
-        // Matches quote types
-        $re = '/(\'[^\']*\')|(\"[^\"]*\")/';
-
-        $quotes = $this->_frame->get_style()->quotes;
-
-        // split on spaces, except within quotes
-        if (!preg_match_all($re, "$quotes", $matches, PREG_SET_ORDER)) {
-            return null;
-        }
-
-        $quotes_array = array();
-        foreach ($matches as $_quote) {
-            $quotes_array[] = $this->_parse_string($_quote[0], true);
-        }
-
-        if (empty($quotes_array)) {
-            $quotes_array = array('"', '"');
-        }
-
-        return array_chunk($quotes_array, 2);
     }
 
     /**
@@ -478,52 +473,59 @@ abstract class AbstractFrameReflower
     }
 
     /**
-     * Sets the generated content of a generated frame
+     * Parses a CSS "quotes" property
+     *
+     * @return array|null An array of pairs of quotes
      */
-    protected function _set_content()
+    protected function _parse_quotes()
     {
-        $frame = $this->_frame;
-        $style = $frame->get_style();
+        // Matches quote types
+        $re = '/(\'[^\']*\')|(\"[^\"]*\")/';
 
-        // if the element was pushed to a new page use the saved counter value, otherwise use the CSS reset value
-        if ($style->counter_reset && ($reset = $style->counter_reset) !== "none") {
-            $vars = preg_split('/\s+/', trim($reset), 2);
-            $frame->reset_counter($vars[0], (isset($frame->_counters['__' . $vars[0]]) ? $frame->_counters['__' . $vars[0]] : (isset($vars[1]) ? $vars[1] : 0)));
+        $quotes = $this->_frame->get_style()->quotes;
+
+        // split on spaces, except within quotes
+        if (!preg_match_all($re, "$quotes", $matches, PREG_SET_ORDER)) {
+            return null;
         }
 
-        if ($style->counter_increment && ($increment = $style->counter_increment) !== "none") {
-            $frame->increment_counters($increment);
+        $quotes_array = array();
+        foreach ($matches as $_quote) {
+            $quotes_array[] = $this->_parse_string($_quote[0], true);
         }
 
-        if ($style->content && $frame->get_node()->nodeName === "dompdf_generated") {
-            $content = $this->_parse_content();
-            // add generated content to the font subset
-            // FIXME: This is currently too late because the font subset has already been generated.
-            //        See notes in issue #750.
-            if ($frame->get_dompdf()->getOptions()->getIsFontSubsettingEnabled() && $frame->get_dompdf()->get_canvas() instanceof CPDF) {
-                $frame->get_dompdf()->get_canvas()->register_string_subset($style->font_family, $content);
-            }
-
-            $node = $frame->get_node()->ownerDocument->createTextNode($content);
-
-            $new_style = $style->get_stylesheet()->create_style();
-            $new_style->inherit($style);
-
-            $new_frame = new Frame($node);
-            $new_frame->set_style($new_style);
-
-            Factory::decorate_frame($new_frame, $frame->get_dompdf(), $frame->get_root());
-            $frame->append_child($new_frame);
+        if (empty($quotes_array)) {
+            $quotes_array = array('"', '"');
         }
+
+        return array_chunk($quotes_array, 2);
     }
 
     /**
-     * Determine current frame width based on contents
+     * Parses a CSS string containing quotes and escaped hex characters
      *
-     * @return float
+     * @param $string string The CSS string to parse
+     * @param $single_trim
+     * @return string
      */
-    public function calculate_auto_width()
+    protected function _parse_string($string, $single_trim = false)
     {
-        return $this->_frame->get_margin_width();
+        if ($single_trim) {
+            $string = preg_replace('/^[\"\']/', "", $string);
+            $string = preg_replace('/[\"\']$/', "", $string);
+        } else {
+            $string = trim($string, "'\"");
+        }
+
+        $string = str_replace(array("\\\n", '\\"', "\\'"),
+            array("", '"', "'"), $string);
+
+        // Convert escaped hex characters into ascii characters (e.g. \A => newline)
+        $string = preg_replace_callback("/\\\\([0-9a-fA-F]{0,6})/",
+            function ($matches) {
+                return \Dompdf\Helpers::unichr(hexdec($matches[1]));
+            },
+            $string);
+        return $string;
     }
 }

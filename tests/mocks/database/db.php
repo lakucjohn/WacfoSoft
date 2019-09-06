@@ -3,19 +3,17 @@
 class Mock_Database_DB {
 
 	/**
-	 * @var array DB configuration
-	 */
-	private $config = array();
-
-	/**
 	 * @var string DB driver name
 	 */
 	private static $dbdriver = '';
-
 	/**
 	 * @var string DB sub-driver name
 	 */
 	private static $subdriver = '';
+    /**
+     * @var array DB configuration
+     */
+    private $config = array();
 
 	/**
 	 * Prepare database configuration skeleton
@@ -26,54 +24,6 @@ class Mock_Database_DB {
 	public function __construct($config = array())
 	{
 		$this->config = $config;
-	}
-
-	/**
-	 * Build DSN connection string for DB driver instantiate process
-	 *
-	 * @param 	string 	Group name
-	 * @return 	string 	DSN Connection string
-	 */
-	public function set_dsn($group = 'default')
-	{
-		if ( ! isset($this->config[$group]))
-		{
-			throw new InvalidArgumentException('Group '.$group.' not exists');
-		}
-
-		self::$dbdriver = $this->config[$group]['dbdriver'];
-		if (isset($this->config[$group]['subdriver']))
-		{
-			self::$subdriver = $this->config[$group]['subdriver'];
-		}
-
-		$params = array(
-			'dbprefix' => '',
-			'pconnect' => FALSE,
-			'db_debug' => FALSE,
-			'cache_on' => FALSE,
-			'cachedir' => '',
-			'char_set' => 'utf8',
-			'dbcollat' => 'utf8_general_ci',
-			'swap_pre' => '',
-			'stricton' => FALSE
-		);
-
-		$config = array_merge($this->config[$group], $params);
-		$dsnstring = empty($config['dsn']) ? FALSE : $config['dsn'];
-		$subdriver = empty($config['subdriver']) ? FALSE: $config['subdriver'];
-		$failover = empty($config['failover']) ? FALSE : $config['failover'];
-
-		$dsn = $config['dbdriver'].'://'.$config['username'].':'.$config['password']
-					.'@'.$config['hostname'].'/'.$config['database'];
-
-		// Build the parameter
-		$other_params = array_slice($config, 6);
-		if ($dsnstring) $other_params['dsn'] = $dsnstring;
-		if ($subdriver) $other_params['subdriver'] = $subdriver;
-		if ($failover) $other_params['failover'] = $failover;
-
-		return $dsn.'?'.http_build_query($other_params);
 	}
 
 	/**
@@ -138,5 +88,51 @@ class Mock_Database_DB {
 
 		return $db;
 	}
+
+    /**
+     * Build DSN connection string for DB driver instantiate process
+     *
+     * @param    string    Group name
+     * @return    string    DSN Connection string
+     */
+    public function set_dsn($group = 'default')
+    {
+        if (!isset($this->config[$group])) {
+            throw new InvalidArgumentException('Group ' . $group . ' not exists');
+        }
+
+        self::$dbdriver = $this->config[$group]['dbdriver'];
+        if (isset($this->config[$group]['subdriver'])) {
+            self::$subdriver = $this->config[$group]['subdriver'];
+        }
+
+        $params = array(
+            'dbprefix' => '',
+            'pconnect' => FALSE,
+            'db_debug' => FALSE,
+            'cache_on' => FALSE,
+            'cachedir' => '',
+            'char_set' => 'utf8',
+            'dbcollat' => 'utf8_general_ci',
+            'swap_pre' => '',
+            'stricton' => FALSE
+        );
+
+        $config = array_merge($this->config[$group], $params);
+        $dsnstring = empty($config['dsn']) ? FALSE : $config['dsn'];
+        $subdriver = empty($config['subdriver']) ? FALSE : $config['subdriver'];
+        $failover = empty($config['failover']) ? FALSE : $config['failover'];
+
+        $dsn = $config['dbdriver'] . '://' . $config['username'] . ':' . $config['password']
+            . '@' . $config['hostname'] . '/' . $config['database'];
+
+        // Build the parameter
+        $other_params = array_slice($config, 6);
+        if ($dsnstring) $other_params['dsn'] = $dsnstring;
+        if ($subdriver) $other_params['subdriver'] = $subdriver;
+        if ($failover) $other_params['failover'] = $failover;
+
+        return $dsn . '?' . http_build_query($other_params);
+    }
 
 }

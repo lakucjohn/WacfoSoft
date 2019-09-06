@@ -56,6 +56,7 @@ class HygieneAndNutrition extends AuthContentController {
         $parish = $this->input->post('parish');
         $checked_by = $this->input->post('checked_by');
         $date_checked = $this->input->post('date_checked');
+        $activities = $this->input->post('activities');
 
 
 
@@ -82,6 +83,7 @@ class HygieneAndNutrition extends AuthContentController {
                 $granary = $this->input->post('granary' . $row->ID);
                 $papyrus_mat = $this->input->post('papyrus_mat' . $row->ID);
                 $earth_floor = $this->input->post('earth_floor' . $row->ID);
+                $energy_saving_stove = $this->input->post('energy_saving_stove' . $row->ID);
                 $check_date = $this->input->post('check_date' . $row->ID);
 
                 $field_data = array(
@@ -105,6 +107,8 @@ class HygieneAndNutrition extends AuthContentController {
                     'GRANARY' => $granary,
                     'PAPYRUS_MAT' => $papyrus_mat,
                     'EARTH_FLOOR' => $earth_floor,
+                    'ENERGY_SAVING_STOVE' => $energy_saving_stove,
+                    'ACTIVITIES' => $activities,
                     'DATE_CHECKED' => $check_date,
                     'STAFF' => $checked_by,
                     'DATE_RECORDED' => $date_checked,
@@ -160,6 +164,7 @@ class HygieneAndNutrition extends AuthContentController {
         # Performing validation checks
         $checked_by = $this->input->post('checked_by');
         $date_checked = $this->input->post('date_checked');
+        $activities = $this->input->post('activities');
 
         # Performing Validation Checks
         $this->form_validation->set_rules('member_id', 'Membership ID', 'required');
@@ -183,6 +188,7 @@ class HygieneAndNutrition extends AuthContentController {
             $granary = $this->input->post('granary');
             $papyrus_mat = $this->input->post('papyrus_mat');
             $earth_floor = $this->input->post('earth_floor');
+            $energy_saving_stove = $this->input->post('energy_saving_stove');
             $check_date = $this->input->post('check_date');
 
             $field_data = array(
@@ -202,6 +208,8 @@ class HygieneAndNutrition extends AuthContentController {
                 'GRANARY' => $granary,
                 'PAPYRUS_MAT' => $papyrus_mat,
                 'EARTH_FLOOR' => $earth_floor,
+                'ENERGY_SAVING_STOVE' => $energy_saving_stove,
+                'ACTIVITIES' => $activities,
                 'DATE_CHECKED' => $check_date,
                 'STAFF' => $checked_by,
                 'DATE_RECORDED' => $date_checked,
@@ -232,6 +240,20 @@ class HygieneAndNutrition extends AuthContentController {
 
     public function generate_pdf_document(){
 
+        if ($this->uri->segment(3)) {
+
+            $row_id = $this->uri->segment(3);
+            $page_data = $this->hygieneAndNutrition_model->fetch_single_record($row_id);
+
+            $html_content = '<h3>About ' . $row_id . '</h3>';
+            $html_content .= $page_data;
+
+            $this->pdf->loadHtml($html_content);
+            $this->pdf->setPaper('A4', 'landscape');
+            $this->pdf->render();
+
+            $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
+        }
     }
 
     public function generate_detailed_pdf(){

@@ -67,19 +67,6 @@ foreach ($default_value_array->result() as $default) {
                            value="The Details of the selected child will appear here" disabled>
                 </p>
                 <p>
-                    <label for="project_visit_type">Project: </label>
-                    <select name="project_visit_type" id="project_visit_type" class="form-control">
-                        <option value="">Select a project</option>
-                        <option value="DSP" <?php if ($default->PROJECT == 'DSP'){ ?>selected<?php } ?>>DSP</option>
-                        <option value="Porticus" <?php if ($default->PROJECT == 'Porticus'){ ?>selected<?php } ?>>
-                            Porticus
-                        </option>
-                        <option value="Victorbraun" <?php if ($default->PROJECT == 'Victorbraun'){ ?>selected<?php } ?>>
-                            Victorbraun
-                        </option>
-                    </select>
-                </p>
-                <p>
                     <label for="subcounty">Sub-County:</label>
                     <select name="subcounty" id="subcounty" class="form-control"
                             onchange="fetch_parish_list(this.value)">

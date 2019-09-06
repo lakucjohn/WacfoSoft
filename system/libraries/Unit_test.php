@@ -182,6 +182,24 @@ class CI_Unit_test {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Generate a backtrace
+     *
+     * This lets us show file names and line numbers
+     *
+     * @return    array
+     */
+    protected function _backtrace()
+    {
+        $back = debug_backtrace();
+        return array(
+            'file' => (isset($back[1]['file']) ? $back[1]['file'] : ''),
+            'line' => (isset($back[1]['line']) ? $back[1]['line'] : '')
+        );
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Generate a report
 	 *
@@ -228,36 +246,6 @@ class CI_Unit_test {
 		}
 
 		return $r;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Use strict comparison
-	 *
-	 * Causes the evaluation to use === rather than ==
-	 *
-	 * @param	bool	$state
-	 * @return	void
-	 */
-	public function use_strict($state = TRUE)
-	{
-		$this->strict = (bool) $state;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Make Unit testing active
-	 *
-	 * Enables/disables unit testing
-	 *
-	 * @param	bool
-	 * @return	void
-	 */
-	public function active($state = TRUE)
-	{
-		$this->active = (bool) $state;
 	}
 
 	// --------------------------------------------------------------------
@@ -310,54 +298,6 @@ class CI_Unit_test {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set the template
-	 *
-	 * This lets us set the template to be used to display results
-	 *
-	 * @param	string
-	 * @return	void
-	 */
-	public function set_template($template)
-	{
-		$this->_template = $template;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Generate a backtrace
-	 *
-	 * This lets us show file names and line numbers
-	 *
-	 * @return	array
-	 */
-	protected function _backtrace()
-	{
-		$back = debug_backtrace();
-		return array(
-			'file' => (isset($back[1]['file']) ? $back[1]['file'] : ''),
-			'line' => (isset($back[1]['line']) ? $back[1]['line'] : '')
-		);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get Default Template
-	 *
-	 * @return	string
-	 */
-	protected function _default_template()
-	{
-		$this->_template = "\n".'<table style="width:100%; font-size:small; margin:10px 0; border-collapse:collapse; border:1px solid #CCC;">{rows}'."\n</table>";
-
-		$this->_template_rows = "\n\t<tr>\n\t\t".'<th style="text-align: left; border-bottom:1px solid #CCC;">{item}</th>'
-					."\n\t\t".'<td style="border-bottom:1px solid #CCC;">{result}</td>'."\n\t</tr>";
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Parse Template
 	 *
 	 * Harvests the data within the template {pseudo-variables}
@@ -380,6 +320,66 @@ class CI_Unit_test {
 		$this->_template_rows = $match[1];
 		$this->_template = str_replace($match[0], '{rows}', $this->_template);
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Get Default Template
+     *
+     * @return    string
+     */
+    protected function _default_template()
+    {
+        $this->_template = "\n" . '<table style="width:100%; font-size:small; margin:10px 0; border-collapse:collapse; border:1px solid #CCC;">{rows}' . "\n</table>";
+
+        $this->_template_rows = "\n\t<tr>\n\t\t" . '<th style="text-align: left; border-bottom:1px solid #CCC;">{item}</th>'
+            . "\n\t\t" . '<td style="border-bottom:1px solid #CCC;">{result}</td>' . "\n\t</tr>";
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Use strict comparison
+     *
+     * Causes the evaluation to use === rather than ==
+     *
+     * @param    bool $state
+     * @return    void
+     */
+    public function use_strict($state = TRUE)
+    {
+        $this->strict = (bool)$state;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Make Unit testing active
+     *
+     * Enables/disables unit testing
+     *
+     * @param    bool
+     * @return    void
+     */
+    public function active($state = TRUE)
+    {
+        $this->active = (bool)$state;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Set the template
+     *
+     * This lets us set the template to be used to display results
+     *
+     * @param    string
+     * @return    void
+     */
+    public function set_template($template)
+    {
+        $this->_template = $template;
+    }
 
 }
 

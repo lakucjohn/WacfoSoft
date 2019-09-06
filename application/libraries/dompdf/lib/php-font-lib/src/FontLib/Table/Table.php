@@ -7,9 +7,9 @@
  */
 namespace FontLib\Table;
 
-use FontLib\TrueType\File;
-use FontLib\Font;
 use FontLib\BinaryStream;
+use FontLib\Font;
+use FontLib\TrueType\File;
 
 /**
  * Generic font table.
@@ -17,46 +17,16 @@ use FontLib\BinaryStream;
  * @package php-font-lib
  */
 class Table extends BinaryStream {
+    public $data;
   /**
    * @var DirectoryEntry
    */
   protected $entry;
   protected $def = array();
 
-  public $data;
-
   final public function __construct(DirectoryEntry $entry) {
     $this->entry = $entry;
     $entry->setTable($this);
-  }
-
-  /**
-   * @return File
-   */
-  public function getFont() {
-    return $this->entry->getFont();
-  }
-
-  protected function _encode() {
-    if (empty($this->data)) {
-      Font::d("  >> Table is empty");
-
-      return 0;
-    }
-
-    return $this->getFont()->pack($this->def, $this->data);
-  }
-
-  protected function _parse() {
-    $this->data = $this->getFont()->unpack($this->def);
-  }
-
-  protected function _parseRaw() {
-    $this->data = $this->getFont()->read($this->entry->length);
-  }
-
-  protected function _encodeRaw() {
-    return $this->getFont()->write($this->data, $this->entry->length);
   }
 
   public function toHTML() {
@@ -78,6 +48,30 @@ class Table extends BinaryStream {
     return $length;
   }
 
+    protected function _encodeRaw()
+    {
+        return $this->getFont()->write($this->data, $this->entry->length);
+    }
+
+    /**
+     * @return File
+     */
+    public function getFont()
+    {
+        return $this->entry->getFont();
+    }
+
+    protected function _encode()
+    {
+        if (empty($this->data)) {
+            Font::d("  >> Table is empty");
+
+            return 0;
+        }
+
+        return $this->getFont()->pack($this->def, $this->data);
+    }
+
   final public function parse() {
     $this->entry->startRead();
 
@@ -90,4 +84,14 @@ class Table extends BinaryStream {
 
     $this->entry->endRead();
   }
+
+    protected function _parseRaw()
+    {
+        $this->data = $this->getFont()->read($this->entry->length);
+    }
+
+    protected function _parse()
+    {
+        $this->data = $this->getFont()->unpack($this->def);
+    }
 }

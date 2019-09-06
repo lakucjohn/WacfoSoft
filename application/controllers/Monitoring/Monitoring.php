@@ -56,50 +56,50 @@ class Monitoring extends AuthContentController {
 
         if (!empty($this->input->post('group_id_1'))) {
             $this->form_validation->set_rules('activities_1', 'Group 1: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_1', 'Group 1: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_1', 'Group 1: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_1', 'Group 1: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_1', 'Group 1: Action Taken', 'required');
         }
 
         if (!empty($this->input->post('group_id_1'))) {
             $this->form_validation->set_rules('activities_1', 'Group 1: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_1', 'Group 1: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_1', 'Group 1: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_1', 'Group 1: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_1', 'Group 1: Action Taken', 'required');
         }
 
         if (!empty($this->input->post('group_id_2'))) {
             $this->form_validation->set_rules('activities_2', 'Group 2: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_2', 'Group 2: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_2', 'Group 2: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_2', 'Group 2: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_2', 'Group 2: Action Taken', 'required');
         }
 
         if (!empty($this->input->post('group_id_3'))) {
             $this->form_validation->set_rules('activities_3', 'Group 3: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_3', 'Group 3: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_3', 'Group 3: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_3', 'Group 3: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_3', 'Group 3: Action Taken', 'required');
         }
 
         if (!empty($this->input->post('group_id_4'))) {
             $this->form_validation->set_rules('activities_4', 'Group 4: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_4', 'Group 4: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_4', 'Group 4: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_4', 'Group 4: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_4', 'Group 4: Action Taken', 'required');
         }
 
         if (!empty($this->input->post('group_id_5'))) {
             $this->form_validation->set_rules('activities_5', 'Group 5: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_5', 'Group 5: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_5', 'Group 5: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_5', 'Group 5: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_5', 'Group 5: Action Taken', 'required');
         }
 
         if (!empty($this->input->post('group_id_6'))) {
             $this->form_validation->set_rules('activities_6', 'Group 6: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_6', 'Group 6: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_6', 'Group 6: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_6', 'Group 6: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_6', 'Group 6: Action Taken', 'required');
         }
 
         if (!empty($this->input->post('group_id_7'))) {
             $this->form_validation->set_rules('activities_7', 'Group 7: Activities', 'required');
-            $this->form_validation->set_rules('issues_identified_7', 'Group 7: Issues Identified', 'required');
-            $this->form_validation->set_rules('action_taken_7', 'Group 7: Action Taken', 'required');
+            #$this->form_validation->set_rules('issues_identified_7', 'Group 7: Issues Identified', 'required');
+            #$this->form_validation->set_rules('action_taken_7', 'Group 7: Action Taken', 'required');
         }
 
         if ($this->form_validation->run() == FALSE) {

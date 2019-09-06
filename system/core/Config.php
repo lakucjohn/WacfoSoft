@@ -115,6 +115,20 @@ class CI_Config {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Set a config file item
+     *
+     * @param    string $item Config item key
+     * @param    string $value Config item value
+     * @return    void
+     */
+    public function set_item($item, $value)
+    {
+        $this->config[$item] = $value;
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Load Config File
 	 *
@@ -188,47 +202,6 @@ class CI_Config {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Fetch a config file item
-	 *
-	 * @param	string	$item	Config item name
-	 * @param	string	$index	Index name
-	 * @return	string|null	The configuration item or NULL if the item doesn't exist
-	 */
-	public function item($item, $index = '')
-	{
-		if ($index == '')
-		{
-			return isset($this->config[$item]) ? $this->config[$item] : NULL;
-		}
-
-		return isset($this->config[$index], $this->config[$index][$item]) ? $this->config[$index][$item] : NULL;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Fetch a config file item with slash appended (if not empty)
-	 *
-	 * @param	string		$item	Config item name
-	 * @return	string|null	The configuration item or NULL if the item doesn't exist
-	 */
-	public function slash_item($item)
-	{
-		if ( ! isset($this->config[$item]))
-		{
-			return NULL;
-		}
-		elseif (trim($this->config[$item]) === '')
-		{
-			return '';
-		}
-
-		return rtrim($this->config[$item], '/').'/';
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Site URL
 	 *
 	 * Returns base_url . index_page [. uri_string]
@@ -289,7 +262,67 @@ class CI_Config {
 		return $base_url.$this->item('index_page').$uri;
 	}
 
+    // --------------------------------------------------------------------
+
+    /**
+     * Fetch a config file item with slash appended (if not empty)
+     *
+     * @param    string $item Config item name
+     * @return    string|null    The configuration item or NULL if the item doesn't exist
+     */
+    public function slash_item($item)
+    {
+        if (!isset($this->config[$item])) {
+            return NULL;
+        } elseif (trim($this->config[$item]) === '') {
+            return '';
+        }
+
+        return rtrim($this->config[$item], '/') . '/';
+    }
+
 	// -------------------------------------------------------------
+
+    /**
+     * Fetch a config file item
+     *
+     * @param    string $item Config item name
+     * @param    string $index Index name
+     * @return    string|null    The configuration item or NULL if the item doesn't exist
+     */
+    public function item($item, $index = '')
+    {
+        if ($index == '') {
+            return isset($this->config[$item]) ? $this->config[$item] : NULL;
+        }
+
+        return isset($this->config[$index], $this->config[$index][$item]) ? $this->config[$index][$item] : NULL;
+    }
+
+    // -------------------------------------------------------------
+
+    /**
+     * Build URI string
+     *
+     * @used-by    CI_Config::site_url()
+     * @used-by    CI_Config::base_url()
+     *
+     * @param    string|string[] $uri URI string or an array of segments
+     * @return    string
+     */
+    protected function _uri_string($uri)
+    {
+        if ($this->item('enable_query_strings') === FALSE) {
+            is_array($uri) && $uri = implode('/', $uri);
+            return ltrim($uri, '/');
+        } elseif (is_array($uri)) {
+            return http_build_query($uri);
+        }
+
+        return $uri;
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Base URL
@@ -322,32 +355,6 @@ class CI_Config {
 		return $base_url.$this->_uri_string($uri);
 	}
 
-	// -------------------------------------------------------------
-
-	/**
-	 * Build URI string
-	 *
-	 * @used-by	CI_Config::site_url()
-	 * @used-by	CI_Config::base_url()
-	 *
-	 * @param	string|string[]	$uri	URI string or an array of segments
-	 * @return	string
-	 */
-	protected function _uri_string($uri)
-	{
-		if ($this->item('enable_query_strings') === FALSE)
-		{
-			is_array($uri) && $uri = implode('/', $uri);
-			return ltrim($uri, '/');
-		}
-		elseif (is_array($uri))
-		{
-			return http_build_query($uri);
-		}
-
-		return $uri;
-	}
-
 	// --------------------------------------------------------------------
 
 	/**
@@ -360,20 +367,6 @@ class CI_Config {
 	{
 		$x = explode('/', preg_replace('|/*(.+?)/*$|', '\\1', BASEPATH));
 		return $this->slash_item('base_url').end($x).'/';
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set a config file item
-	 *
-	 * @param	string	$item	Config item key
-	 * @param	string	$value	Config item value
-	 * @return	void
-	 */
-	public function set_item($item, $value)
-	{
-		$this->config[$item] = $value;
 	}
 
 }

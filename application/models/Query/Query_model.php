@@ -11,6 +11,7 @@ class Query_model extends CI_Model
     public function execute_query($sql)
     {
         $query = $this->db->query($sql);
+//        $query = $this->db->where('STATUS',TRUE);
 
         if ($query) {
             return $query;
@@ -19,9 +20,21 @@ class Query_model extends CI_Model
         }
     }
 
+    public function get_number_of_results($sql)
+    {
+        $query = $this->db->query($sql);
+//        $query = $this->db->where('STATUS',TRUE);
+
+        if ($query) {
+            return $query->num_rows();
+        } else {
+            return $this->db->error();
+        }
+    }
+
     public function search_groups($content_to_search)
     {
-        $this->db->like('NAME', $content_to_search);
+        $this->db->like('GROUP_NAME', $content_to_search);
         $this->db->or_like('DATE_OF_REGISTRATION', $content_to_search);
         $this->db->or_like('GROUP_ID', $content_to_search);
         $this->db->where('STATUS', TRUE);
@@ -51,6 +64,7 @@ class Query_model extends CI_Model
         $this->db->like('NAME', $content_to_search);
         $this->db->or_like('DATE_OF_BIRTH', $content_to_search);
         $this->db->or_like('DATE_OF_JOINING', $content_to_search);
+        $this->db->or_like('PROJECT', $content_to_search);
         $this->db->or_like('MOTHER', $content_to_search);
         $this->db->or_like('FATHER', $content_to_search);
         $this->db->or_like('GUARDIAN', $content_to_search);
@@ -309,7 +323,6 @@ class Query_model extends CI_Model
         $this->db->like('DATE_OF_VISIT', $content_to_search);
         $this->db->or_like('KIND_OF_VISIT', $content_to_search);
         $this->db->or_like('CHILD_ID_VISITED', $content_to_search);
-        $this->db->or_like('PROJECT', $content_to_search);
         $this->db->or_like('VILLAGE', $content_to_search);
         $this->db->or_like('PARISH', $content_to_search);
         $this->db->or_like('SUBCOUNTY', $content_to_search);

@@ -82,8 +82,9 @@ foreach ($default_value_array->result() as $default) {
                                 <?php
                                 foreach ($grouping_list->result() as $row) {
                                     ?>
-                                    <option value="<?php echo $row->GROUP_ID; ?>" title="<?php echo $row->NAME; ?>"
-                                            <?php if ($row->GROUP_ID == $default->GROUPS){ ?>selected<?php } ?>><?php echo $row->NAME; ?></option>
+                                    <option value="<?php echo $row->GROUP_ID; ?>"
+                                            title="<?php echo $row->GROUP_NAME; ?>"
+                                            <?php if ($row->GROUP_ID == $default->GROUPS){ ?>selected<?php } ?>><?php echo $row->GROUP_NAME; ?></option>
                                     <?php
                                 }
                                 ?>

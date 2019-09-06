@@ -24,19 +24,19 @@ gulp.task('vendor', function() {
       '!./node_modules/bootstrap/dist/css/bootstrap-grid*',
       '!./node_modules/bootstrap/dist/css/bootstrap-reboot*'
     ])
-    .pipe(gulp.dest('./vendor/bootstrap'))
+      .pipe(gulp.dest('./vendor/bootstrap'));
   // ChartJS
   gulp.src([
       './node_modules/chart.js/dist/*.js'
     ])
-    .pipe(gulp.dest('./vendor/chart.js'))
+      .pipe(gulp.dest('./vendor/chart.js'));
   // DataTables
   gulp.src([
       './node_modules/datatables.net/js/*.js',
       './node_modules/datatables.net-bs4/js/*.js',
       './node_modules/datatables.net-bs4/css/*.css'
     ])
-    .pipe(gulp.dest('./vendor/datatables/'))
+      .pipe(gulp.dest('./vendor/datatables/'));
   // Font Awesome
   gulp.src([
       './node_modules/font-awesome/**/*',
@@ -45,13 +45,13 @@ gulp.task('vendor', function() {
       '!./node_modules/font-awesome/.*',
       '!./node_modules/font-awesome/*.{txt,json,md}'
     ])
-    .pipe(gulp.dest('./vendor/font-awesome'))
+      .pipe(gulp.dest('./vendor/font-awesome'));
   // jQuery
   gulp.src([
       './node_modules/jquery/dist/*',
       '!./node_modules/jquery/dist/core.js'
     ])
-    .pipe(gulp.dest('./vendor/jquery'))
+      .pipe(gulp.dest('./vendor/jquery'));
   // jQuery Easing
   gulp.src([
       './node_modules/jquery.easing/*.js'

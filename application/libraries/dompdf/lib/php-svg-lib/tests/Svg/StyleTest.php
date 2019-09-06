@@ -8,8 +8,8 @@
 
 namespace Svg\Tests;
 
-use Svg\Style;
 use PHPUnit\Framework\TestCase;
+use Svg\Style;
 
 class StyleTest extends TestCase
 {

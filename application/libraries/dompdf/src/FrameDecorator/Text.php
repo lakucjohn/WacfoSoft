@@ -10,8 +10,8 @@
 namespace Dompdf\FrameDecorator;
 
 use Dompdf\Dompdf;
-use Dompdf\Frame;
 use Dompdf\Exception;
+use Dompdf\Frame;
 
 /**
  * Decorates Frame objects for text layout
@@ -58,6 +58,22 @@ class Text extends AbstractFrameDecorator
     }
 
     /**
+     * @param $spacing
+     */
+    function set_text_spacing($spacing)
+    {
+        $style = $this->_frame->get_style();
+
+        $this->_text_spacing = $spacing;
+        $char_spacing = (float)$style->length_in_pt($style->letter_spacing);
+
+        // Re-adjust our width to account for the change in spacing
+        $style->width = $this->_dompdf->getFontMetrics()->getTextWidth($this->get_text(), $style->font_family, $style->font_size, $spacing, $char_spacing);
+    }
+
+    //........................................................................
+
+    /**
      * @return string
      */
     function get_text()
@@ -78,8 +94,6 @@ class Text extends AbstractFrameDecorator
 
         return $this->_frame->get_node()->data;
     }
-
-    //........................................................................
 
     /**
      * Vertical margins & padding do not apply to text frames
@@ -122,20 +136,6 @@ class Text extends AbstractFrameDecorator
         $pb[3] = $pb["h"] = $this->_frame->get_style()->height;
 
         return $pb;
-    }
-
-    /**
-     * @param $spacing
-     */
-    function set_text_spacing($spacing)
-    {
-        $style = $this->_frame->get_style();
-
-        $this->_text_spacing = $spacing;
-        $char_spacing = (float)$style->length_in_pt($style->letter_spacing);
-
-        // Re-adjust our width to account for the change in spacing
-        $style->width = $this->_dompdf->getFontMetrics()->getTextWidth($this->get_text(), $style->font_family, $style->font_size, $spacing, $char_spacing);
     }
 
     /**

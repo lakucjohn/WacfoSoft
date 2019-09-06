@@ -66,6 +66,20 @@ class CI_Cache_apc extends CI_Driver {
 
 	// ------------------------------------------------------------------------
 
+    /**
+     * is_supported()
+     *
+     * Check to see if APC is available on this system, bail if it isn't.
+     *
+     * @return    bool
+     */
+    public function is_supported()
+    {
+        return (extension_loaded('apc') && ini_get('apc.enabled'));
+    }
+
+    // ------------------------------------------------------------------------
+
 	/**
 	 * Get
 	 *
@@ -199,19 +213,5 @@ class CI_Cache_apc extends CI_Driver {
 		}
 
 		return FALSE;
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * is_supported()
-	 *
-	 * Check to see if APC is available on this system, bail if it isn't.
-	 *
-	 * @return	bool
-	 */
-	public function is_supported()
-	{
-		return (extension_loaded('apc') && ini_get('apc.enabled'));
 	}
 }

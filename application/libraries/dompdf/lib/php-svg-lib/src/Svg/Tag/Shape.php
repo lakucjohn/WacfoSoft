@@ -8,8 +8,6 @@
 
 namespace Svg\Tag;
 
-use Svg\Style;
-
 class Shape extends AbstractTag
 {
     protected function before($attributes)

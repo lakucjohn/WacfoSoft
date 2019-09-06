@@ -115,12 +115,92 @@ class HygieneAndNutrition_model extends CI_Model{
                             <td>PLATE DRYING_RACK</td>
                         </tr>
                         <tr>
-                            <td>' . $row->PIT_LATRINE . '</td>
-                            <td>' . $row->RUBBISH_PIT . '</td>
-                            <td>' . $row->BATHING_SHELTER . '</td>
-                            <td>' . $row->TIPPY_TAP . '</td>
-                            <td>' . $row->PLATE_DRYING_RACK . '</td>
-                        </tr>
+                            ';
+            if ($row->PIT_LATRINE == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->PIT_LATRINE == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->PIT_LATRINE == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->PIT_LATRINE == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->PIT_LATRINE == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->PIT_LATRINE == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+
+            if ($row->RUBBISH_PIT == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->RUBBISH_PIT == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->RUBBISH_PIT == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->RUBBISH_PIT == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->RUBBISH_PIT == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->RUBBISH_PIT == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+
+            if ($row->BATHING_SHELTER == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->BATHING_SHELTER == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->BATHING_SHELTER == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->BATHING_SHELTER == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->BATHING_SHELTER == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->BATHING_SHELTER == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+
+            if ($row->TIPPY_TAP == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->TIPPY_TAP == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->TIPPY_TAP == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->TIPPY_TAP == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->TIPPY_TAP == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->TIPPY_TAP == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+
+            if ($row->PLATE_DRYING_RACK == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->PLATE_DRYING_RACK == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->PLATE_DRYING_RACK == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->PLATE_DRYING_RACK == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->PLATE_DRYING_RACK == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->PLATE_DRYING_RACK == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            $output .= '</tr>
                         <tr>
                             <td colspan="5">&nbsp;</td>
                         </tr>
@@ -131,13 +211,124 @@ class HygieneAndNutrition_model extends CI_Model{
                             <td>MAIZE CRIB</td>
                             <td>DRYING RACK</td>
                         </tr>
-                        <tr>
-                            <td>' . $row->KITCHEN_GARDEN . '</td>
-                            <td>' . $row->FRUIT_TREES . '</td>
-                            <td>' . $row->NRM_PRACTICES . '</td>
-                            <td>' . $row->MAIZE_CRIB . '</td>
-                            <td>' . $row->DRYING_RACK . '</td>
-                        </tr>
+                        <tr>';
+
+//                            if($row->KITCHEN_GARDEN=="1"){
+//                                $output .= '<td>Absent</td>';
+//                            }else if($row->KITCHEN_GARDEN=="RB"){
+//                                $output .= '<td>Raise Bed</td>';
+//                            }else if($row->KITCHEN_GARDEN=="DD"){
+//                                $output .= '<td>Double dug</td>';
+//                            }else if($row->KITCHEN_GARDEN=="SB"){
+//                                $output .= '<td>Sunken Bed</td>';
+//                            }else if($row->KITCHEN_GARDEN=="DM"){
+//                                $output .= '<td>Ditch Method</td>';
+//                            }else if($row->KITCHEN_GARDEN=="M"){
+//                                $output .= '<td>Mandella</td>';
+//                            }else{
+//                                $output .= '<td>N/A</td>';
+//                            }
+
+            if ($row->KITCHEN_GARDEN == "1") {
+                $output .= '<td>Absent</td>';
+            } else {
+                $kitchen_garden = explode(',', $row->KITCHEN_GARDEN);
+                $selected_kitchen_garden_set = array();
+
+                if (count($kitchen_garden) == 0) {
+                    $output .= '<td>N/A</td>';
+                } else {
+                    if (in_array('RB', $kitchen_garden)) {
+                        array_push($selected_kitchen_garden_set, 'Raise Bed');
+                    }
+                    if (in_array('DD', $kitchen_garden)) {
+                        array_push($selected_kitchen_garden_set, 'Double dug');
+                    }
+                    if (in_array('SB', $kitchen_garden)) {
+                        array_push($selected_kitchen_garden_set, 'Sunken Bed');
+                    }
+                    if (in_array('DM', $kitchen_garden)) {
+                        array_push($selected_kitchen_garden_set, 'Ditch Method');
+                    }
+                    if (in_array('M', $kitchen_garden)) {
+                        array_push($selected_kitchen_garden_set, 'Mandella');
+                    }
+
+                    #$output .= implode(',',$selected_kitchen_garden_set);
+                    $output .= '<td>' . implode(',', $selected_kitchen_garden_set) . '</td>';
+                }
+            }
+
+            if ($row->FRUIT_TREES == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->FRUIT_TREES == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->FRUIT_TREES == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->FRUIT_TREES == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->FRUIT_TREES == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->FRUIT_TREES == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            if ($row->NRM_PRACTICES == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->NRM_PRACTICES == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->NRM_PRACTICES == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->NRM_PRACTICES == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->NRM_PRACTICES == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->NRM_PRACTICES == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            if ($row->MAIZE_CRIB == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->MAIZE_CRIB == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->MAIZE_CRIB == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->MAIZE_CRIB == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->MAIZE_CRIB == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->MAIZE_CRIB == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            if ($row->DRYING_RACK == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->DRYING_RACK == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->DRYING_RACK == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->DRYING_RACK == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->DRYING_RACK == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->DRYING_RACK == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+//                            <td>' . $row->KITCHEN_GARDEN . '</td>
+//                            <td>' . $row->FRUIT_TREES . '</td>
+//                            <td>' . $row->NRM_PRACTICES . '</td>
+//                            <td>' . $row->MAIZE_CRIB . '</td>
+//                            <td>' . $row->DRYING_RACK . '</td>
+            $output .= '</tr>
                         <tr>
                             <td colspan="5">&nbsp;</td>
                         </tr>
@@ -146,13 +337,95 @@ class HygieneAndNutrition_model extends CI_Model{
                             <td>GRANARY</td>
                             <td>PAPYRUS MAT</td>
                             <td>EARTH FLOOR</td>
+                            <td>ENERGY SAVING STOVE</td>
                         </tr>
-                        <tr>
-                            <td>' . $row->TAPAULIN . '</td>
-                            <td>' . $row->GRANARY . '</td>
-                            <td>' . $row->PAPYRUS_MAT . '</td>
-                            <td>' . $row->EARTH_FLOOR . '</td>
-                        </tr>
+                        <tr>';
+
+            if ($row->TAPAULIN == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->TAPAULIN == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->TAPAULIN == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->TAPAULIN == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->TAPAULIN == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->TAPAULIN == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            if ($row->GRANARY == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->GRANARY == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->GRANARY == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->GRANARY == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->GRANARY == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->GRANARY == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            if ($row->PAPYRUS_MAT == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->PAPYRUS_MAT == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->PAPYRUS_MAT == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->PAPYRUS_MAT == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->PAPYRUS_MAT == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->PAPYRUS_MAT == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            if ($row->EARTH_FLOOR == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->EARTH_FLOOR == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->EARTH_FLOOR == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->EARTH_FLOOR == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->EARTH_FLOOR == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->EARTH_FLOOR == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+
+            if ($row->ENERGY_SAVING_STOVE == 1) {
+                $output .= '<td>Absent</td>';
+            } else if ($row->ENERGY_SAVING_STOVE == 2) {
+                $output .= '<td>New and in use</td>';
+            } else if ($row->ENERGY_SAVING_STOVE == 3) {
+                $output .= '<td>Present and in use</td>';
+            } else if ($row->ENERGY_SAVING_STOVE == 4) {
+                $output .= '<td>Present but not in use</td>';
+            } else if ($row->ENERGY_SAVING_STOVE == 5) {
+                $output .= '<td>Renovated and in use</td>';
+            } else if ($row->ENERGY_SAVING_STOVE == 6) {
+                $output .= '<td>Renovated but not in use</td>';
+            } else {
+                $output .= '<td>N/A</td>';
+            }
+//                            <td>' . $row->TAPAULIN . '</td>
+//                            <td>' . $row->GRANARY . '</td>
+//                            <td>' . $row->PAPYRUS_MAT . '</td>
+//                            <td>' . $row->EARTH_FLOOR . '</td>
+//                            <td>' . $row->ENERGY_SAVING_STOVE . '</td>
+            $output .= '</tr>
                     </table>
                     
                 </td>

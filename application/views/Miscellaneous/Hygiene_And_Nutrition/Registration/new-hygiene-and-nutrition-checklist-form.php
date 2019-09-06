@@ -48,15 +48,17 @@
         <div class="row">
             <div class="col-md-4">
                 <label for="parish">Parish</label>
-                <input type="text" class="form-control" name="parish" id="parish" value="Parish"/>
+                <input type="text" class="form-control" name="parish" id="parish" placeholder="Parish" required/>
             </div>
             <div class="col-md-4">
                 <label for="subcounty">Sub-County</label>
-                <input type="text" class="form-control" name="subcounty" id="subcounty" value="SubCounty"/>
+                <input type="text" class="form-control" name="subcounty" id="subcounty" placeholder="SubCounty"
+                       required/>
             </div>
             <div class="col-md-4">
                 <label for="district">District</label>
-                <input type="text" class="form-control" name="district" id="district" value="District"/>
+                <input type="text" class="form-control" name="district" id="district" value="Amuru"
+                       placeholder="District" required/>
             </div>
         </div><br>
     </div>
@@ -66,7 +68,7 @@
     <br>
     <div class="document-part-content">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <strong><em>Note: Use the following key below to fill the table appropriately</em></strong><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 = Absent <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 = New and in use <br>
@@ -75,12 +77,30 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 = Renovated and in use <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 = Renovated but not in use <br>
             </div>
+            <div class="col-md-6">
+                <strong><em>Note: Use the following key below to fill kitchen garden field</em></strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 = Absent <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RB = Raise Bed <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DD = Double dug <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SB = Sunken Bed <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DM = Ditch Method <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M = Mandella <br>
+            </div>
         </div>
         <div id="checklist_table">
 
         </div>
     </div>
 
+    <hr>
+    <div class="document-part-content">
+        <div class="row">
+            <div class="col-md-12">
+                <label for="activities">Activities: </label>
+                <textarea name="activities" id="activities" class="form-control" rows="4"></textarea>
+            </div>
+        </div>
+    </div>
     <hr>
     <div class="document-part-header">Details of the person accountable for this information</div>
 

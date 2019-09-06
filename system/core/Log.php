@@ -48,68 +48,60 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class CI_Log {
 
+    /**
+     * mbstring.func_overload flag
+     *
+     * @var    bool
+     */
+    protected static $func_overload;
 	/**
 	 * Path to save log files
 	 *
 	 * @var string
 	 */
 	protected $_log_path;
-
 	/**
 	 * File permissions
 	 *
 	 * @var	int
 	 */
 	protected $_file_permissions = 0644;
-
 	/**
 	 * Level of logging
 	 *
 	 * @var int
 	 */
 	protected $_threshold = 1;
-
 	/**
 	 * Array of threshold levels to log
 	 *
 	 * @var array
 	 */
 	protected $_threshold_array = array();
-
 	/**
 	 * Format of timestamp for log files
 	 *
 	 * @var string
 	 */
 	protected $_date_fmt = 'Y-m-d H:i:s';
-
 	/**
 	 * Filename extension
 	 *
 	 * @var	string
 	 */
 	protected $_file_ext;
-
 	/**
 	 * Whether or not the logger can write to the log files
 	 *
 	 * @var bool
 	 */
 	protected $_enabled = TRUE;
-
 	/**
 	 * Predefined logging levels
 	 *
 	 * @var array
 	 */
 	protected $_levels = array('ERROR' => 1, 'DEBUG' => 2, 'INFO' => 3, 'ALL' => 4);
-
-	/**
-	 * mbstring.func_overload flag
-	 *
-	 * @var	bool
-	 */
-	protected static $func_overload;
 
 	// --------------------------------------------------------------------
 

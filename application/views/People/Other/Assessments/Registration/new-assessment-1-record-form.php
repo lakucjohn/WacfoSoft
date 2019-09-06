@@ -72,7 +72,6 @@
                     <input type="date" name="date_of_recording" id="date_of_recording" class="form-control" />
                 </div>
             </div><br>
-
             <div class="row">
                 <div class="col-md-12">
                     <label for="cbr_worker">Name of the CBR Worker (Information on the child obtained by CBR Worker):</label>
@@ -83,16 +82,39 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="child_id">Child ID: </label>
-                    <select name="child_id" id="child_id" class="form-control"
-                            onchange="show_child_details(this.value)">
-                        <option value="">Select the child</option>
-                        <?php
-                        foreach ($children_list->result() as $row) {
-                            echo '<option value="' . $row->CHILD_ID . '">' . $row->CHILD_ID . '</option>';
-                        }
+                    <?php
+                    if (isset($selected_child_id)) {
                         ?>
-                    </select><br>
-                    <input type="text" name="child_name" id="child_name" class="form-control" value="Details of the selected child will appear here" disabled />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" name="child_id" id="child_id"
+                                       value="<?php echo $selected_child_id; ?>" class="form-control"/>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="child_name" id="child_name" value="<?php echo $child_name; ?>"
+                                       class="form-control"/>
+                            </div>
+
+                        </div>
+                        <?php
+                    } else if (isset($children_list)) {
+                        ?>
+                        <select name="child_id" id="child_id" class="form-control"
+                                onchange="show_child_details(this.value);">
+                            <option value="">Select a child</option>
+                            <?php
+                            foreach ($children_list->result() as $row) {
+                                echo '<option value="' . $row->CHILD_ID . '">' . $row->CHILD_ID . '</option>';
+                            }
+                            ?>
+                        </select><br>
+                        <input type="text" name="child_name" id="child_name"
+                               value="The details of the selected child will appear here" class="form-control"
+                               disabled/>
+
+                        <?php
+                    }
+                    ?>
 
                 </div>
                 <div class="col-md-6">

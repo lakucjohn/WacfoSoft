@@ -19,6 +19,7 @@ class Membership_model extends CI_Model{
 
     function fetch(){
         $this->db->order_by('MEMBERSHIP_ID', 'ASC');
+        $this->db->where('STATUS', TRUE);
 
         return $this->db->get('MEMBERSHIP');
     }
@@ -220,14 +221,14 @@ class Membership_model extends CI_Model{
     {
 
         #Obtaining the group name
-        $this->db->select('NAME');
+        $this->db->select('GROUP_NAME');
         $this->db->where('GROUP_ID', $group_id);
         $this->db->limit(1);
 
         $child_data = $this->db->get('GROUPS');
 
         foreach ($child_data->result() as $row) {
-            $group_name = $row->NAME;
+            $group_name = $row->GROUP_NAME;
         }
 
         return $group_name;
@@ -603,6 +604,7 @@ class Membership_model extends CI_Model{
                     <th>Granary</th>
                     <th>Papyrus Mat</th>
                     <th>Earth Floor</th>
+                    <th>Energy Saving Stove</th>
                     <th>Date</th>
                 </tr>
         ';
@@ -618,7 +620,7 @@ class Membership_model extends CI_Model{
                 <td><div class="col-md-12"><input type="number" name="plate_drying_rack' . $row->ID . '" id="plate_drying_rack' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="number" name="rubbish_pit' . $row->ID . '" id="rubbish_pit' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="number" name="bathroom_shelter' . $row->ID . '" id="bathroom_shelter' . $row->ID . '" style="width: 45px;" /> </div> </td>
-                <td><div class="col-md-12"><input type="number" name="kitchen_garden' . $row->ID . '" id="kitchen_garden' . $row->ID . '" style="width: 45px;" /> </div> </td>
+                <td><div class="col-md-12"><input type="text" name="kitchen_garden' . $row->ID . '" id="kitchen_garden' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="number" name="fruit_trees' . $row->ID . '" id="fruit_trees' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="number" name="nrm_practices' . $row->ID . '" id="nrm_practices' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="number" name="maize_crib' . $row->ID . '" id="maize_crib' . $row->ID . '" style="width: 45px;" /> </div> </td>
@@ -627,6 +629,7 @@ class Membership_model extends CI_Model{
                 <td><div class="col-md-12"><input type="number" name="granary' . $row->ID . '" id="granary' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="number" name="papyrus_mat' . $row->ID . '" id="papyrus_mat' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="number" name="earth_floor' . $row->ID . '" id="earth_floor' . $row->ID . '" style="width: 45px;" /> </div> </td>
+                <td><div class="col-md-12"><input type="number" name="energy_saving_stove' . $row->ID . '" id="energy_saving_stove' . $row->ID . '" style="width: 45px;" /> </div> </td>
                 <td><div class="col-md-12"><input type="date" name="check_date' . $row->ID . '" id="check_date' . $row->ID . '" style="width: 145px;" /> </div> </td>
             </tr>
             ';
@@ -724,6 +727,15 @@ class Membership_model extends CI_Model{
 //        return print_r($query->result());
 
         $output = '
+<div class="document-part-header">
+    FISH FARMING
+</div>
+<hr>
+<div class="document-part-content">
+    <div class="row">
+        <div id="fish_farming_table"></div>
+
+    
             <table class="table table-bordered table-responsive">
                 <tr style="text-align: left;">
                     <td colspan="8"><div class="row"><div class="col-md-6" style="text-align: right;"> Q1 - % Increase in value of sales (UGX)</div><div class="col-md-6"> <input type="number" name="" id="" class="form-control" /></div></div></td>
@@ -835,7 +847,9 @@ class Membership_model extends CI_Model{
             }
         }
 
-        $output .= '</table>';
+        $output .= '</table>
+                   </div>
+                </div>';
 
         return $output;
 
@@ -905,122 +919,35 @@ class Membership_model extends CI_Model{
 
     }
 
-    function fetch_associated_group_members_for_vegetable_production($group_id)
+    public function get_support_list_for_this_group($group_id)
     {
 
-        $this->db->where('GROUPS', $group_id);
-        $this->db->order_by('NAME', 'ASC');
+        $this->db->where('BENEFICIARY', $group_id);
+        $this->db->order_by('DATE_OF_SUPPORT', 'DESC');
 
-        $query = $this->db->get('MEMBERSHIP');
+        $query = $this->db->get('SUPPORT_RENDERED');
 
-//        return print_r($query->result());
-
-        $output = '
-            <table class="table table-bordered table-responsive">
-            <tr>
-                <th>Individual ID</th>
-                <th>Individual Name</th>
-                <th>Sex</th>
-                <th>Vulnerable</th>
-                <th colspan="4">Q1. Vegetable 1: Onion</th>
-                <th colspan="4">Q6. Vegetable 2: Tomatoes</th>
-                <th colspan="4">Q11. Vegetable 3: Egg Plants</th>
-                <th colspan="4">Q16. Vegetable 4: Okra</th>
-            </tr>';
-
+        $output = '';
         foreach ($query->result() as $row) {
-
-            $output .= '<tr>
-                <td>' . $row->MEMBERSHIP_ID . '</td>
-                <td>' . $row->NAME . '</td>
-                <td>' . $row->SEX . '</td>
-                <td>' . $row->VULNERABILITY . '</td>
-                <td>
-                    <div class="col-md-12">
-                        ACRES: <input type="number" name="onions_acres' . $row->ID . '" id="onions_acres' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        YIELD: <input type="number" name="onions_yield' . $row->ID . '" id="onions_yield' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        SOLD: <input type="number" name="onions_sold' . $row->ID . '" id="onions_sold' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        UGX: <input type="number" name="onions_amount_ugx' . $row->ID . '" id="onions_amount_ugx' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        ACRES: <input type="number" name="tomatoes_acres' . $row->ID . '" id="tomatoes_acres' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        YIELD: <input type="number" name="tomatoes_yield' . $row->ID . '" id="tomatoes_yield' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        SOLD: <input type="number" name="tomatoes_sold' . $row->ID . '" id="tomatoes_sold' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        UGX: <input type="number" name="tomatoes_amount_ugx' . $row->ID . '" id="tomatoes_amount_ugx' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        ACRES: <input type="number" name="egg_plants_acres' . $row->ID . '" id="egg_plants_acres' . $row->ID . '" style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        YIELD: <input type="number" name="egg_plants_yield' . $row->ID . '" id="egg_plants_yield' . $row->ID . '"  style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        SOLD: <input type="number" name="egg_plants_sold' . $row->ID . '" id="egg_plants_sold' . $row->ID . '"  style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        UGX: <input type="number" name="egg_plants_amount_ugx' . $row->ID . '" id="egg_plants_amount_ugx' . $row->ID . '"  style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        ACRES: <input type="number" name="okra_acres' . $row->ID . '" id="okra_acres' . $row->ID . '"  style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        YIELD: <input type="number" name="okra_yield' . $row->ID . '" id="okra_yield' . $row->ID . '"  style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        SOLD: <input type="number" name="okra_sold' . $row->ID . '" id="okra_sold' . $row->ID . '"  style="width: 45px;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="col-md-12">
-                        UGX: <input type="number" name="okra_amount_ugx' . $row->ID . '" id="okra_amount_ugx' . $row->ID . '"  style="width: 45px;" />
-                    </div>
-                </td>
-            </tr>';
+            if (!$this->support_outcome_exists($row->ID, $row->BENEFICIARY)) {
+                $output .= '<option value="' . $row->ID . '">' . $row->SUPPORT . ' --> ' . $row->DATE_OF_SUPPORT . '</option>';
+            }
         }
+    }
 
-        $output .= '</table>';
+    public function support_outcome_exists($support_id, $beneficiary)
+    {
 
-        return $output;
+        $this->db->where('SUPPORT_ID', $support_id);
+        $this->db->where('BENEFICIARY', $beneficiary);
+
+        $query = $this->db->get('SUPPORT_OUTCOMES');
+
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function fetch_associated_group_members_for_crop_production($group_id)
@@ -1033,17 +960,87 @@ class Membership_model extends CI_Model{
 
 //        return print_r($query->result());
 
+
         $output = '
+        <div class="document-part-header">
+            Table 2.0: % Increase in target group\'s knowledge on problems affecting vegetable/crop production and challenges on the marketing aspect
+            </div>
+        
+            <hr>
+        
+            <div class="document-part-content">
+        
+                <div class="col-md-12">
+                    <table class="table table-bordered table-responsive">
+                        <tr>
+                            <td style="width: 50%;">
+                                <div class="col-md-12">
+                                    Q - 12: Mention problems affecting crop production<br><br>
+                                    <textarea class="form-control" name="problems_affecting_crop_production"
+                                              id="problems_affecting_crop_production"></textarea>
+        
+                                </div>
+                            </td>
+                            <td style="width: 50%;">
+                                <div class="col-md-12">
+                                    Q - 12: Problems hindering marketing crop products<br><br>
+                                    <textarea class="form-control" name="problems_hindering_marketing_crop_products"
+                                              id="problems_hindering_marketing_crop_products"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+           
+            <hr>
+    <div class="document-part-header">
+        Table 4.0: Crop Product
+    </div>
+    <hr>
+    <div class="document-part-content">
+        <table class="table table-bordered table-responsive">
+            <tr>
+                <td style="width: 50%;">
+                    <div class="col-md-12">
+                        % increase in value of sales (UGX)
+                    </div>
+                </td>
+                <td style="width: 50%;">
+                    <div class="col-md-12">
+                        <input type="number" name="percentage_increase_in_sale_of_crops"
+                               id="percentage_increase_in_sale_of_crops" class="form-control"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">
+                    <div class="col-md-12">
+                        % increase in productivity (Kg/Acre)
+                    </div>
+                </td>
+                <td style="width: 50%;">
+                    <div class="col-md-12">
+                        <input type="number" name="percentage_increase_in_productivity_of_crops"
+                               id="percentage_increase_in_productivity_of_crops" class="form-control"/>
+                    </div>
+                </td>
+            </tr>
+        </table><br>
+
+    </div>
+    <hr>';
+        $output .= '<div id="crop_production_table">
             <table class="table table-bordered table-responsive">
             <tr>
                 <th>Individual ID</th>
                 <th>Individual Name</th>
                 <th>Sex</th>
-                <th>Vulnerable</th>
-                <th colspan="4">Q21. Crop 1: Soya Beans</th>
-                <th colspan="4">Q26. Crop 2: Groundnuts</th>
-                <th colspan="4">Q31. Crop 3: Sesames</th>
-                <th colspan="4">Q36. Crop 4: Beans</th>
+                <th>Vulnerability</th>
+                <th colspan="5">Q21. Crop 1: Soya Beans</th>
+                <th colspan="5">Q26. Crop 2: Simsim</th>
+                <th colspan="5">Q31. Crop 3: Sesames</th>
+                <th colspan="5">Q36. Crop 4: Beans</th>
             </tr>';
 
         foreach ($query->result() as $row) {
@@ -1052,7 +1049,12 @@ class Membership_model extends CI_Model{
                 <td>' . $row->MEMBERSHIP_ID . '</td>
                 <td>' . $row->NAME . '</td>
                 <td>' . $row->SEX . '</td>
-                <td>' . $row->VULNERABILITY . '</td>
+                <td>' . $this->get_vulnerability_name($row->VULNERABILITY) . '</td>
+                <td>
+                    <div class="col-md-12">
+                        Support: <input type="text" name="soya_beans_support' . $row->ID . '" id="soya_beans_support' . $row->ID . '" style="width: 45px;" />
+                    </div>
+                </td>
                 <td>
                     <div class="col-md-12">
                         ACRES: <input type="number" name="soya_beans_acres' . $row->ID . '" id="soya_beans_acres' . $row->ID . '"  style="width: 45px;" />
@@ -1075,22 +1077,32 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        ACRES: <input type="number" name="ground_nuts_acres' . $row->ID . '" id="ground_nuts_acres' . $row->ID . '"  style="width: 45px;" />
+                        Support: <input type="text" name="simsim_support' . $row->ID . '" id="ground_nuts_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
                     <div class="col-md-12">
-                        YIELD: <input type="number" name="ground_nuts_yield' . $row->ID . '" id="ground_nuts_yield' . $row->ID . '"  style="width: 45px;" />
+                        ACRES: <input type="number" name="simsim_acres' . $row->ID . '" id="ground_nuts_acres' . $row->ID . '"  style="width: 45px;" />
                     </div>
                 </td>
                 <td>
                     <div class="col-md-12">
-                        SOLD: <input type="number" name="ground_nuts_sold' . $row->ID . '" id="ground_nuts_sold' . $row->ID . '"  style="width: 45px;" />
+                        YIELD: <input type="number" name="simsim_yield' . $row->ID . '" id="ground_nuts_yield' . $row->ID . '"  style="width: 45px;" />
                     </div>
                 </td>
                 <td>
                     <div class="col-md-12">
-                        UGX: <input type="number" name="ground_nuts_amount_ugx' . $row->ID . '" id="ground_nuts_amount_ugx' . $row->ID . '"  style="width: 45px;" />
+                        SOLD: <input type="number" name="simsim_sold' . $row->ID . '" id="ground_nuts_sold' . $row->ID . '"  style="width: 45px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        UGX: <input type="number" name="simsim zmmm_amount_ugx' . $row->ID . '" id="ground_nuts_amount_ugx' . $row->ID . '"  style="width: 45px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support: <input type="text" name="sesames_support' . $row->ID . '" id="sesames_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1115,6 +1127,11 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
+                        Support: <input type="text" name="beans_support' . $row->ID . '" id="beans_support' . $row->ID . '" style="width: 45px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
                         ACRES: <input type="number" name="beans_acres' . $row->ID . '" id="beans_acres' . $row->ID . '"  style="width: 45px;" />
                     </div>
                 </td>
@@ -1135,10 +1152,162 @@ class Membership_model extends CI_Model{
                 </td>
             </tr>';
         }
+        $output .= '</table></div>';
+        $output .= '<hr>
 
-        $output .= '</table>';
+            <hr>
+            <div class="document-part-header">Table 5.0: Number of Misean Cara beneficiaries adopting new technologies in vegetables and crop production</div>
+            <hr>
+            <div class="document-part-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Did you use any of the following technologies during your production process?</strong>
+                    </div>
+                </div><br>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-responsive">
+                            <tr>
+                                <th>Q - 41: Did you use any improved seed during the year in your production</th>
+                                <th>Q - 42: Did you use underground water in your crop production process during the dry season?</th>
+                                <th>Q - 43: Did you use any pesticides on your crops(vegetables)?</th>
+                                <th>Q - 44: Use of farm imlements e.g. zero tillage during land opening?</th>
+                                <th>Q - 45: Have you been using any method of post-harvest handling and processing techniques?</th>
+                                <th>Q - 46: Did you have any opportunity in planting your crops in Rows/Lines as oppsed to random
+                                    sowing/scattering?
+                                </th>
+                                <th>Q - 47: What other techniques did you use apart from the ones discussed here? (Name them)</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="1"/>Yes<br>
+                                        <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_underground_water_during_dry_season"
+                                               id="used_underground_water_during_dry_season" value="1"/>Yes<br>
+                                        <input type="radio" name="used_underground_water_during_dry_season"
+                                               id="used_underground_water_during_dry_season" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_pesticides" id="used_pesticides" value="1"/>Yes<br>
+                                        <input type="radio" name="used_pesticides" id="used_pesticides" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_farm_implements" id="used_farm_implements" value="1"/>Yes<br>
+                                        <input type="radio" name="used_farm_implements" id="used_farm_implements" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
+                                               id="used_post_harvest_handling_and_processing_techniques" value="1"/>Yes<br>
+                                        <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
+                                               id="used_post_harvest_handling_and_processing_techniques" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
+                                               id="had_the_opportunity_to_plant_crops_in_rows" value="1"/>Yes<br>
+                                        <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
+                                               id="had_the_opportunity_to_plant_crops_in_rows" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <textarea name="" cols="400" id="other_techniques_used" id="other_techniques_used"
+                                                  class="form-control"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="document-part-header">Table 6.0: % Change in People\'s knowledge on Marketing and Processing</div>
+            
+            <hr>
+            <div class="document-part-content">
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-responsive">
+                            <tr>
+                                <th style="width: 25%;">Q -48: Do you sell all your crop products?</th>
+                                <th colspan="3" style="width: 75%;">Q - 49: In what forms do you market the product?</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="sells_all_crop_products" id="sells_all_crop_products" value="1"/>Yes<br>
+                                        <input type="radio" name="sells_all_crop_products" id="sells_all_crop_products" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12"">
+                                    <label for="place_1">Place 1:</label>
+                                    <input type="text" class="form-control" name="crop_market_place_1" id="crop_market_place_1"/>
+                    </div>
+                    </td>
+                    <td>
+                        <div class="col-md-12"">
+                        <label for="place_2">Place 2:</label>
+                        <input type="text" class="form-control" name="crop_market_place_2" id="crop_market_place_2"/>
+                </div>
+            </td>
+            <td>
+                <div class="col-md-12"">
+                <label for="place_3">Place 3:</label>
+                <input type="text" class="form-control" name="crop_market_place_3" id="crop_market_place_3"/>
+                </div>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </div>
+            </div>
+            <hr>';
+
 
         return $output;
+    }
+
+//    function fetch_associated_group_members_for_crop_production($group_id)
+//    {
+//
+//        $this->db->where('GROUPS', $group_id);
+//        $this->db->order_by('NAME', 'ASC');
+//
+//        $query = $this->db->get('MEMBERSHIP');
+//
+////        return print_r($query->result());
+//
+//
+//
+//        return $output;
+//    }
+
+    function get_vulnerability_name($disability_id)
+    {
+        $this->db->select('DISABILITY_NAME');
+        $this->db->where('DISABILITY_ID', $disability_id);
+        $query = $this->db->get('DISABILITIES');
+
+        $disability_name = '';
+        foreach ($query->result() as $row) {
+            $disability_name = $row->DISABILITY_NAME;
+        }
+        return $disability_name;
     }
 
     function fetch_associated_group_members_for_fish_farming($group_id)
@@ -1152,12 +1321,19 @@ class Membership_model extends CI_Model{
 //        return print_r($query->result());
 
         $output = '
+            <hr>
+            
+                <div class="document-part-header">
+                    Table 5.0: Fish Farming
+                </div>
+               <hr>
+               <div id="fish_farming">
             <table class="table table-bordered table-responsive">
             <tr>
-                <td colspan="8"><div class="row"><div class="col-md-4"> Q1 - % Increase in value of sales (UGX)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_fish_sales" id="percentage_increase_in_fish_sales" class="form-control" /></div></div></td>
+                <td colspan="9"><div class="row"><div class="col-md-4"> Q1 - % Increase in value of sales (UGX)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_fish_sales" id="percentage_increase_in_fish_sales" class="form-control" /></div></div></td>
             </tr>
             <tr>
-                <td colspan="8"><div class="row"><div class="col-md-4">Q2 - % Increase in productivity (Kg/Acre)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_fish_productivity" id="percentage_increase_in_fish_productivity" class="form-control" /></div></div></td>
+                <td colspan="9"><div class="row"><div class="col-md-4">Q2 - % Increase in productivity (Kg/Acre)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_fish_productivity" id="percentage_increase_in_fish_productivity" class="form-control" /></div></div></td>
             </tr>
 
             <tr>
@@ -1189,6 +1365,11 @@ class Membership_model extends CI_Model{
                 <td>
                     <div class="col-md-12">
                         Vulnerability
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support
                     </div>
                 </td>
                 <td>
@@ -1234,7 +1415,12 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        ' . $row->VULNERABILITY . '
+                        ' . $this->get_vulnerability_name($row->VULNERABILITY) . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support: <input type="text" name="fish_support' . $row->ID . '" id="fish_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1261,10 +1447,1092 @@ class Membership_model extends CI_Model{
             ';
         }
 
-        $output .= '</table>';
+        $output .= '</table></div>';
 
         return $output;
 
+
+    }
+
+    function fetch_associated_group_members_for_piggery($group_id)
+    {
+
+
+        $this->db->where('GROUPS', $group_id);
+        $this->db->order_by('NAME', 'ASC');
+
+        $query = $this->db->get('MEMBERSHIP');
+
+//        return print_r($query->result());
+
+        $output = '
+            <hr>
+            
+                <div class="document-part-header">
+                    Table 6.0: Piggery
+                </div>
+               <hr>
+               <div id="pig_farming">
+            <table class="table table-bordered table-responsive">
+            <tr>
+                <td colspan="9"><div class="row"><div class="col-md-4"> Q1 - % Increase in value of sales (UGX)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_pig_sales" id="percentage_increase_in_pig_sales" class="form-control" /></div></div></td>
+            </tr>
+            <tr>
+                <td colspan="9"><div class="row"><div class="col-md-4">Q2 - % Increase in productivity (Kg/Acre)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_pig_productivity" id="percentage_increase_in_pig_productivity" class="form-control" /></div></div></td>
+            </tr>
+
+            <tr>
+                <td colspan="8">&nbsp;</td>
+            </tr>
+            <tr>
+                <th style="width: 20%;">Individual</th>
+                <th>Group Member</th>
+                <th>Q3</th>
+                <th>Q4</th>
+                <th colspan="4">Q5 - Piggery</th>
+            </tr>
+            <tr style="font-weight: bold;">
+                <td>
+                    <div class="col-md-12">
+                        ID
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Name
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Sex
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Vulnerability
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Number of Pigglets
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Uses IMO
+                    </div>
+                </td>
+            </tr>
+        ';
+
+        foreach ($query->result() as $row) {
+            $output .= '
+                <tr>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->MEMBERSHIP_ID . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->NAME . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->SEX . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $this->get_vulnerability_name($row->VULNERABILITY) . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support: <input type="text" name="pig_support' . $row->ID . '" id="pig_support' . $row->ID . '" style="width: 45px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="number_of_pigglets' . $row->ID . '" id="number_of_pigglets' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="checkbox" name="uses_imo' . $row->ID . '" id="uses_imo' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+            </tr>
+            ';
+        }
+
+        $output .= '</table></div>';
+
+        return $output;
+    }
+
+    function fetch_associated_group_members_for_apiary($group_id)
+    {
+
+
+        $this->db->where('GROUPS', $group_id);
+        $this->db->order_by('NAME', 'ASC');
+
+        $query = $this->db->get('MEMBERSHIP');
+
+//        return print_r($query->result());
+
+        $output = '
+            <hr>
+            
+                <div class="document-part-header">
+                    Table 7.0: Apiary
+                </div>
+               <hr>
+               <div id="apiary_farming">
+            <table class="table table-bordered table-responsive">
+            <tr>
+                <td colspan="9"><div class="row"><div class="col-md-4"> Q1 - % Increase in value of sales (UGX)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_honey_sales" id="percentage_increase_in_honey_sales" class="form-control" /></div></div></td>
+            </tr>
+            <tr>
+                <td colspan="9"><div class="row"><div class="col-md-4">Q2 - % Increase in productivity (Kg/Acre)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_honey_productivity" id="percentage_increase_in_honey_productivity" class="form-control" /></div></div></td>
+            </tr>
+
+            <tr>
+                <td colspan="8">&nbsp;</td>
+            </tr>
+            <tr>
+                <th style="width: 20%;">Individual</th>
+                <th>Group Member</th>
+                <th>Q3</th>
+                <th>Q4</th>
+                <th colspan="4">Q5 - Apiary</th>
+            </tr>
+            <tr style="font-weight: bold;">
+                <td>
+                    <div class="col-md-12">
+                        ID
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Name
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Sex
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Vulnerability
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Quantity Harvested
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Quantity Sold
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Quantity Consumed
+                    </div>
+                </td>
+            </tr>
+        ';
+
+        foreach ($query->result() as $row) {
+            $output .= '
+                <tr>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->MEMBERSHIP_ID . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->NAME . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->SEX . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $this->get_vulnerability_name($row->VULNERABILITY) . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support: <input type="text" name="apiary_support' . $row->ID . '" id="apiary_support' . $row->ID . '" style="width: 45px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="honey_quantity_harvested' . $row->ID . '" id="honey_quantity_harvested' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="honey_quantity_sold' . $row->ID . '" id="honey_quantity_sold' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="honey_quantity_consumed' . $row->ID . '" id="honey_quantity_consumed' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+            </tr>
+            ';
+        }
+
+        $output .= '</table></div>';
+
+        return $output;
+    }
+
+    function fetch_associated_group_members_for_briquettes_production($group_id)
+    {
+
+        $this->db->where('GROUPS', $group_id);
+        $this->db->order_by('NAME', 'ASC');
+
+        $query = $this->db->get('MEMBERSHIP');
+
+//        return print_r($query->result());
+
+        $output = '
+            <hr>
+            
+                <div class="document-part-header">
+                    Table 8.0: Briquettes Production
+                </div>
+               <hr>
+               <div id="briquettes_production">
+            <table class="table table-bordered table-responsive">
+            <tr>
+                <td colspan="9"><div class="row"><div class="col-md-4"> Q1 - % Increase in value of sales (UGX)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_briquette_sales" id="percentage_increase_in_briquette_sales" class="form-control" /></div></div></td>
+            </tr>
+            <tr>
+                <td colspan="9"><div class="row"><div class="col-md-4">Q2 - % Increase in productivity (Kg/Acre)</div><div class="col-md-6"> <input type="number" name="percentage_increase_in_briquette_productivity" id="percentage_increase_in_briquette_productivity" class="form-control" /></div></div></td>
+            </tr>
+
+            <tr>
+                <td colspan="8">&nbsp;</td>
+            </tr>
+            <tr>
+                <th style="width: 20%;">Individual</th>
+                <th>Group Member</th>
+                <th>Q3</th>
+                <th>Q4</th>
+                <th colspan="4">Q5 - Briquettes Production</th>
+            </tr>
+            <tr style="font-weight: bold;">
+                <td>
+                    <div class="col-md-12">
+                        ID
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Name
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Sex
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Vulnerability
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Quantity Produced
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Quantity Sold
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Quantity Used
+                    </div>
+                </td>
+            </tr>
+        ';
+
+        foreach ($query->result() as $row) {
+            $output .= '
+                <tr>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->MEMBERSHIP_ID . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->NAME . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $row->SEX . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        ' . $this->get_vulnerability_name($row->VULNERABILITY) . '
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        Support: <input type="text" name="briquette_support' . $row->ID . '" id="briquette_support' . $row->ID . '" style="width: 45px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="briquette_quantity_produced' . $row->ID . '" id="quantity_produced' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="briquette_quantity_sold' . $row->ID . '" id="quantity_sold' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="briquette_quantity_used' . $row->ID . '" id="quantity_used' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+            </tr>
+            ';
+        }
+
+        $output .= '</table></div>';
+
+        return $output;
+    }
+
+    function fetch_associated_group_members_for_run_off($group_id)
+    {
+
+        $this->db->where('GROUPS', $group_id);
+        $this->db->order_by('NAME', 'ASC');
+
+        $query = $this->db->get('MEMBERSHIP');
+        // Did not provide the information
+        $output = '<div class="document-part-header">
+            Table 2.0: % Increase in target group\'s knowledge on problems affecting vegetable/crop production and challenges on the marketing aspect
+            </div>
+        
+            <hr>
+        
+            <div class="document-part-content">
+        
+                <div class="col-md-12">
+                    <table class="table table-bordered table-responsive">
+                        <tr>
+                            <td style="width: 50%;">
+                                <div class="col-md-12">
+                                    Q - 12: Mention problems affecting vegetable production<br><br>
+                                    <textarea class="form-control" name="problems_affecting_vegetable_production"
+                                              id="problems_affecting_vegetable_production"></textarea>
+        
+                                </div>
+                            </td>
+                            <td style="width: 50%;">
+                                <div class="col-md-12"">
+                                    Q - 12: Mention the challenges faced in marketing vegetable products<br><br>
+                                <textarea class="form-control" name="challenges_faced_in_marketing_vegetable_products"
+                                          id="challenges_faced_in_marketing_vegetable_products"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr>
+            <div class="document-part-header">
+                Table 3.0: Vegetable Product
+            </div>
+            <hr>
+            <div class="document-part-content">
+                <table class="table table-bordered table-responsive">
+                    <tr>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                % increase in value of sales (UGX)
+                            </div>
+                        </td>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                <input type="number" name="percentage_increase_in_sale_of_vegetable"
+                                       id="percentage_increase_in_sale_of_vegetable" class="form-control"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                % increase in productivity (Kg/Acre)
+                            </div>
+                        </td>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                <input type="number" name="percentage_increase_in_productivity_of_vegetable"
+                                       id="percentage_increase_in_productivity_of_vegetable" class="form-control"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table><br>   
+                <hr>
+                <div id="vegetable_table">
+                <table class="table table-bordered table-responsive">
+                    <tr>
+                        <th>Individual ID</th>
+                        <th>Individual Name</th>
+                        <th>Sex</th>
+                        <th>Vulnerability</th>
+                        <th colspan="5">Q1. Vegetable 1: Onion</th>
+                        <th colspan="5">Q6. Vegetable 2: Tomatoes</th>
+                        <th colspan="5">Q11. Vegetable 3: Cabbage</th>
+                        <th colspan="5">Q16. Vegetable 4: Okra</th>
+                        <th colspan="5">Q16. Vegetable 5: Green Paper</th>
+                    </tr>';
+
+        foreach ($query->result() as $row) {
+
+            $output .= '<tr>
+                        <td>' . $row->MEMBERSHIP_ID . '</td>
+                        <td>' . $row->NAME . '</td>
+                        <td>' . $row->SEX . '</td>
+                        <td>' . $this->get_vulnerability_name($row->VULNERABILITY) . '</td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="onions_support' . $row->ID . '" id="onions_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="onions_acres' . $row->ID . '" id="onions_acres' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="onions_yield' . $row->ID . '" id="onions_yield' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="onions_sold' . $row->ID . '" id="onions_sold' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="onions_amount_ugx' . $row->ID . '" id="onions_amount_ugx' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="tomatoes_support' . $row->ID . '" id="tomatoes_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="tomatoes_acres' . $row->ID . '" id="tomatoes_acres' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="tomatoes_yield' . $row->ID . '" id="tomatoes_yield' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="tomatoes_sold' . $row->ID . '" id="tomatoes_sold' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="tomatoes_amount_ugx' . $row->ID . '" id="tomatoes_amount_ugx' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="cabbage_support' . $row->ID . '" id="cabbage_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="cabbage_acres' . $row->ID . '" id="cabbage_acres' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="cabbage_yield' . $row->ID . '" id="cabbage_yield' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="cabbage_sold' . $row->ID . '" id="cabbage_sold' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="cabbage_amount_ugx' . $row->ID . '" id="cabbage_amount_ugx' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="okra_support' . $row->ID . '" id="okra_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="okra_acres' . $row->ID . '" id="okra_acres' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="okra_yield' . $row->ID . '" id="okra_yield' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="okra_sold' . $row->ID . '" id="okra_sold' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="okra_amount_ugx' . $row->ID . '" id="okra_amount_ugx' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="green_paper_support' . $row->ID . '" id="green_paper_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="green_paper_acres' . $row->ID . '" id="green_paper_acres' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="green_paper_yield' . $row->ID . '" id="green_paper_yield' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="green_paper_sold' . $row->ID . '" id="green_paper_sold' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="green_paper_amount_ugx' . $row->ID . '" id="green_paper_amount_ugx' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                    </tr>';
+        }
+
+        $output .= '</table>';
+        $output .= '</div>
+        
+                </div>
+            
+            <hr>';
+        $output .= '
+            <div class="document-part-header">Table 5.0: Number of Misean Cara beneficiaries adopting new technologies in vegetables and crop production</div>
+            <hr>
+            <div class="document-part-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Did you use any of the following technologies during your production process?</strong>
+                    </div>
+                </div><br>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-responsive">
+                            <tr>
+                                <th>Q - 41: Did you use any improved seed during the year in your production</th>
+                                <th>Q - 42: Did you use underground water in your crop production process during the dry season?</th>
+                                <th>Q - 43: Did you use any pesticides on your crops(vegetables)?</th>
+                                <th>Q - 44: Use of farm imlements e.g. zero tillage during land opening?</th>
+                                <th>Q - 45: Have you been using any method of post-harvest handling and processing techniques?</th>
+                                <th>Q - 46: Did you have any opportunity in planting your crops in Rows/Lines as oppsed to random
+                                    sowing/scattering?
+                                </th>
+                                <th>Q - 47: What other techniques did you use apart from the ones discussed here? (Name them)</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="1"/>Yes<br>
+                                        <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_underground_water_during_dry_season"
+                                               id="used_underground_water_during_dry_season" value="1"/>Yes<br>
+                                        <input type="radio" name="used_underground_water_during_dry_season"
+                                               id="used_underground_water_during_dry_season" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_pesticides" id="used_pesticides" value="1"/>Yes<br>
+                                        <input type="radio" name="used_pesticides" id="used_pesticides" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_farm_implements" id="used_farm_implements" value="1"/>Yes<br>
+                                        <input type="radio" name="used_farm_implements" id="used_farm_implements" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
+                                               id="used_post_harvest_handling_and_processing_techniques" value="1"/>Yes<br>
+                                        <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
+                                               id="used_post_harvest_handling_and_processing_techniques" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
+                                               id="had_the_opportunity_to_plant_crops_in_rows" value="1"/>Yes<br>
+                                        <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
+                                               id="had_the_opportunity_to_plant_crops_in_rows" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <textarea name="" cols="400" id="other_techniques_used" id="other_techniques_used"
+                                                  class="form-control"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="document-part-header">Table 6.0: % Change in People\'s knowledge on Marketing and Processing </div >
+
+            <hr >
+            <div class="document-part-content" >
+                <div class="row" >
+                    <div class="col-md-12" >
+                        <table class="table table-bordered table-responsive" >
+                            <tr >
+                                <th style = "width: 25%;" > Q - 48: Do you sell all your vegetable products ?</th >
+                                <th colspan = "3" style = "width: 75%;" > Q - 49: In what forms do you market the product ?</th >
+                            </tr >
+                            <tr >
+                                <td >
+                                    <div class="col-md-12" >
+                                        <input type = "radio" name = "sells_all_vegetable_products" id = "sells_all_vegetable_products"
+                                               value = "1" />Yes<br >
+                                        <input type = "radio" name = "sells_all_vegetable_products" id = "sells_all_vegetable_products"
+                                               value = "2" />No
+                                    </div >
+                                </td >
+                                <td >
+                                    <div class="col-md-12">
+                                        <label for="place_1">Place 1:</label>
+                                    <input type="text" class="form - control" name="vegetable_market_place_1"
+                                           id="vegetable_market_place_1"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col - md - 12" >
+                                        <label for="place_2" > Place 2:</label >
+                                    <input type = "text" class="form-control" name = "vegetable_market_place_2"
+                                           id = "vegetable_market_place_2" />
+                                    </div >
+                                </td >
+                                <td >
+                                    <div class="col-md-12"">
+                                        <label for="place_3">Place 3:</label>
+                                    <input type="text" class="form - control" name="vegetable_market_place_3"
+                                           id="vegetable_market_place_3"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                </div >
+                <hr >';
+
+        return $output;
+
+    }
+
+    function fetch_associated_group_members_for_underground_water($group_id)
+    {
+
+        $this->db->where('GROUPS', $group_id);
+        $this->db->order_by('NAME', 'ASC');
+
+        $query = $this->db->get('MEMBERSHIP');
+        // Did not provide the information
+        $output = '<div class="document-part-header">
+            Table 2.0: % Increase in target group\'s knowledge on problems affecting vegetable/crop production and challenges on the marketing aspect
+            </div>
+        
+            <hr>
+        
+            <div class="document-part-content">
+        
+                <div class="col-md-12">
+                    <table class="table table-bordered table-responsive">
+                        <tr>
+                            <td style="width: 50%;">
+                                <div class="col-md-12">
+                                    Q - 12: Mention problems affecting vegetable production<br><br>
+                                    <textarea class="form-control" name="problems_affecting_vegetable_production"
+                                              id="problems_affecting_vegetable_production"></textarea>
+        
+                                </div>
+                            </td>
+                            <td style="width: 50%;">
+                                <div class="col-md-12"">
+                                    Q - 12: Mention the challenges faced in marketing vegetable products<br><br>
+                                <textarea class="form-control" name="challenges_faced_in_marketing_vegetable_products"
+                                          id="challenges_faced_in_marketing_vegetable_products"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr>
+            <div class="document-part-header">
+                Table 3.0: Vegetable Product
+            </div>
+            <hr>
+            <div class="document-part-content">
+                <table class="table table-bordered table-responsive">
+                    <tr>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                % increase in value of sales (UGX)
+                            </div>
+                        </td>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                <input type="number" name="percentage_increase_in_sale_of_vegetable"
+                                       id="percentage_increase_in_sale_of_vegetable" class="form-control"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                % increase in productivity (Kg/Acre)
+                            </div>
+                        </td>
+                        <td style="width: 50%;">
+                            <div class="col-md-12">
+                                <input type="number" name="percentage_increase_in_productivity_of_vegetable"
+                                       id="percentage_increase_in_productivity_of_vegetable" class="form-control"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table><br>   
+                <hr>
+                <div id="vegetable_table">
+                <table class="table table-bordered table-responsive">
+                    <tr>
+                        <th>Individual ID</th>
+                        <th>Individual Name</th>
+                        <th>Sex</th>
+                        <th>Vulnerability</th>
+                        <th colspan="5">Q1. Vegetable 1: Onion</th>
+                        <th colspan="5">Q6. Vegetable 2: Tomatoes</th>
+                        <th colspan="5">Q11. Vegetable 3: Egg Plants</th>
+                        <th colspan="5">Q16. Vegetable 4: Okra</th>
+                    </tr>';
+
+        foreach ($query->result() as $row) {
+
+            $output .= '<tr>
+                        <td>' . $row->MEMBERSHIP_ID . '</td>
+                        <td>' . $row->NAME . '</td>
+                        <td>' . $row->SEX . '</td>
+                        <td>' . $this->get_vulnerability_name($row->VULNERABILITY) . '</td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="onions_support' . $row->ID . '" id="onions_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="onions_acres' . $row->ID . '" id="onions_acres' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="onions_yield' . $row->ID . '" id="onions_yield' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="onions_sold' . $row->ID . '" id="onions_sold' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="onions_amount_ugx' . $row->ID . '" id="onions_amount_ugx' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="tomatoes_support' . $row->ID . '" id="tomatoes_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="tomatoes_acres' . $row->ID . '" id="tomatoes_acres' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="tomatoes_yield' . $row->ID . '" id="tomatoes_yield' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="tomatoes_sold' . $row->ID . '" id="tomatoes_sold' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="tomatoes_amount_ugx' . $row->ID . '" id="tomatoes_amount_ugx' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="egg_plants_support' . $row->ID . '" id="egg_plants_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="egg_plants_acres' . $row->ID . '" id="egg_plants_acres' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="egg_plants_yield' . $row->ID . '" id="egg_plants_yield' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="egg_plants_sold' . $row->ID . '" id="egg_plants_sold' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="egg_plants_amount_ugx' . $row->ID . '" id="egg_plants_amount_ugx' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            Support: <input type="text" name="okra_support' . $row->ID . '" id="okra_support' . $row->ID . '" style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            ACRES: <input type="number" name="okra_acres' . $row->ID . '" id="okra_acres' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            YIELD: <input type="number" name="okra_yield' . $row->ID . '" id="okra_yield' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            SOLD: <input type="number" name="okra_sold' . $row->ID . '" id="okra_sold' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-12">
+            UGX: <input type="number" name="okra_amount_ugx' . $row->ID . '" id="okra_amount_ugx' . $row->ID . '"  style="width: 45px;" />
+                            </div>
+                        </td>
+                    </tr>';
+        }
+
+        $output .= '</table>';
+        $output .= '</div>
+        
+                </div>
+            
+            <hr>';
+        $output .= '
+            <div class="document-part-header">Table 5.0: Number of Misean Cara beneficiaries adopting new technologies in vegetables and crop production</div>
+            <hr>
+            <div class="document-part-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Did you use any of the following technologies during your production process?</strong>
+                    </div>
+                </div><br>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-responsive">
+                            <tr>
+                                <th>Q - 41: Did you use any improved seed during the year in your production</th>
+                                <th>Q - 42: Did you use underground water in your crop production process during the dry season?</th>
+                                <th>Q - 43: Did you use any pesticides on your crops(vegetables)?</th>
+                                <th>Q - 44: Use of farm imlements e.g. zero tillage during land opening?</th>
+                                <th>Q - 45: Have you been using any method of post-harvest handling and processing techniques?</th>
+                                <th>Q - 46: Did you have any opportunity in planting your crops in Rows/Lines as oppsed to random
+                                    sowing/scattering?
+                                </th>
+                                <th>Q - 47: What other techniques did you use apart from the ones discussed here? (Name them)</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="1"/>Yes<br>
+                                        <input type="radio" name="used_improved_seeds" id="used_improved_seeds" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_underground_water_during_dry_season"
+                                               id="used_underground_water_during_dry_season" value="1"/>Yes<br>
+                                        <input type="radio" name="used_underground_water_during_dry_season"
+                                               id="used_underground_water_during_dry_season" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_pesticides" id="used_pesticides" value="1"/>Yes<br>
+                                        <input type="radio" name="used_pesticides" id="used_pesticides" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_farm_implements" id="used_farm_implements" value="1"/>Yes<br>
+                                        <input type="radio" name="used_farm_implements" id="used_farm_implements" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
+                                               id="used_post_harvest_handling_and_processing_techniques" value="1"/>Yes<br>
+                                        <input type="radio" name="used_post_harvest_handling_and_processing_techniques"
+                                               id="used_post_harvest_handling_and_processing_techniques" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
+                                               id="had_the_opportunity_to_plant_crops_in_rows" value="1"/>Yes<br>
+                                        <input type="radio" name="had_the_opportunity_to_plant_crops_in_rows"
+                                               id="had_the_opportunity_to_plant_crops_in_rows" value="2"/>No
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md-12">
+                                        <textarea name="" cols="400" id="other_techniques_used" id="other_techniques_used"
+                                                  class="form-control"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="document-part-header">Table 6.0: % Change in People\'s knowledge on Marketing and Processing </div >
+
+            <hr >
+            <div class="document-part-content" >
+                <div class="row" >
+                    <div class="col-md-12" >
+                        <table class="table table-bordered table-responsive" >
+                            <tr >
+                                <th style = "width: 25%;" > Q - 48: Do you sell all your vegetable products ?</th >
+                                <th colspan = "3" style = "width: 75%;" > Q - 49: In what forms do you market the product ?</th >
+                            </tr >
+                            <tr >
+                                <td >
+                                    <div class="col-md-12" >
+                                        <input type = "radio" name = "sells_all_vegetable_products" id = "sells_all_vegetable_products"
+                                               value = "1" />Yes<br >
+                                        <input type = "radio" name = "sells_all_vegetable_products" id = "sells_all_vegetable_products"
+                                               value = "2" />No
+                                    </div >
+                                </td >
+                                <td >
+                                    <div class="col-md-12">
+                                        <label for="place_1">Place 1:</label>
+                                    <input type="text" class="form - control" name="vegetable_market_place_1"
+                                           id="vegetable_market_place_1"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col - md - 12" >
+                                        <label for="place_2" > Place 2:</label >
+                                    <input type = "text" class="form-control" name = "vegetable_market_place_2"
+                                           id = "vegetable_market_place_2" />
+                                    </div >
+                                </td >
+                                <td >
+                                    <div class="col-md-12"">
+                                        <label for="place_3">Place 3:</label>
+                                    <input type="text" class="form - control" name="vegetable_market_place_3"
+                                           id="vegetable_market_place_3"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                </div >
+                <hr >';
+
+        return $output;
 
     }
 
@@ -1353,7 +2621,7 @@ class Membership_model extends CI_Model{
             $queryset = $this->db->get('MEMBERSHIP');
 
             foreach ($queryset->result() as $resultset) {
-                $group_id = $resultset->GROUPS;
+                $group_id .= $resultset->GROUPS;
             }
         }
 

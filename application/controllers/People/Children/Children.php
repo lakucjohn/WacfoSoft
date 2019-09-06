@@ -59,6 +59,7 @@ class Children extends AuthContentController {
             $child_date_of_birth = $this->input->post('child_date_of_birth');
             $child_parish = $this->input->post('child_parish');
             $child_village = $this->input->post('child_village');
+            $project_visit_type = $this->input->post('project_visit_type');
             $child_date_of_joining = $this->input->post('child_date_of_joining');
             $child_mother_name = $this->input->post('child_mother_name');
             $child_father_name = $this->input->post('child_father_name');
@@ -74,6 +75,7 @@ class Children extends AuthContentController {
                 'DATE_OF_BIRTH' => $child_date_of_birth,
                 'PARISH' => $child_parish,
                 'VILLAGE' => $child_village,
+                'PROJECT' => $project_visit_type,
                 'DATE_OF_JOINING' => $child_date_of_joining,
                 'MOTHER' => $child_mother_name,
                 'FATHER' => $child_father_name,
@@ -124,6 +126,7 @@ class Children extends AuthContentController {
             $child_date_of_birth = $this->input->post('child_date_of_birth');
             $child_parish = $this->input->post('child_parish');
             $child_village = $this->input->post('child_village');
+            $project_visit_type = $this->input->post('project_visit_type');
             $child_date_of_joining = $this->input->post('child_date_of_joining');
             $child_mother_name = $this->input->post('child_mother_name');
             $child_father_name = $this->input->post('child_father_name');
@@ -143,6 +146,7 @@ class Children extends AuthContentController {
                     'DATE_OF_BIRTH' => $child_date_of_birth,
                     'PARISH' => $child_parish,
                     'VILLAGE' => $child_village,
+                    'PROJECT' => $project_visit_type,
                     'DATE_OF_JOINING' => $child_date_of_joining,
                     'MOTHER' => $child_mother_name,
                     'FATHER' => $child_father_name,
@@ -157,6 +161,7 @@ class Children extends AuthContentController {
                     'DATE_OF_BIRTH' => $child_date_of_birth,
                     'PARISH' => $child_parish,
                     'VILLAGE' => $child_village,
+                    'PROJECT' => $project_visit_type,
                     'DATE_OF_JOINING' => $child_date_of_joining,
                     'MOTHER' => $child_mother_name,
                     'FATHER' => $child_father_name,

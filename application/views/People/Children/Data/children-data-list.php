@@ -28,12 +28,15 @@
         <i class="fa fa-table"></i> Children in WACFO </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: 12px;">
+            <table class="table table-bordered js-exportable" id="dataTable" width="100%" cellspacing="0"
+                   style="font-size: 12px;">
                 <thead>
                 <tr>
+                    <th>Child ID</th>
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Date of Birth</th>
+                    <th>Project</th>
                     <th>Vulnerability</th>
                     <th>Joining Date</th>
                     <th>Options</th>
@@ -44,10 +47,12 @@
 
         foreach($children_list->result() as $row) {
             echo '
-                <tr title="'.$row -> NAME.'">
+                <tr title="' . $row->CHILD_ID . '">
+                    <td>' . $row->CHILD_ID . '</td>
                     <td>'.$row -> NAME.'</td>
                     <td>'.$row -> SEX.'</td>
                     <td>'.$row -> DATE_OF_BIRTH.'</td>
+                    <td>' . $row->PROJECT . '</td>
                     <td>';
 
             foreach ($disability_list->result() as $disability) {

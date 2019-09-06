@@ -78,6 +78,15 @@
 
             </p>
             <p>
+                <label for="project_visit_type">Project: </label>
+                <select name="project_visit_type" id="project_visit_type" class="form-control">
+                    <option value="">Select a project</option>
+                    <option value="DSP">DSP</option>
+                    <option value="Porticus">Porticus</option>
+                    <option value="Victorbraun">Victorbraun</option>
+                </select>
+            </p>
+            <p>
                 <label for="child_date_of_joining">Date of joining: </label>
                 <input type="date" name="child_date_of_joining" id="child_date_of_joining" class="form-control" />
             </p>

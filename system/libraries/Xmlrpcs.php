@@ -110,37 +110,6 @@ class CI_Xmlrpcs extends CI_Xmlrpc {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Initialize Prefs and Serve
-	 *
-	 * @param	mixed
-	 * @return	void
-	 */
-	public function initialize($config = array())
-	{
-		if (isset($config['functions']) && is_array($config['functions']))
-		{
-			$this->methods = array_merge($this->methods, $config['functions']);
-		}
-
-		if (isset($config['debug']))
-		{
-			$this->debug = $config['debug'];
-		}
-
-		if (isset($config['object']) && is_object($config['object']))
-		{
-			$this->object = $config['object'];
-		}
-
-		if (isset($config['xss_clean']))
-		{
-			$this->xss_clean = $config['xss_clean'];
-		}
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Setting of System Methods
 	 *
 	 * @return	void
@@ -169,6 +138,33 @@ class CI_Xmlrpcs extends CI_Xmlrpc {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Initialize Prefs and Serve
+     *
+     * @param    mixed
+     * @return    void
+     */
+    public function initialize($config = array())
+    {
+        if (isset($config['functions']) && is_array($config['functions'])) {
+            $this->methods = array_merge($this->methods, $config['functions']);
+        }
+
+        if (isset($config['debug'])) {
+            $this->debug = $config['debug'];
+        }
+
+        if (isset($config['object']) && is_object($config['object'])) {
+            $this->object = $config['object'];
+        }
+
+        if (isset($config['xss_clean'])) {
+            $this->xss_clean = $config['xss_clean'];
+        }
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Main Server Function
 	 *
@@ -182,26 +178,6 @@ class CI_Xmlrpcs extends CI_Xmlrpc {
 		header('Content-Type: text/xml');
 		header('Content-Length: '.strlen($payload));
 		exit($payload);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Add Method to Class
-	 *
-	 * @param	string	method name
-	 * @param	string	function
-	 * @param	string	signature
-	 * @param	string	docstring
-	 * @return	void
-	 */
-	public function add_to_map($methodname, $function, $sig, $doc)
-	{
-		$this->methods[$methodname] = array(
-			'function'	=> $function,
-			'signature'	=> $sig,
-			'docstring'	=> $doc
-		);
 	}
 
 	// --------------------------------------------------------------------
@@ -411,6 +387,26 @@ class CI_Xmlrpcs extends CI_Xmlrpc {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Add Method to Class
+     *
+     * @param    string    method name
+     * @param    string    function
+     * @param    string    signature
+     * @param    string    docstring
+     * @return    void
+     */
+    public function add_to_map($methodname, $function, $sig, $doc)
+    {
+        $this->methods[$methodname] = array(
+            'function' => $function,
+            'signature' => $sig,
+            'docstring' => $doc
+        );
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Server Function: List Methods
 	 *
@@ -543,25 +539,6 @@ class CI_Xmlrpcs extends CI_Xmlrpc {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Multi-call Function: Error Handling
-	 *
-	 * @param	mixed
-	 * @return	object
-	 */
-	public function multicall_error($err)
-	{
-		$str = is_string($err) ? $this->xmlrpcstr["multicall_${err}"] : $err->faultString();
-		$code = is_string($err) ? $this->xmlrpcerr["multicall_${err}"] : $err->faultCode();
-
-		$struct['faultCode'] = new XML_RPC_Values($code, 'int');
-		$struct['faultString'] = new XML_RPC_Values($str, 'string');
-
-		return new XML_RPC_Values($struct, 'struct');
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Multi-call Function: Processes method
 	 *
 	 * @param	mixed
@@ -615,5 +592,24 @@ class CI_Xmlrpcs extends CI_Xmlrpc {
 
 		return new XML_RPC_Values(array($result->value()), 'array');
 	}
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Multi-call Function: Error Handling
+     *
+     * @param    mixed
+     * @return    object
+     */
+    public function multicall_error($err)
+    {
+        $str = is_string($err) ? $this->xmlrpcstr["multicall_${err}"] : $err->faultString();
+        $code = is_string($err) ? $this->xmlrpcerr["multicall_${err}"] : $err->faultCode();
+
+        $struct['faultCode'] = new XML_RPC_Values($code, 'int');
+        $struct['faultString'] = new XML_RPC_Values($str, 'string');
+
+        return new XML_RPC_Values($struct, 'struct');
+    }
 
 }

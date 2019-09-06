@@ -103,37 +103,6 @@ class CI_Encrypt {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Fetch the encryption key
-	 *
-	 * Returns it as MD5 in order to have an exact-length 128 bit key.
-	 * Mcrypt is sensitive to keys that are not the correct length
-	 *
-	 * @param	string
-	 * @return	string
-	 */
-	public function get_key($key = '')
-	{
-		if ($key === '')
-		{
-			if ($this->encryption_key !== '')
-			{
-				return $this->encryption_key;
-			}
-
-			$key = config_item('encryption_key');
-
-			if ( ! self::strlen($key))
-			{
-				show_error('In order to use the encryption class requires that you set an encryption key in your config file.');
-			}
-		}
-
-		return md5($key);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Set the encryption key
 	 *
 	 * @param	string
@@ -169,6 +138,137 @@ class CI_Encrypt {
 
 	// --------------------------------------------------------------------
 
+    /**
+     * Encrypt using Mcrypt
+     *
+     * @param    string
+     * @param    string
+     * @return    string
+     */
+    public function mcrypt_encode($data, $key)
+    {
+        $init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
+        $init_vect = mcrypt_create_iv($init_size, MCRYPT_DEV_URANDOM);
+        return $this->_add_cipher_noise($init_vect . mcrypt_encrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), $key);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Get Mcrypt cipher Value
+     *
+     * @return    int
+     */
+    protected function _get_cipher()
+    {
+        if ($this->_mcrypt_cipher === NULL) {
+            return $this->_mcrypt_cipher = MCRYPT_RIJNDAEL_256;
+        }
+
+        return $this->_mcrypt_cipher;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Get Mcrypt Mode Value
+     *
+     * @return    int
+     */
+    protected function _get_mode()
+    {
+        if ($this->_mcrypt_mode === NULL) {
+            return $this->_mcrypt_mode = MCRYPT_MODE_CBC;
+        }
+
+        return $this->_mcrypt_mode;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Adds permuted noise to the IV + encrypted data to protect
+     * against Man-in-the-middle attacks on CBC mode ciphers
+     * http://www.ciphersbyritter.com/GLOSSARY.HTM#IV
+     *
+     * @param    string
+     * @param    string
+     * @return    string
+     */
+    protected function _add_cipher_noise($data, $key)
+    {
+        $key = $this->hash($key);
+        $str = '';
+
+        for ($i = 0, $j = 0, $ld = self::strlen($data), $lk = self::strlen($key); $i < $ld; ++$i, ++$j) {
+            if ($j >= $lk) {
+                $j = 0;
+            }
+
+            $str .= chr((ord($data[$i]) + ord($key[$j])) % 256);
+        }
+
+        return $str;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Hash encode a string
+     *
+     * @param    string
+     * @return    string
+     */
+    public function hash($str)
+    {
+        return hash($this->_hash_type, $str);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Byte-safe strlen()
+     *
+     * @param    string $str
+     * @return    int
+     */
+    protected static function strlen($str)
+    {
+        return defined('MB_OVERLOAD_STRING')
+            ? mb_strlen($str, '8bit')
+            : strlen($str);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Fetch the encryption key
+     *
+     * Returns it as MD5 in order to have an exact-length 128 bit key.
+     * Mcrypt is sensitive to keys that are not the correct length
+     *
+     * @param    string
+     * @return    string
+     */
+    public function get_key($key = '')
+    {
+        if ($key === '') {
+            if ($this->encryption_key !== '') {
+                return $this->encryption_key;
+            }
+
+            $key = config_item('encryption_key');
+
+            if (!self::strlen($key)) {
+                show_error('In order to use the encryption class requires that you set an encryption key in your config file.');
+            }
+        }
+
+        return md5($key);
+    }
+
+    // --------------------------------------------------------------------
+
 	/**
 	 * Decode
 	 *
@@ -189,6 +289,88 @@ class CI_Encrypt {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Decrypt using Mcrypt
+     *
+     * @param    string
+     * @param    string
+     * @return    string
+     */
+    public function mcrypt_decode($data, $key)
+    {
+        $data = $this->_remove_cipher_noise($data, $key);
+        $init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
+
+        if ($init_size > self::strlen($data)) {
+            return FALSE;
+        }
+
+        $init_vect = self::substr($data, 0, $init_size);
+        $data = self::substr($data, $init_size);
+
+        return rtrim(mcrypt_decrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), "\0");
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Removes permuted noise from the IV + encrypted data, reversing
+     * _add_cipher_noise()
+     *
+     * Function description
+     *
+     * @param    string $data
+     * @param    string $key
+     * @return    string
+     */
+    protected function _remove_cipher_noise($data, $key)
+    {
+        $key = $this->hash($key);
+        $str = '';
+
+        for ($i = 0, $j = 0, $ld = self::strlen($data), $lk = self::strlen($key); $i < $ld; ++$i, ++$j) {
+            if ($j >= $lk) {
+                $j = 0;
+            }
+
+            $temp = ord($data[$i]) - ord($key[$j]);
+
+            if ($temp < 0) {
+                $temp += 256;
+            }
+
+            $str .= chr($temp);
+        }
+
+        return $str;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Byte-safe substr()
+     *
+     * @param    string $str
+     * @param    int $start
+     * @param    int $length
+     * @return    string
+     */
+    protected static function substr($str, $start, $length = NULL)
+    {
+        if (defined('MB_OVERLOAD_STRING')) {
+            // mb_substr($str, $start, null, '8bit') returns an empty
+            // string on PHP 5.3
+            isset($length) OR $length = ($start >= 0 ? self::strlen($str) - $start : -$start);
+            return mb_substr($str, $start, $length, '8bit');
+        }
+
+        return isset($length)
+            ? substr($str, $start, $length)
+            : substr($str, $start);
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * Encode from Legacy
@@ -236,6 +418,20 @@ class CI_Encrypt {
 	}
 
 	// --------------------------------------------------------------------
+
+    /**
+     * Set the Mcrypt Mode
+     *
+     * @param    int
+     * @return    CI_Encrypt
+     */
+    public function set_mode($mode)
+    {
+        $this->_mcrypt_mode = $mode;
+        return $this;
+    }
+
+    // --------------------------------------------------------------------
 
 	/**
 	 * XOR Decode
@@ -287,113 +483,6 @@ class CI_Encrypt {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Encrypt using Mcrypt
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	string
-	 */
-	public function mcrypt_encode($data, $key)
-	{
-		$init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
-		$init_vect = mcrypt_create_iv($init_size, MCRYPT_DEV_URANDOM);
-		return $this->_add_cipher_noise($init_vect.mcrypt_encrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), $key);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Decrypt using Mcrypt
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	string
-	 */
-	public function mcrypt_decode($data, $key)
-	{
-		$data = $this->_remove_cipher_noise($data, $key);
-		$init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
-
-		if ($init_size > self::strlen($data))
-		{
-			return FALSE;
-		}
-
-		$init_vect = self::substr($data, 0, $init_size);
-		$data      = self::substr($data, $init_size);
-
-		return rtrim(mcrypt_decrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), "\0");
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Adds permuted noise to the IV + encrypted data to protect
-	 * against Man-in-the-middle attacks on CBC mode ciphers
-	 * http://www.ciphersbyritter.com/GLOSSARY.HTM#IV
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	string
-	 */
-	protected function _add_cipher_noise($data, $key)
-	{
-		$key = $this->hash($key);
-		$str = '';
-
-		for ($i = 0, $j = 0, $ld = self::strlen($data), $lk = self::strlen($key); $i < $ld; ++$i, ++$j)
-		{
-			if ($j >= $lk)
-			{
-				$j = 0;
-			}
-
-			$str .= chr((ord($data[$i]) + ord($key[$j])) % 256);
-		}
-
-		return $str;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Removes permuted noise from the IV + encrypted data, reversing
-	 * _add_cipher_noise()
-	 *
-	 * Function description
-	 *
-	 * @param	string	$data
-	 * @param	string	$key
-	 * @return	string
-	 */
-	protected function _remove_cipher_noise($data, $key)
-	{
-		$key = $this->hash($key);
-		$str = '';
-
-		for ($i = 0, $j = 0, $ld = self::strlen($data), $lk = self::strlen($key); $i < $ld; ++$i, ++$j)
-		{
-			if ($j >= $lk)
-			{
-				$j = 0;
-			}
-
-			$temp = ord($data[$i]) - ord($key[$j]);
-
-			if ($temp < 0)
-			{
-				$temp += 256;
-			}
-
-			$str .= chr($temp);
-		}
-
-		return $str;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Set the Mcrypt Cipher
 	 *
 	 * @param	int
@@ -408,54 +497,6 @@ class CI_Encrypt {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set the Mcrypt Mode
-	 *
-	 * @param	int
-	 * @return	CI_Encrypt
-	 */
-	public function set_mode($mode)
-	{
-		$this->_mcrypt_mode = $mode;
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get Mcrypt cipher Value
-	 *
-	 * @return	int
-	 */
-	protected function _get_cipher()
-	{
-		if ($this->_mcrypt_cipher === NULL)
-		{
-			return $this->_mcrypt_cipher = MCRYPT_RIJNDAEL_256;
-		}
-
-		return $this->_mcrypt_cipher;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get Mcrypt Mode Value
-	 *
-	 * @return	int
-	 */
-	protected function _get_mode()
-	{
-		if ($this->_mcrypt_mode === NULL)
-		{
-			return $this->_mcrypt_mode = MCRYPT_MODE_CBC;
-		}
-
-		return $this->_mcrypt_mode;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Set the Hash type
 	 *
 	 * @param	string
@@ -464,58 +505,5 @@ class CI_Encrypt {
 	public function set_hash($type = 'sha1')
 	{
 		$this->_hash_type = in_array($type, hash_algos()) ? $type : 'sha1';
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Hash encode a string
-	 *
-	 * @param	string
-	 * @return	string
-	 */
-	public function hash($str)
-	{
-		return hash($this->_hash_type, $str);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Byte-safe strlen()
-	 *
-	 * @param	string	$str
-	 * @return	int
-	 */
-	protected static function strlen($str)
-	{
-		return defined('MB_OVERLOAD_STRING')
-			? mb_strlen($str, '8bit')
-			: strlen($str);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Byte-safe substr()
-	 *
-	 * @param	string	$str
-	 * @param	int	$start
-	 * @param	int	$length
-	 * @return	string
-	 */
-	protected static function substr($str, $start, $length = NULL)
-	{
-		if (defined('MB_OVERLOAD_STRING'))
-		{
-			// mb_substr($str, $start, null, '8bit') returns an empty
-			// string on PHP 5.3
-			isset($length) OR $length = ($start >= 0 ? self::strlen($str) - $start : -$start);
-			return mb_substr($str, $start, $length, '8bit');
-		}
-
-		return isset($length)
-			? substr($str, $start, $length)
-			: substr($str, $start);
 	}
 }

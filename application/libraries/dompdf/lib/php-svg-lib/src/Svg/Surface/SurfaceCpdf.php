@@ -77,6 +77,13 @@ class SurfaceCpdf implements SurfaceInterface
         $this->transform($x, 0, 0, $y, 0, 0);
     }
 
+    public function transform($a, $b, $c, $d, $e, $f)
+    {
+        if (self::DEBUG) echo __FUNCTION__ . "\n";
+
+        $this->canvas->transform(array($a, $b, $c, $d, $e, $f));
+    }
+
     public function rotate($angle)
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
@@ -101,13 +108,6 @@ class SurfaceCpdf implements SurfaceInterface
             0,  1,
             $x, $y
         );
-    }
-
-    public function transform($a, $b, $c, $d, $e, $f)
-    {
-        if (self::DEBUG) echo __FUNCTION__ . "\n";
-
-        $this->canvas->transform(array($a, $b, $c, $d, $e, $f));
     }
 
     public function beginPath()
@@ -182,6 +182,28 @@ class SurfaceCpdf implements SurfaceInterface
         unlink($image);
     }
 
+    function image($img, $x, $y, $w, $h, $resolution = "normal")
+    {
+        list($width, $height, $type) = $this->getimagesize($img);
+
+        switch ($type) {
+            case IMAGETYPE_JPEG:
+                $this->canvas->addJpegFromFile($img, $x, $y - $h, $w, $h);
+                break;
+
+            case IMAGETYPE_GIF:
+            case IMAGETYPE_BMP:
+                // @todo use cache for BMP and GIF
+                $img = $this->_convert_gif_bmp_to_png($img, $type);
+
+            case IMAGETYPE_PNG:
+                $this->canvas->addPngFromFile($img, $x, $y - $h, $w, $h);
+                break;
+
+            default:
+        }
+    }
+
     public static function getimagesize($filename)
     {
         static $cache = array();
@@ -206,40 +228,6 @@ class SurfaceCpdf implements SurfaceInterface
         return $cache[$filename] = array($width, $height, $type);
     }
 
-    function image($img, $x, $y, $w, $h, $resolution = "normal")
-    {
-        list($width, $height, $type) = $this->getimagesize($img);
-
-        switch ($type) {
-            case IMAGETYPE_JPEG:
-                $this->canvas->addJpegFromFile($img, $x, $y - $h, $w, $h);
-                break;
-
-            case IMAGETYPE_GIF:
-            case IMAGETYPE_BMP:
-                // @todo use cache for BMP and GIF
-                $img = $this->_convert_gif_bmp_to_png($img, $type);
-
-            case IMAGETYPE_PNG:
-                $this->canvas->addPngFromFile($img, $x, $y - $h, $w, $h);
-                break;
-
-            default:
-        }
-    }
-
-    public function lineTo($x, $y)
-    {
-        if (self::DEBUG) echo __FUNCTION__ . "\n";
-        $this->canvas->lineTo($x, $y);
-    }
-
-    public function moveTo($x, $y)
-    {
-        if (self::DEBUG) echo __FUNCTION__ . "\n";
-        $this->canvas->moveTo($x, $y);
-    }
-
     public function quadraticCurveTo($cpx, $cpy, $x, $y)
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
@@ -257,12 +245,6 @@ class SurfaceCpdf implements SurfaceInterface
     public function arcTo($x1, $y1, $x2, $y2, $radius)
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
-    }
-
-    public function arc($x, $y, $radius, $startAngle, $endAngle, $anticlockwise = false)
-    {
-        if (self::DEBUG) echo __FUNCTION__ . "\n";
-        $this->canvas->ellipse($x, $y, $radius, $radius, 0, 8, $startAngle, $endAngle, false, false, false, true);
     }
 
     public function circle($x, $y, $radius)
@@ -327,6 +309,24 @@ class SurfaceCpdf implements SurfaceInterface
 
         /* Arc segment in the lower left corner */
         $this->arc($x + $rx, $y + $rx, $rx, 180, 270);
+    }
+
+    public function moveTo($x, $y)
+    {
+        if (self::DEBUG) echo __FUNCTION__ . "\n";
+        $this->canvas->moveTo($x, $y);
+    }
+
+    public function lineTo($x, $y)
+    {
+        if (self::DEBUG) echo __FUNCTION__ . "\n";
+        $this->canvas->lineTo($x, $y);
+    }
+
+    public function arc($x, $y, $radius, $startAngle, $endAngle, $anticlockwise = false)
+    {
+        if (self::DEBUG) echo __FUNCTION__ . "\n";
+        $this->canvas->ellipse($x, $y, $radius, $radius, 0, 8, $startAngle, $endAngle, false, false, false, true);
     }
 
     public function fill()
