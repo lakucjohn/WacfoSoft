@@ -439,15 +439,16 @@ function get_village_name($village_id)
     <!-- Custom scripts for this page-->
     <script src="<?php echo base_url('Assets/js/sb-admin-datatables.min.js') ?>"></script>
     <script src="<?php echo base_url('Assets/js/sb-admin-charts.min.js') ?>"></script>
-<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') ?>"></script>
-<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') ?>"></script>
-<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/jszip.min.js') ?>"></script>
-<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') ?>"></script>
-<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') ?>"></script>
-<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') ?>"></script>
-<script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') ?>"></script>
-<script src="<?php echo base_url('Assets/js/app_main.js') ?>"></script>
-<!--<script src="--><?php //echo base_url('Assets/js/query_data.js') ?><!--"></script>-->
+    <script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') ?>"></script>
+    <script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') ?>"></script>
+    <script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/jszip.min.js') ?>"></script>
+    <script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js') ?>"></script>
+    <script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js') ?>"></script>
+    <script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') ?>"></script>
+    <script src="<?php echo base_url('Assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js') ?>"></script>
+    <script src="<?php echo base_url('Assets/js/app_main.js') ?>"></script>
+    <!--<script src="--><?php //echo base_url('Assets/js/search_js.js') ?><!--"></script>-->
+    <!--<script src="--><?php //echo base_url('Assets/js/query_data.js') ?><!--"></script>-->
 </div>
 </body>
 

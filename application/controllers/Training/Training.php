@@ -333,7 +333,7 @@ class Training extends AuthContentController {
                 'ATTENDANT' => $name,
                 'ADDRESS' => $address,
                 'CONTACT' => $contact,
-                'TYPE' => 'Non-Member',
+                'TYPE' => 'Beneficiary',
             );
 
 //                    print_r($field_data);

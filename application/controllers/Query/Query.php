@@ -384,22 +384,8 @@ class Query extends AuthContentController
             $final_conditions['OR'] = $final_or_conditions_array;
         }
 
-//        print_r($final_conditions);
-
-//        print_r($final_conditions);
-
-//        print_r($conditionslist);
-
-//        print_r($fieldslist);
-
         $generated_sql = $this->build_query($table = $tableslist, $fields = $fieldslist, $joins = $joinslist, $conditions = $final_conditions);
-        #echo $generated_sql;
 
-        # Format of a query builder input pattern
-        #$generated_sql = $this->build_query($table = array(), $fields = array(), $joins = array(), $cosnditions = array());
-
-        #echo $generated_sql;
-        #print_r($tableslist);
 
         $result_set = $this->query_model->get_number_of_results($generated_sql);
 

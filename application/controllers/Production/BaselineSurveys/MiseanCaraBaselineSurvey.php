@@ -535,7 +535,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
 
     }
 
-    public function create_group_support_outcome($group_id, $track_id)
+    public function create_group_support_outcome()
     {
         $data = array(
             'title' => 'New Misean Cara Baseline Survey Economic Security before project intervention',
@@ -548,6 +548,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
         $data['group_name'] = $this->get_group_name($usable_group_id);
         $data['production_tables'] = $this->check_and_display_list_as_per_group_type_for_this_group($usable_group_id);
         $usable_track_id = $this->uri->segment(8);
+        $data['track_id'] = $usable_track_id;
         # Now getting the values of the input
         $name_of_the_grantee = $this->input->post('name_of_the_grantee');
         $district = $this->input->post('district');
@@ -633,7 +634,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
 
             # Inserting the production problems
             $field_data_problems = array(
-                'GROUP_NAME' => $group_id,
+                'GROUP_NAME' => $usable_group_id,
                 'VEGETABLE_PRODUCTION_PROBLEMS' => $problems_affecting_vegetable_production,
                 'VEGETABLE_MARKETING_PROBLEMS' => $challenges_faced_in_marketing_vegetable_products,
                 'CROP_PRODUCTION_PROBLEMS' => $problems_affecting_crop_production,
@@ -650,7 +651,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
 
             #Inserting misean cara technology beneficiaries
             $field_data_techonology = array(
-                'INDIVIDUAL_ID' => $group_id,
+                'INDIVIDUAL_ID' => $usable_group_id,
                 'USED_IMPROVED_SEEDS' => $used_improved_seeds,
                 'USED_UNDERGROUND_WATER' => $used_underground_water_during_dry_season,
                 'USED_PESTICIDES' => $used_pesticides,
@@ -671,7 +672,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
 
             #Inserting marketing data
             $field_data_marketing_knowledge = array(
-                'INDIVIDUAL_ID' => $group_id,
+                'INDIVIDUAL_ID' => $usable_group_id,
                 'SELLS_ALL_VEGETABLES' => $sells_all_vegetable_products,
                 'VEGETABLE_MARKET_PLACE_1' => $vegetable_market_place_1,
                 'VEGETABLE_MARKET_PLACE_2' => $vegetable_market_place_2,
@@ -693,7 +694,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
 
             #Inserting productivity data
             $field_data_increase_in_productivity = array(
-                'GROUP_ID' => $group_id,
+                'GROUP_ID' => $usable_group_id,
                 'INCREASE_IN_VEGETABLE_PRODUCTION' => $percentage_increase_in_productivity_of_vegetable,
                 'INCREASE_IN_VEGETABLE_SALES' => $percentage_increase_in_sale_of_vegetable,
                 'INCREASE_IN_CROP_PRODUCTION' => $percentage_increase_in_productivity_of_crops,
@@ -952,7 +953,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     $field_data_fish = array(
                         'INDIVIDUAL_ID' => $row->MEMBERSHIP_ID,
                         'SUPPORT' => $fish_support,
-                        'SIZE_OF_POND' => $fish_support,
+                        'SIZE_OF_POND' => $size_of_pond,
                         'NUMBER_OF_FISH_HARVESTED' => $number_of_fish_harvested,
                         'QUANTITY_IN_KG' => $quantity_yield_in_kg,
                         'INCOME' => $income_ugx,
@@ -965,6 +966,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                 if (isset($_POST['pig_support' . $row->ID]) && !empty($_POST['pig_support' . $row->ID])) {
                     $pig_support = $this->input->post('pig_support' . $row->ID);
                     $number_of_pigglets = $this->input->post('number_of_pigglets' . $row->ID);
+                    $piggery_income = $this->input->post('piggery_income_gained' . $row->ID);
 
                     if (isset($_POST['uses_imo' . $row->ID])) {
                         $uses_imo = true;
@@ -979,6 +981,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                         'SUPPORT' => $pig_support,
                         'NUMBER_OF_PIGGLETS' => $number_of_pigglets,
                         'USES_IMO' => $uses_imo,
+                        'INCOME' => $piggery_income,
                         'TRACK_ID' => $usable_track_id,
                     );
 
@@ -990,6 +993,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     $honey_quantity_harvested = $this->input->post('honey_quantity_harvested' . $row->ID);
                     $honey_quantity_sold = $this->input->post('honey_quantity_sold' . $row->ID);
                     $honey_quantity_consumed = $this->input->post('honey_quantity_consumed' . $row->ID);
+                    $apiary_amount_gained = $this->input->post('apiary_amount_gained' . $row->ID);
 
                     # Prepare apiary data
 
@@ -999,10 +1003,11 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                         'QUANTITY_HARVESTED' => $honey_quantity_harvested,
                         'QUANTITY_SOLD' => $honey_quantity_sold,
                         'QUANTITY_CONSUMED' => $honey_quantity_consumed,
+                        'INCOME' => $apiary_amount_gained,
                         'TRACK_ID' => $usable_track_id,
                     );
 
-                    $this->piggery_model->insert_record($field_data_apiary);
+                    $this->apiary_model->insert_record($field_data_apiary);
                 }
 
                 if (isset($_POST['briquette_support' . $row->ID]) && !empty($_POST['briquette_support' . $row->ID])) {
@@ -1010,6 +1015,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                     $briquette_quantity_produced = $this->input->post('briquette_quantity_produced' . $row->ID);
                     $briquette_quantity_sold = $this->input->post('briquette_quantity_sold' . $row->ID);
                     $briquette_quantity_used = $this->input->post('briquette_quantity_used' . $row->ID);
+                    $briquette_income = $this->input->post('briquette_income' . $row->ID);
 
                     # Prepare briquette data
 
@@ -1019,10 +1025,11 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                         'QUANTITY_PRODUCED' => $briquette_quantity_produced,
                         'QUANTITY_SOLD' => $briquette_quantity_sold,
                         'QUANTITY_USED' => $briquette_quantity_used,
+                        'INCOME' => $briquette_income,
                         'TRACK_ID' => $usable_track_id,
                     );
 
-                    $this->piggery_model->insert_record($field_data_briquette);
+                    $this->briquettes_model->insert_record($field_data_briquette);
                 }
             }
 //            print_r($field_data_fish);
@@ -1099,7 +1106,7 @@ class MiseanCaraBaselineSurvey extends AuthContentController
                 $func = 'fetch_group_members_for_' . $group_type;
                 //$func($group_id);
                 //call_user_func('fetch_group_members_for_'.$group_type, $group_id);
-                $this->$func($group_id);
+                echo $this->$func($group_id);
             } else {
                 echo 'Function ' . $function_name . ' was not found';
             }

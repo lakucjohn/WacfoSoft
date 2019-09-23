@@ -6381,70 +6381,7 @@
                         conditions.push(record);
 
                     }
-                    if (production_individual_criterion !== '') {
-                        var record = [];
-                        record.push('VEGETABLE_PRODUCTION_NEW.INDIVIDUAL');
-                        record.push(production_individual_criterion);
 
-                        conditions.push(record);
-
-                    }
-                    if (production_foodstuff_criterion !== '') {
-                        var record = [];
-                        record.push('VEGETABLE_PRODUCTION_NEW.FOOD_STUFF');
-                        record.push(production_foodstuff_criterion);
-
-                        conditions.push(record);
-
-                    }
-                    if (production_category_criterion !== '') {
-                        var record = [];
-                        record.push('VEGETABLE_PRODUCTION_NEW.CATEGORY');
-                        record.push(production_category_criterion);
-
-                        conditions.push(record);
-
-                    }
-                    if (production_acresplanted_criterion !== '') {
-                        var record = [];
-                        record.push('VEGETABLE_PRODUCTION_NEW.ACRES_PLANTED');
-                        record.push(production_acresplanted_criterion);
-
-                        conditions.push(record);
-
-                    }
-                    if (production_yieldobtained_criterion !== '') {
-                        var record = [];
-                        record.push('VEGETABLE_PRODUCTION_NEW.YIELD_OBTAINED');
-                        record.push(production_yieldobtained_criterion);
-
-                        conditions.push(record);
-
-                    }
-                    if (production_quantitysold_criterion !== '') {
-                        var record = [];
-                        record.push('VEGETABLE_PRODUCTION_NEW.QUANTITY_SOLD');
-                        record.push(production_quantitysold_criterion);
-
-                        conditions.push(record);
-
-                    }
-                    if (production_income_criterion !== '') {
-                        var record = [];
-                        record.push('VEGETABLE_PRODUCTION_NEW.INCOME');
-                        record.push(production_income_criterion);
-
-                        conditions.push(record);
-
-                    }
-                    if (fishing_individual_id_criterion !== '') {
-                        var record = [];
-                        record.push('FISH_FARMING_RECORDS.INDIVIDUAL_ID');
-                        record.push(fishing_individual_id_criterion);
-
-                        conditions.push(record);
-
-                    }
                     if (fishing_size_of_pond_criterion !== '') {
                         var record = [];
                         record.push('FISH_FARMING_RECORDS.SIZE_OF_POND');

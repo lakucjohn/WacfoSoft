@@ -1,0 +1,51 @@
+
+<hr>
+<div class="row">
+    <div class="col-md-12" style="text-align: center;" id="start-query-box">
+        <button class="btn btn-md-5 btn-primary" onclick="show_results();">Run Query <i
+                class="fa fa-angle-double-right"></i></button>
+    </div>
+    <div class="col-md-12" style="text-align: center; display: none" id="update-query-box">
+        <button class="btn btn-md-5 btn-success" onclick="show_results_update();">Update Results <i
+                class="fa fa-angle-double-right"></i></button>
+        <button class="btn btn-md-5 btn-link" id="hide_criteria_button" onclick="hide_criteria();"
+                style="display: block;">Hide Criteria<i class="fa fa-angle-double-up"></i></button>
+    </div>
+</div>
+<hr>
+</div>
+<div id="query-results" style="display: none;">
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Search Results</h4>
+        </div>
+        <div class="col-md-12">
+            <p>&nbsp;</p>
+            <div id="preview_query_results" style="overflow-x:scroll;">
+                Query Results
+            </div>
+            <div id="preview_query_results_num" style="display:none;"></div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-6" id="show-div-buttons">
+            <button class="btn btn-md-5 btn-default" onclick="show_criteria();" style="margin-right: 5%;">Show Criteria
+                <i class="fa fa-angle-double-up"></i></button>
+            <button class="btn btn-md-5 btn-primary" onclick="show_criteria_and_results();">Show Criteria and Results <i
+                    class="fa fa-angle-double-up"></i></button>
+        </div>
+        <div class="col-md-4" style="white-space: nowrap;">
+            <button class="btn btn-md-5 btn-danger" onclick="print_results();"><i class="fa fa-print"></i> Print Query
+                Results <i class="fa fa-angle-double-right"></i></button>
+            <button class="btn btn-md-5 btn-warning" onclick="print_num_results();"><i class="fa fa-print"></i> Print
+                Number of Results for this Query <i class="fa fa-angle-double-right"></i></button>
+            <button class="btn btn-md btn-link" id="show_criteria_button" onclick="show_criteria();"
+                    style="display: none;">Show Criteria<i class="fa fa-angle-double-down"></i></button>
+        </div>
+
+
+    </div>
+    <hr>
+</div>

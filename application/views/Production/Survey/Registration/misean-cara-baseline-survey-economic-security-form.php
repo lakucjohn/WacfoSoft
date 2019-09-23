@@ -280,7 +280,7 @@
                 method: "POST",
                 data: {group_id: group_id},
                 success: function (data) {
-//                    alert(data);
+                    alert(data);
                     show_group_details(group_id);
                     document.getElementById('production_tables').innerHTML = data;
 //                    document.getElementById('group_id').value = group_id;

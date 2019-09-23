@@ -10,7 +10,7 @@
 
 <hr>
 
-<?php echo form_open('production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security%20for%20group'); ?>
+<?php echo form_open('production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security%20for%20group%20/'.$group_id.'/'.$track_id); ?>
 <div class="row">
     <div class="col-md-2">
 

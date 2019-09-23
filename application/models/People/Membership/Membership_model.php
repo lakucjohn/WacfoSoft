@@ -1052,7 +1052,7 @@ class Membership_model extends CI_Model{
                 <td>' . $this->get_vulnerability_name($row->VULNERABILITY) . '</td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="soya_beans_support' . $row->ID . '" id="soya_beans_support' . $row->ID . '" style="width: 45px;" />
+                         <input type="text" name="soya_beans_support' . $row->ID . '" id="soya_beans_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1077,7 +1077,7 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="simsim_support' . $row->ID . '" id="ground_nuts_support' . $row->ID . '" style="width: 45px;" />
+                         <input type="text" name="simsim_support' . $row->ID . '" id="ground_nuts_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1102,7 +1102,7 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="sesames_support' . $row->ID . '" id="sesames_support' . $row->ID . '" style="width: 45px;" />
+                         <input type="text" name="sesames_support' . $row->ID . '" id="sesames_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1127,7 +1127,7 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="beans_support' . $row->ID . '" id="beans_support' . $row->ID . '" style="width: 45px;" />
+                         <input type="text" name="beans_support' . $row->ID . '" id="beans_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1420,7 +1420,7 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="fish_support' . $row->ID . '" id="fish_support' . $row->ID . '" style="width: 45px;" />
+                         <input type="text" name="fish_support' . $row->ID . '" id="fish_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1482,14 +1482,14 @@ class Membership_model extends CI_Model{
             </tr>
 
             <tr>
-                <td colspan="8">&nbsp;</td>
+                <td colspan="9">&nbsp;</td>
             </tr>
             <tr>
                 <th style="width: 20%;">Individual</th>
                 <th>Group Member</th>
                 <th>Q3</th>
                 <th>Q4</th>
-                <th colspan="4">Q5 - Piggery</th>
+                <th colspan="5">Q5 - Piggery</th>
             </tr>
             <tr style="font-weight: bold;">
                 <td>
@@ -1527,6 +1527,11 @@ class Membership_model extends CI_Model{
                         Uses IMO
                     </div>
                 </td>
+                <td>
+                    <div class="col-md-12">
+                        INCOME
+                    </div>
+                </td>
             </tr>
         ';
 
@@ -1555,7 +1560,7 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="pig_support' . $row->ID . '" id="pig_support' . $row->ID . '" style="width: 45px;" />
+                         <input type="text" name="pig_support' . $row->ID . '" id="pig_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1566,6 +1571,11 @@ class Membership_model extends CI_Model{
                 <td>
                     <div class="col-md-12">
                         <input type="checkbox" name="uses_imo' . $row->ID . '" id="uses_imo' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="piggery_income_gained' . $row->ID . '" id="piggery_income_gained' . $row->ID . '" style="width: 60px;" />
                     </div>
                 </td>
             </tr>
@@ -1605,14 +1615,14 @@ class Membership_model extends CI_Model{
             </tr>
 
             <tr>
-                <td colspan="8">&nbsp;</td>
+                <td colspan="9">&nbsp;</td>
             </tr>
             <tr>
                 <th style="width: 20%;">Individual</th>
                 <th>Group Member</th>
                 <th>Q3</th>
                 <th>Q4</th>
-                <th colspan="4">Q5 - Apiary</th>
+                <th colspan="5">Q5 - Apiary</th>
             </tr>
             <tr style="font-weight: bold;">
                 <td>
@@ -1655,6 +1665,10 @@ class Membership_model extends CI_Model{
                         Quantity Consumed
                     </div>
                 </td>
+                    <div class="col-md-12">
+                        Income (UGX)
+                    </div>
+                </td>
             </tr>
         ';
 
@@ -1683,7 +1697,7 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="apiary_support' . $row->ID . '" id="apiary_support' . $row->ID . '" style="width: 45px;" />
+                         <input type="text" name="apiary_support' . $row->ID . '" id="apiary_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1699,6 +1713,11 @@ class Membership_model extends CI_Model{
                 <td>
                     <div class="col-md-12">
                         <input type="number" name="honey_quantity_consumed' . $row->ID . '" id="honey_quantity_consumed' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="apiary_amount_gained' . $row->ID . '" id="apiary_amount_gained' . $row->ID . '" style="width: 60px;" />
                     </div>
                 </td>
             </tr>
@@ -1737,14 +1756,14 @@ class Membership_model extends CI_Model{
             </tr>
 
             <tr>
-                <td colspan="8">&nbsp;</td>
+                <td colspan="9">&nbsp;</td>
             </tr>
             <tr>
                 <th style="width: 20%;">Individual</th>
                 <th>Group Member</th>
                 <th>Q3</th>
                 <th>Q4</th>
-                <th colspan="4">Q5 - Briquettes Production</th>
+                <th colspan="5">Q5 - Briquettes Production</th>
             </tr>
             <tr style="font-weight: bold;">
                 <td>
@@ -1787,6 +1806,11 @@ class Membership_model extends CI_Model{
                         Quantity Used
                     </div>
                 </td>
+                <td>
+                    <div class="col-md-12">
+                        INCOME (UGX)
+                    </div>
+                </td>
             </tr>
         ';
 
@@ -1815,7 +1839,7 @@ class Membership_model extends CI_Model{
                 </td>
                 <td>
                     <div class="col-md-12">
-                        Support: <input type="text" name="briquette_support' . $row->ID . '" id="briquette_support' . $row->ID . '" style="width: 45px;" />
+                        <input type="text" name="briquette_support' . $row->ID . '" id="briquette_support' . $row->ID . '" style="width: 45px;" />
                     </div>
                 </td>
                 <td>
@@ -1831,6 +1855,11 @@ class Membership_model extends CI_Model{
                 <td>
                     <div class="col-md-12">
                         <input type="number" name="briquette_quantity_used' . $row->ID . '" id="quantity_used' . $row->ID . '" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12">
+                        <input type="number" name="briquette_income' . $row->ID . '" id="briquette_income' . $row->ID . '" style="width: 60px;" />
                     </div>
                 </td>
             </tr>
@@ -1938,7 +1967,7 @@ class Membership_model extends CI_Model{
                         <td>' . $this->get_vulnerability_name($row->VULNERABILITY) . '</td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="onions_support' . $row->ID . '" id="onions_support' . $row->ID . '" style="width: 45px;" />
+            <input type="text" name="onions_support' . $row->ID . '" id="onions_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -1963,7 +1992,7 @@ class Membership_model extends CI_Model{
                         </td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="tomatoes_support' . $row->ID . '" id="tomatoes_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="tomatoes_support' . $row->ID . '" id="tomatoes_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -1988,7 +2017,7 @@ class Membership_model extends CI_Model{
                         </td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="cabbage_support' . $row->ID . '" id="cabbage_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="cabbage_support' . $row->ID . '" id="cabbage_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -2013,7 +2042,7 @@ class Membership_model extends CI_Model{
                         </td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="okra_support' . $row->ID . '" id="okra_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="okra_support' . $row->ID . '" id="okra_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -2038,7 +2067,7 @@ class Membership_model extends CI_Model{
                         </td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="green_paper_support' . $row->ID . '" id="green_paper_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="green_paper_support' . $row->ID . '" id="green_paper_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -2297,7 +2326,7 @@ class Membership_model extends CI_Model{
                         <td>' . $this->get_vulnerability_name($row->VULNERABILITY) . '</td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="onions_support' . $row->ID . '" id="onions_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="onions_support' . $row->ID . '" id="onions_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -2322,7 +2351,7 @@ class Membership_model extends CI_Model{
                         </td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="tomatoes_support' . $row->ID . '" id="tomatoes_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="tomatoes_support' . $row->ID . '" id="tomatoes_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -2347,7 +2376,7 @@ class Membership_model extends CI_Model{
                         </td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="egg_plants_support' . $row->ID . '" id="egg_plants_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="egg_plants_support' . $row->ID . '" id="egg_plants_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>
@@ -2372,7 +2401,7 @@ class Membership_model extends CI_Model{
                         </td>
                         <td>
                             <div class="col-md-12">
-            Support: <input type="text" name="okra_support' . $row->ID . '" id="okra_support' . $row->ID . '" style="width: 45px;" />
+             <input type="text" name="okra_support' . $row->ID . '" id="okra_support' . $row->ID . '" style="width: 45px;" />
                             </div>
                         </td>
                         <td>

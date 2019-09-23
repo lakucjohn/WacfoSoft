@@ -74,6 +74,7 @@ $route['member-details/edit/(:any)'] = 'People/Membership/membership/edit';
 $route['member-info/generate-pdf/(:any)'] = 'People/Membership/membership/generate_detailed_pdf';
 
 $route['groupings'] = 'People/Groupings/groupings';
+$route['groupings/filter'] = 'People/Groupings/groupings/filter_data';
 $route['groupings/register-new-livelihood-group'] = 'People/Groupings/groupings/create';
 $route['group-details/(:any)'] = 'People/Groupings/groupings/details';
 $route['group-details/edit/(:any)'] = 'People/Groupings/groupings/edit';
@@ -147,7 +148,7 @@ $route['production/fish%20farming-info/generate-pdf/(:any)'] = 'Production/FishF
 $route['production/misean%20cara%20baseline%20surveys'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey';
 #$route['production/misean%20cara%20baseline%20surveys%20for%20group/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome/';
 $route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create';
-$route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security%20for%20group/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome';
+$route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security%20for%20group%20/(:any)/(:any)/(:any)/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome';
 $route['production/misean%20cara%20baseline%20survey-details/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/details';
 $route['production/misean%20cara%20baseline%20survey-details/edit/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/edit';
 $route['production/misean%20cara%20baseline%20survey-info/generate-pdf/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/generate_pdf_document';

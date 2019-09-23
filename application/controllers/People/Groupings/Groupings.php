@@ -208,5 +208,10 @@ class Groupings extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'FIlter Data in this table';
+        $this->template->load('default', 'People/Livelihood/Groupings/Data/filter-data', $data);
+    }
+
 }
 ?>
