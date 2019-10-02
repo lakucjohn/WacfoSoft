@@ -266,5 +266,10 @@ class Children extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'People/Children/Data/filter-data', $data);
+    }
+
 }
 ?>

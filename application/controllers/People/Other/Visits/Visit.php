@@ -163,5 +163,10 @@ class Visit extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'People/Other/Visits/Data/filter-data', $data);
+    }
+
 }
 ?>

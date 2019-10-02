@@ -125,17 +125,17 @@ class Query extends AuthContentController
 //        print_r($fieldslist);
 
         $generated_sql = $this->build_query($table = $tableslist, $fields = $fieldslist, $joins = $joinslist, $conditions = $final_conditions);
-        #echo $generated_sql;
+        echo $generated_sql;
 
         # Format of a query builder input pattern
         #$generated_sql = $this->build_query($table = array(), $fields = array(), $joins = array(), $cosnditions = array());
 
-        #echo $generated_sql;
+//        #echo $generated_sql;
         #print_r($tableslist);
 
-        $result_set = $this->query_model->execute_query($generated_sql);
+//        $result_set = $this->query_model->execute_query($generated_sql);
 
-        $output = '
+        /*$output = '
                 <head>
                  <style>
 
@@ -189,7 +189,7 @@ class Query extends AuthContentController
         $output .= $currentDateTime;
 
         echo $output;
-        #echo $generated_sql;
+        #echo $generated_sql;*/
 
     }
 
@@ -384,21 +384,71 @@ class Query extends AuthContentController
             $final_conditions['OR'] = $final_or_conditions_array;
         }
 
-        $generated_sql = $this->build_query($table = $tableslist, $fields = $fieldslist, $joins = $joinslist, $conditions = $final_conditions);
+//        print_r($final_conditions);
 
+//        print_r($final_conditions);
+
+//        print_r($conditionslist);
+
+//        print_r($fieldslist);
+
+        $generated_sql = $this->build_query($table = $tableslist, $fields = $fieldslist, $joins = $joinslist, $conditions = $final_conditions);
+        #echo $generated_sql;
+
+        # Format of a query builder input pattern
+        #$generated_sql = $this->build_query($table = array(), $fields = array(), $joins = array(), $cosnditions = array());
+
+        #echo $generated_sql;
+        #print_r($tableslist);
 
         $result_set = $this->query_model->get_number_of_results($generated_sql);
 
-        $output = $generated_sql . '<br><br>';
+        $output = '
+                <head>
+                 <style>
 
-        $output .= $result_set . '<br><br> Results Found';
+                    #innertable td{
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                    }
+
+                    #innertable-2 td, th{
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                    }
+                </style>
+                </head>';
+        $output .= '<table class="table table-bordered" id="innertable-2" style="border-collapse: collapse;">';
+        $output .= '<tr>';
+        $output .= '<th>Field</th>';
+        $output .= '<th>Condition</th>';
+        $output .= '</tr>';
+
+        foreach($conditionslist as $condition){
+            $output .= '<tr>';
+
+            $output .= '<td>'.$condition[0].'</td>';
+            $output .= '<td>'.$condition[1].'</td>';
+
+            $output .= '</tr>';
+        }
+//        $output .= '</table>';
+
+        $output .= '<hr>';
+
+        $output .= $result_set . ' Results Found for: <hr>';
+
+        #$colspan = count($result_set->list_fields())+1;
+        #$output .= '<td style="text-align:right;" colspan='.$colspan.'>&nbsp;</td>';
+        #$output .= '<td style="text-align:right;" colspan='.$colspan.'>'.$result_set->num_rows().' Results Found</td>';
+        $output .= '</table><br><br><hr>';
 
 
         $currentDateTime = date('Y-m-d H:i:s');
         $output .= $currentDateTime;
 
         echo $output;
-//        echo $generated_sql;
+        #echo $generated_sql;
 
     }
 

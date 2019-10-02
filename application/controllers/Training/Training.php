@@ -416,4 +416,9 @@ class Training extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'Training/Trainings/Data/filter-data', $data);
+    }
+
 }

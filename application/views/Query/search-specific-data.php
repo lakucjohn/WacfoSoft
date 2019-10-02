@@ -186,6 +186,18 @@
                                                    onchange="show_table_fields('change_in_knowledge');"/> Change in
                         People's knowledge on Marketing and Processing
                     </td>
+                    <td style="width: 25%;"><input type="checkbox" name="query_tables" id="piggery"
+                                                   value="PIGGERY_RECORDS"
+                                                   onchange="show_table_fields('piggery');"/> Piggery
+                    </td>
+                    <td style="width: 25%;"><input type="checkbox" name="query_tables" id="apiary"
+                                                   value="APIARY_RECORDS"
+                                                   onchange="show_table_fields('apiary');"/> Apiary
+                    </td>
+                    <td style="width: 25%;"><input type="checkbox" name="query_tables" id="briquette_production"
+                                                   value="BRIQUETTE_PRODUCTION_RECORDS"
+                                                   onchange="show_table_fields('briquette_production');"/> Briquette Production
+                    </td>
                 </tr>
             </table>
             <table id="miscellaneous_table_selections" class="table-bordered" cellpadding="10" cellspacing="50"
@@ -1006,6 +1018,89 @@
                                         QUANTITY (KG) <br>
                                         <input type="checkbox" name="tables_field" id="tables_field"
                                                class="fish_farming_field" value="FISH_FARMING_RECORDS.INCOME"/> INCOME
+                                        <br>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="apiary_fields" class="col-md-3" style="display: none;">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>APIARY</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="apiary_field" value="APIARY_RECORDS.INDIVIDUAL_ID"/>
+                                        INDIVIDUAL ID <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="apiary_field" value="APIARY_RECORDS.QUANTITY_HARVESTED"/>
+                                        QUANTITY HARVESTED <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="apiary_field"
+                                               value="APIARY_RECORDS.QUANTITY_SOLD"/> QUNATITY SOLD <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="apiary_field" value="APIARY_RECORDS.QUANTITY_CONSUMED"/>
+                                        QUANTITY CONSUMED (KG) <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="apiary_field" value="APIARY_RECORDS.INCOME"/> INCOME
+                                        <br>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="piggery_fields" class="col-md-3" style="display: none;">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PIGGERY</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="piggery_field" value="PIGGERY_RECORDS.INDIVIDUAL_ID"/>
+                                        INDIVIDUAL ID <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="piggery_field" value="PIGGERY_RECORDS.NUMBER_OF_PIGGLETS"/>
+                                        NUMBER OF PIGGLETS <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="piggery_field" value="PIGGERY_RECORDS.USES_IMO"/> USES IMO <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="piggery_field" value="PIGGERY_RECORDS.INCOME"/> INCOME
+                                        <br>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="briquette_production_fields" class="col-md-3" style="display: none;">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>BRIQUETTE PRODUCTION</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="briquette_production_field" value="BRIQUETTE_PRODUCTION_RECORDS.INDIVIDUAL_ID"/>
+                                        INDIVIDUAL ID <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="briquette_production_field" value="BRIQUETTE_PRODUCTION_RECORDS.QUANTITY_PRODUCED"/>
+                                        QUANTITY PRODUCED <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="briquette_production_field"
+                                               value="BRIQUETTE_PRODUCTION_RECORDS.QUANTITY_SOLD"/> QUNATITY SOLD <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="briquette_production_field" value="BRIQUETTE_PRODUCTION_RECORDS.QUANTITY_USED"/>
+                                        QUANTITY USED (KG) <br>
+                                        <input type="checkbox" name="tables_field" id="tables_field"
+                                               class="briquette_production_field" value="BRIQUETTE_PRODUCTION_RECORDS.INCOME"/> INCOME
                                         <br>
                                     </div>
                                 </td>
@@ -2827,6 +2922,106 @@
 
                 </div>
 
+                <div class="col-md-4" id="apiary_criteria" style="display: none;">
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th colspan="2">APIARY</th>
+                        </tr>
+                        <tr>
+                            <td>INDIVIDUAL ID</td>
+                            <td><input type="text" name="apiary_individual_id_criterion"
+                                       id="apiary_individual_id_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>QUANTITY HARVESTED</td>
+                            <td><input type="text" name="apiary_quantity_harvested_criterion"
+                                       id="apiary_quantity_harvested_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>QUANTITY SOLD</td>
+                            <td><input type="text" name="apiary_quantity_sold_criterion"
+                                       id="apiary_quantity_sold_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>QUANTITY CONSUMED</td>
+                            <td><input type="text" name="apiary_quantity_consumed_criterion" id="apiary_quantity_consumed_criterion"
+                                       class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>INCOME</td>
+                            <td><input type="text" name="apiary_income_criterion" id="apiary_income_criterion"
+                                       class="form-control"/></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="col-md-4" id="piggery_criteria" style="display: none;">
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th colspan="2">PIGGERY</th>
+                        </tr>
+                        <tr>
+                            <td>INDIVIDUAL ID</td>
+                            <td><input type="text" name="piggery_individual_id_criterion"
+                                       id="piggery_individual_id_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>NUMBER OF PIGGLETS</td>
+                            <td><input type="text" name="piggery_number_of_pigglets_criterion"
+                                       id="piggery_number_of_pigglets_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>USES IMO</td>
+                            <td><input type="text" name="piggery_uses_imo_criterion"
+                                       id="piggery_uses_imo_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>INCOME</td>
+                            <td><input type="text" name="piggery_income_criterion" id="piggery_income_criterion"
+                                       class="form-control"/></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="col-md-4" id="briquette_production_criteria" style="display: none;">
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th colspan="2">BRIQUETTE PRODUCTION</th>
+                        </tr>
+                        <tr>
+                            <td>INDIVIDUAL ID</td>
+                            <td><input type="text" name="briquette_production_individual_id_criterion"
+                                       id="briquette_production_individual_id_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>QUANTITY PRODUCED</td>
+                            <td><input type="text" name="briquette_production_quantity_produced_criterion"
+                                       id="briquette_production_quantity_produced_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>QUANTITY SOLD</td>
+                            <td><input type="text" name="briquette_production_quantity_sold_criterion"
+                                       id="briquette_production_quantity_sold_criterion" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>QUANTITY USED</td>
+                            <td><input type="text" name="briquette_production_quantity_used_criterion" id="briquette_production_quantity_used_criterion"
+                                       class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>INCOME</td>
+                            <td><input type="text" name="briquette_production_income_criterion" id="briquette_production_income_criterion"
+                                       class="form-control"/></td>
+                        </tr>
+                    </table>
+
+                </div>
+
                 <div class="col-md-4" id="farming_problems_criteria" style="display: none;">
 
                     <table class="table table-bordered">
@@ -4470,6 +4665,69 @@
             }
         }
 
+        if (checkbox_id === 'apiary') {
+
+
+            if (document.getElementById(checkbox_id).checked) {
+//                alert(checkbox_id);
+                document.getElementById('apiary_fields').style.display = 'block';
+                document.getElementById('apiary_criteria').style.display = 'block';
+
+            } else {
+                document.getElementById('apiary_fields').style.display = 'none';
+                document.getElementById('apiary_criteria').style.display = 'none';
+
+
+                $('input.apiary_field').prop('checked', false);
+
+
+                //unchecking and checking elements
+                //document.getElementById('desiredInput').checked = false;
+            }
+        }
+
+        if (checkbox_id === 'piggery') {
+
+
+            if (document.getElementById(checkbox_id).checked) {
+//                alert(checkbox_id);
+                document.getElementById('piggery_fields').style.display = 'block';
+                document.getElementById('piggery_criteria').style.display = 'block';
+
+            } else {
+                document.getElementById('piggery_fields').style.display = 'none';
+                document.getElementById('piggery_criteria').style.display = 'none';
+
+
+                $('input.piggery_field').prop('checked', false);
+
+
+                //unchecking and checking elements
+                //document.getElementById('desiredInput').checked = false;
+            }
+        }
+
+        if (checkbox_id === 'briquette_production') {
+
+
+            if (document.getElementById(checkbox_id).checked) {
+//                alert(checkbox_id);
+                document.getElementById('briquette_production_fields').style.display = 'block';
+                document.getElementById('briquette_production_criteria').style.display = 'block';
+
+            } else {
+                document.getElementById('briquette_production_fields').style.display = 'none';
+                document.getElementById('briquette_production_criteria').style.display = 'none';
+
+
+                $('input.briquette_production_field').prop('checked', false);
+
+
+                //unchecking and checking elements
+                //document.getElementById('desiredInput').checked = false;
+            }
+        }
+
         if (checkbox_id === 'production_problems') {
 
 
@@ -4866,6 +5124,26 @@
         var fishing_quantity_criterion = document.getElementById('fishing_quantity_criterion').value;
         var fishing_income_criterion = document.getElementById('fishing_income_criterion').value;
 
+        //Fish Apiary Criteria
+        var apiary_individual_id_criterion = document.getElementById('fishing_individual_id_criterion').value;
+        var apiary_quantity_harvested_criterion = document.getElementById('apiary_quantity_harvested_criterion').value;
+        var apiary_quantity_sold_criterion = document.getElementById('apiary_quantity_sold_criterion').value;
+        var apiary_quantity_consumed_criterion = document.getElementById('apiary_quantity_consumed_criterion').value;
+        var apiary_income_criterion = document.getElementById('apiary_income_criterion').value;
+
+        //Fish Piggery Criteria
+        var piggery_individual_id_criterion = document.getElementById('piggery_individual_id_criterion').value;
+        var piggery_number_of_pigglets_criterion = document.getElementById('piggery_number_of_pigglets_criterion').value;
+        var piggery_uses_imo_criterion = document.getElementById('piggery_uses_imo_criterion').value;
+        var piggery_income_criterion = document.getElementById('piggery_income_criterion').value;
+
+        //Fish Briquette Production Criteria
+        var briquette_production_individual_id_criterion = document.getElementById('briquette_production_individual_id_criterion').value;
+        var briquette_production_quantity_produced_criterion = document.getElementById('briquette_production_quantity_produced_criterion').value;
+        var briquette_production_quantity_sold_criterion = document.getElementById('briquette_production_quantity_sold_criterion').value;
+        var briquette_production_quantity_used_criterion = document.getElementById('briquette_production_quantity_used_criterion').value;
+        var briquette_production_income_criterion = document.getElementById('briquette_production_income_criterion').value;
+
         //Misean Cara Technology Criteria
         var misean_cara_technology_individual_id_criterion = document.getElementById('misean_cara_technology_individual_id_criterion').value;
         var misean_cara_technology_imprived_seeds_criterion = document.getElementById('misean_cara_technology_imprived_seeds_criterion').value;
@@ -5072,7 +5350,7 @@
                  */
                 if (query_tables.length > 1) {
 
-                    if (contains.call(query_tables, 'CHILDREN') & contains.call(query_tables, 'ASSESSMENT_1_RECORDS')) {
+                    if (contains.call(query_tables, 'CHILDREN') && contains.call(query_tables, 'ASSESSMENT_1_RECORDS')) {
                         var join = [];
 
                         join.push('ASSESSMENT_1_RECORDS');
@@ -5091,9 +5369,9 @@
                     }
 
 
-                    if (contains.call(required_fields, 'MEMBERSHIP.VULNERABILITY') & contains.call(query_tables, 'MEMBERSHIP')) {
+                    if (contains.call(required_fields, 'MEMBERSHIP.VULNERABILITY') && contains.call(query_tables, 'MEMBERSHIP')) {
 
-                        if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_ATTENDANCE') & contains.call(query_tables, 'MEMBERSHIP')) {
+                        if (contains.call(query_tables, 'TRAININGS') && contains.call(query_tables, 'TRAINING_ATTENDANCE') && contains.call(query_tables, 'MEMBERSHIP')) {
                             var join_1 = [];
                             var join_2 = [];
 
@@ -5114,7 +5392,7 @@
 
                         }
 
-                        else if (contains.call(query_tables, 'TRAINING_ATTENDANCE') & contains.call(query_tables, 'MEMBERSHIP')) {
+                        else if (contains.call(query_tables, 'TRAINING_ATTENDANCE') && contains.call(query_tables, 'MEMBERSHIP')) {
                             var join = [];
 
                             join.push('TRAINING_ATTENDANCE');
@@ -5123,7 +5401,7 @@
                             joins.push(join);
                         }
 
-                        else if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_ATTENDANCE')) {
+                        else if (contains.call(query_tables, 'TRAININGS') && contains.call(query_tables, 'TRAINING_ATTENDANCE')) {
                             var join = [];
 
                             join.push('TRAINING_ATTENDANCE');
@@ -5143,20 +5421,52 @@
                         join_a.push('DISABILITIES.DISABILITY_ID = MEMBERSHIP.VULNERABILITY');
                         //
                         joins.push(join_a);
-                    } else {
+                    }
+                    else {
 
-                        if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_ATTENDANCE')) {
+                        if (contains.call(query_tables, 'TRAININGS') && contains.call(query_tables, 'TRAINING_ATTENDANCE') && contains.call(query_tables, 'MEMBERSHIP')) {
+                            var join_1 = [];
+                            var join_2 = [];
+
+                            var index = query_tables.indexOf('MEMBERSHIP');
+
+                            query_tables[index] = 'TRAININGS';
+
+                            join_1.push('TRAINING_ATTENDANCE');
+                            join_1.push('TRAINING_ATTENDANCE.TRAINING_ID = TRAININGS.ID');
+
+                            joins.push(join_1);
+
+                            join_2.push('MEMBERSHIP');
+                            join_2.push('MEMBERSHIP.MEMBERSHIP_ID=TRAINING_ATTENDANCE.ATTENDANT');
+
+                            joins.push(join_2);
+
+
+                        }
+
+                        else if (contains.call(query_tables, 'TRAINING_ATTENDANCE') && contains.call(query_tables, 'MEMBERSHIP')) {
                             var join = [];
 
                             join.push('TRAINING_ATTENDANCE');
-                            join.push('TRAININGS.ID = TRAINING_ATTENDANCE.TRAINING_ID');
+                            join.push('TRAINING_ATTENDANCE.ATTENDANT = MEMBERSHIP.MEMBERSHIP_ID');
 
                             joins.push(join);
                         }
+
+                        else if (contains.call(query_tables, 'TRAININGS') && contains.call(query_tables, 'TRAINING_ATTENDANCE')) {
+                                var join = [];
+
+                                join.push('TRAINING_ATTENDANCE');
+                                join.push('TRAININGS.ID = TRAINING_ATTENDANCE.TRAINING_ID');
+
+                                joins.push(join);
+                            }
+
                     }
 
 
-                    if (contains.call(query_tables, 'GROUPS') & contains.call(query_tables, 'MEMBERSHIP')) {
+                    if (contains.call(query_tables, 'GROUPS') && contains.call(query_tables, 'MEMBERSHIP')) {
                         var join = [];
 
                         join.push('MEMBERSHIP');
@@ -5165,7 +5475,7 @@
                         joins.push(join);
                     }
 
-                    /*                    if (contains.call(query_tables, 'GROUPS') & contains.call(query_tables, 'MEMBERSHIP')) {
+                    /*                    if (contains.call(query_tables, 'GROUPS') && contains.call(query_tables, 'MEMBERSHIP')) {
                      var join = [];
                      var index = required_fields.indexOf('GROUPS.LOCATION');
 
@@ -5179,7 +5489,7 @@
                      joins.push(join);
                      }
                      */
-                    if (contains.call(query_tables, 'ORGANIZATION_STAFF_NEW') & contains.call(query_tables, 'ORGANIZATION_DEPARTMENTS_NEW')) {
+                    if (contains.call(query_tables, 'ORGANIZATION_STAFF_NEW') && contains.call(query_tables, 'ORGANIZATION_DEPARTMENTS_NEW')) {
                         var join = [];
 
                         join.push('ORGANIZATION_STAFF_NEW');
@@ -5188,7 +5498,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'CHILDREN') & contains.call(query_tables, 'ASSESSMENT_2_RECORDS_NEW')) {
+                    if (contains.call(query_tables, 'CHILDREN') && contains.call(query_tables, 'ASSESSMENT_2_RECORDS_NEW')) {
                         var join = [];
 
                         join.push('ASSESSMENT_2_RECORDS_NEW');
@@ -5197,7 +5507,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'CHILDREN') & contains.call(query_tables, 'VISIT_RECORDS')) {
+                    if (contains.call(query_tables, 'CHILDREN') && contains.call(query_tables, 'VISIT_RECORDS')) {
                         var join = [];
 
                         join.push('VISIT_RECORDS');
@@ -5206,7 +5516,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'TRAINING_OUTCOMES')) {
+                    if (contains.call(query_tables, 'TRAININGS') && contains.call(query_tables, 'TRAINING_OUTCOMES')) {
                         var join = [];
 
                         join.push('TRAINING_OUTCOMES');
@@ -5215,7 +5525,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'TRAININGS') & contains.call(query_tables, 'COURSES_AND_TOPICS')) {
+                    if (contains.call(query_tables, 'TRAININGS') && contains.call(query_tables, 'COURSES_AND_TOPICS')) {
                         var join = [];
 
                         join.push('COURSES_AND_TOPICS');
@@ -5224,7 +5534,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') & contains.call(query_tables, 'VEGETABLE_PRODUCTION_NEW')) {
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'VEGETABLE_PRODUCTION_NEW')) {
                         var join = [];
 
                         join.push('VEGETABLE_PRODUCTION_NEW');
@@ -5233,42 +5543,83 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') & contains.call(query_tables, 'FISH_FARMING_RECORDS')) {
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'FISH_FARMING_RECORDS')) {
                         var join = [];
 
-                        join.push('VEGETABLE_PRODUCTION_NEW');
+                        join.push('FISH_FARMING_RECORDS');
                         join.push('MISEAN_CARA_BASELINE_SURVEYS.TRACK_ID = FISH_FARMING_RECORDS.TRACK_ID');
 
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') & contains.call(query_tables, 'PRODUCTION_PROBLEMS')) {
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'APIARY_RECORDS')) {
                         var join = [];
 
-                        join.push('VEGETABLE_PRODUCTION_NEW');
+                        join.push('APIARY_RECORDS');
+                        join.push('MISEAN_CARA_BASELINE_SURVEYS.TRACK_ID = APIARY_RECORDS.TRACK_ID');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'PIGGERY_RECORDS')) {
+                        var join = [];
+
+                        join.push('PIGGERY_RECORDS');
+                        join.push('MISEAN_CARA_BASELINE_SURVEYS.TRACK_ID = PIGGERY_RECORDS.TRACK_ID');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'BRIQUETTE_PRODUCTION_RECORDS')) {
+                        var join = [];
+
+                        join.push('BRIQUETTE_PRODUCTION_RECORDS');
+                        join.push('MISEAN_CARA_BASELINE_SURVEYS.TRACK_ID = BRIQUETTE_PRODUCTION_RECORDS.TRACK_ID');
+
+                        joins.push(join);
+                    }
+
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'PRODUCTION_PROBLEMS')) {
+                        var join = [];
+
+                        join.push('PRODUCTION_PROBLEMS');
                         join.push('MISEAN_CARA_BASELINE_SURVEYS.TRACK_ID = PRODUCTION_PROBLEMS.TRACK_ID');
 
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') & contains.call(query_tables, 'MISEAN_CARA_BENEFICIARIES_NEW')) {
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'MISEAN_CARA_BENEFICIARIES_NEW')) {
                         var join = [];
 
-                        join.push('VEGETABLE_PRODUCTION_NEW');
+                        join.push('MISEAN_CARA_BENEFICIARIES_NEW');
                         join.push('MISEAN_CARA_BASELINE_SURVEYS.TRACK_ID = MISEAN_CARA_BENEFICIARIES_NEW.TRACK_ID');
 
                         joins.push(join);
                     }
 
-                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') & contains.call(query_tables, 'CHANGE_IN_KNOWLEDGE_NEWER')) {
+                    if (contains.call(query_tables, 'MISEAN_CARA_BASELINE_SURVEYS') && contains.call(query_tables, 'CHANGE_IN_KNOWLEDGE_NEWER')) {
                         var join = [];
 
-                        join.push('VEGETABLE_PRODUCTION_NEW');
+                        join.push('CHANGE_IN_KNOWLEDGE_NEWER');
                         join.push('MISEAN_CARA_BASELINE_SURVEYS.TRACK_ID = CHANGE_IN_KNOWLEDGE_NEWER.TRACK_ID');
 
                         joins.push(join);
                     }
 
+                }
+
+                if (contains.call(query_tables, 'MEMBERSHIP') && contains.call(required_fields, 'MEMBERSHIP.GROUPS')) {
+                    var join = [];
+                    var index = required_fields.indexOf('MEMBERSHIP.GROUPS');
+
+                    required_fields[index] = 'GROUPS.GROUP_NAME';
+
+                    query_tables.push('GROUPS');
+
+                    join.push('GROUPS');
+                    join.push('MEMBERSHIP.GROUPS = GROUPS.GROUP_ID');
+
+                    joins.push(join);
                 }
 
                 /*
@@ -6382,6 +6733,15 @@
 
                     }
 
+                    if (fishing_individual_id_criterion !== '') {
+                        var record = [];
+                        record.push('FISH_FARMING_RECORDS.INDIVIDUAL_ID');
+                        record.push(fishing_individual_id_criterion);
+
+                        conditions.push(record);
+
+                    }
+
                     if (fishing_size_of_pond_criterion !== '') {
                         var record = [];
                         record.push('FISH_FARMING_RECORDS.SIZE_OF_POND');
@@ -6410,6 +6770,124 @@
                         var record = [];
                         record.push('FISH_FARMING_RECORDS.INCOME');
                         record.push(fishing_income_criterion);
+
+                        conditions.push(record);
+
+                    }
+
+                    if (apiary_individual_id_criterion !== '') {
+                        var record = [];
+                        record.push('APIARY_RECORDS.INDIVIDUAL_ID');
+                        record.push(fishing_individual_id_criterion);
+
+                        conditions.push(record);
+
+                    }
+
+                    if (apiary_quantity_harvested_criterion !== '') {
+                        var record = [];
+                        record.push('APIARY_RECORDS.QUANTITY_HARVESTED');
+                        record.push(apiary_quantity_harvested_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (apiary_quantity_sold_criterion !== '') {
+                        var record = [];
+                        record.push('APIARY_RECORDS.QUANTITY_SOLD');
+                        record.push(apiary_quantity_sold_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (apiary_quantity_consumed_criterion !== '') {
+                        var record = [];
+                        record.push('APIARY_RECORDS.QUANTITY_CONSUMED');
+                        record.push(apiary_quantity_consumed_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (apiary_income_criterion !== '') {
+                        var record = [];
+                        record.push('APIARY_RECORDS.INCOME');
+                        record.push(apiary_income_criterion);
+
+                        conditions.push(record);
+
+                    }
+
+                    if (piggery_individual_id_criterion !== '') {
+                        var record = [];
+                        record.push('PIGGERY_RECORDS.INDIVIDUAL_ID');
+                        record.push(piggery_individual_id_criterion);
+
+                        conditions.push(record);
+
+                    }
+
+                    if (piggery_number_of_pigglets_criterion !== '') {
+                        var record = [];
+                        record.push('PIGGERY_RECORDS.NUMBER_OF_PIGGLETS');
+                        record.push(piggery_number_of_pigglets_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (piggery_uses_imo_criterion !== '') {
+                        var record = [];
+                        record.push('PIGGERY_RECORDS.USES_IMO');
+                        record.push(piggery_uses_sold_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (piggery_income_criterion !== '') {
+                        var record = [];
+                        record.push('PIGGERY_RECORDS.INCOME');
+                        record.push(piggery_income_criterion);
+
+                        conditions.push(record);
+
+                    }
+
+                    if (briquette_production_individual_id_criterion !== '') {
+                        var record = [];
+                        record.push('BRIQUETTE_PRODUCTION_RECORDS.INDIVIDUAL_ID');
+                        record.push(briquette_production_individual_id_criterion);
+
+                        conditions.push(record);
+
+                    }
+
+                    if (briquette_production_quantity_produced_criterion !== '') {
+                        var record = [];
+                        record.push('BRIQUETTE_PRODUCTION_RECORDS.QUANTITY_PRODUCED');
+                        record.push(briquette_production_quantity_produced_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (briquette_production_quantity_sold_criterion !== '') {
+                        var record = [];
+                        record.push('BRIQUETTE_PRODUCTION_RECORDS.QUANTITY_SOLD');
+                        record.push(briquette_production_quantity_sold_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (briquette_production_quantity_used_criterion !== '') {
+                        var record = [];
+                        record.push('BRIQUETTE_PRODUCTION_RECORDS.QUANTITY_USED');
+                        record.push(briquette_production_quantity_used_criterion);
+
+                        conditions.push(record);
+
+                    }
+                    if (briquette_production_income_criterion !== '') {
+                        var record = [];
+                        record.push('BRIQUETTE_PRODUCTION_RECORDS.INCOME');
+                        record.push(briquette_production_income_criterion);
 
                         conditions.push(record);
 
@@ -7861,7 +8339,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(required_fields, 'MEMBERSHIP.VULNERABILITY') & contains.call(query_tables, 'MEMBERSHIP')) {
+                    if (contains.call(required_fields, 'MEMBERSHIP.VULNERABILITY') && contains.call(query_tables, 'MEMBERSHIP')) {
 
                         var join = [];
                         var index = required_fields.indexOf('MEMBERSHIP.VULNERABILITY');
@@ -7876,7 +8354,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(required_fields, 'MEMBERSHIP.PARISH') & contains.call(query_tables, 'MEMBERSHIP')) {
+                    if (contains.call(required_fields, 'MEMBERSHIP.PARISH') && contains.call(query_tables, 'MEMBERSHIP')) {
                         var join = [];
 
                         query_tables.push('PARISH');
@@ -7887,7 +8365,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(required_fields, 'MEMBERSHIP.VILLAGE') & contains.call(query_tables, 'MEMBERSHIP')) {
+                    if (contains.call(required_fields, 'MEMBERSHIP.VILLAGE') && contains.call(query_tables, 'MEMBERSHIP')) {
                         var join = [];
 
                         query_tables.push('VILLAGE');
@@ -8110,7 +8588,7 @@
                         joins.push(join);
                     }
 
-                    if (contains.call(required_fields, 'LIVELIHOODGROUPCATEGORIES.CATEGORYNAME') & contains.call(query_tables, 'GROUPS')) {
+                    if (contains.call(required_fields, 'LIVELIHOODGROUPCATEGORIES.CATEGORYNAME') && contains.call(query_tables, 'GROUPS')) {
                         var join = [];
 
                         query_tables.push('LIVELIHOODGROUPCATEGORIES');

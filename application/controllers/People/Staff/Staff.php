@@ -184,5 +184,10 @@ class Staff extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'People/Staff/Data/filter-data', $data);
+    }
+
 }
 ?>

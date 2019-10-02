@@ -14,7 +14,7 @@
     </div>
     <div class="float-content-right">
         <a class="btn btn-primary btn-md space-sm-right" href="<?php echo site_url('assessments/form-2/record-a-new-assessment'); ?>"><i class="fa fa-plus-circle"></i> New Assessment 2 Form</a>
-        <a class="btn btn-success btn-md space-sm-right" href="#"><i class="fa fa-filter"></i> Filter</a>
+        <a class="btn btn-success btn-md space-sm-right" href="<?php echo site_url('assessments/form-2/filter'); ?>"><i class="fa fa-filter"></i> Filter</a>
         <a class="btn btn-danger btn-md space-sm-right" href="#"><i class="fa fa-file-pdf-o"></i> Generate Pdf</a>
     </div>
 </div>

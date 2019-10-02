@@ -67,6 +67,7 @@ $route['dashboard'] = 'Dashboard/dashboard';
 # People Urls
 //$route['groupings'];
 $route['membership'] = 'People/Membership/membership';
+$route['membership/filter'] = 'People/Membership/membership/filter_data';
 $route['membership/register-new-member'] = 'People/Membership/membership/create';
 $route['member-support/create'] = 'People/Membership/membership/create_support';
 $route['member-details/(:any)'] = 'People/Membership/membership/details';
@@ -83,12 +84,14 @@ $route['group-support/create'] = 'People/Groupings/groupings/create_support';
 $route['group-info/generate-pdf/(:any)'] = 'People/Groupings/groupings/generate_pdf_document';
 
 $route['children%20list'] = 'People/Children/children';
+$route['children%20list/filter'] = 'People/Children/children/filter_data';
 $route['children%20list/register-new-child'] = 'People/Children/children/create';
 $route['child-details/(:any)'] = 'People/Children/children/details';
 $route['child-details/edit/(:any)'] = 'People/Children/children/edit';
 $route['child-support/create'] = 'People/Children/children/create_support';
 $route['child-info/generate-pdf/(:any)'] = 'People/Children/children/generate_pdf_document';
 
+$route['staff/filter'] = 'People/Staff/staff/filter_data';
 $route['staff'] = 'People/Staff/staff';
 $route['staff/register-new'] = 'People/Staff/staff/create';
 $route['staff-details/(:any)'] = 'People/Staff/staff/details';
@@ -97,12 +100,14 @@ $route['staff-info/generate-pdf/(:any)'] = 'People/Staff/staff/generate_pdf_docu
 
 #Health Urls
 $route['visitations'] = 'People/Other/Visits/visit';
+$route['visitations/filter'] = 'People/Other/Visits/visit/filter_data';
 $route['visitations/record-a-new-visit'] = 'People/Other/Visits/visit/create';
 $route['visitation-details/(:any)'] = 'People/Other/Visits/visit/details';
 $route['visitation-details/edit/(:any)'] = 'People/Other/Visits/visit/edit';
 $route['visitation-info/generate-pdf/(:any)'] = 'People/Other/Visits/visit/generate_pdf_document';
 
 $route['assessments/form-1'] = 'People/Other/Assessments/form_1';
+$route['assessments/form-1/filter'] = 'People/Other/Assessments/form_1/filter_data';
 $route['assessments/form-1/record-a-new-assessment'] = 'People/Other/Assessments/form_1/create';
 $route['assessments/form-1/record-a-new-assessment/(:any)'] = 'People/Other/Assessments/form_1/show_create_for_specific_child';
 $route['assessments/form-1-details/(:any)'] = 'People/Other/Assessments/form_1/details';
@@ -110,6 +115,7 @@ $route['assessments/form-1-details/edit/(:any)'] = 'People/Other/Assessments/for
 $route['assessments/form-1/generate-pdf/(:any)'] = 'People/Other/Assessments/form_1/generate_pdf_document';
 
 $route['assessments/form-2'] = 'People/Other/Assessments/form_2';
+$route['assessments/form-2/filter'] = 'People/Other/Assessments/form_2/filter_data';
 $route['assessments/form-2/record-a-new-assessment'] = 'People/Other/Assessments/form_2/create';
 $route['assessments/form-2/record-a-new-assessment/(:any)'] = 'People/Other/Assessments/form_2/show_create_for_specific_child';
 $route['assessments/form-2-details/(:any)'] = 'People/Other/Assessments/form_2/details';
@@ -118,6 +124,7 @@ $route['assessments/form-2/generate-pdf/(:any)'] = 'People/Other/Assessments/for
 
 #Training Urls
 $route['trainings'] = 'Training/training';
+$route['trainings/filter'] = 'Training/training/filter_data';
 $route['trainings/new-training'] = 'Training/training/create';
 $route['training-details/(:any)'] = 'Training/training/details';
 $route['training-details/edit/(:any)'] = 'Training/training/edit';
@@ -128,6 +135,7 @@ $route['training-attendants/(:any)/record-new-beneficiary-list'] = 'Training/tra
 $route['training-outcome/(:any)/record-new-outcome'] = 'Training/training/register_training_outcome';
 
 $route['courses%20and%20topics'] = 'Training/courses';
+$route['courses%20and%20topics/filter'] = 'Training/courses/filter_data';
 $route['courses%20and%20topics/new-course'] = 'Training/courses/create';
 $route['course-details/(:any)'] = 'Training/courses/details';
 $route['course-details/edit/(:any)'] = 'Training/courses/edit';
@@ -136,16 +144,19 @@ $route['course-info/generate-pdf/(:any)'] = 'Training/courses/generate_pdf_docum
 #Production Urls
 //$route['production'];
 $route['production/crop%20production'] = 'Production/Crop/cropProduction';
+$route['production/crop%20production/filter'] = 'Production/Crop/cropProduction/filter_data';
 $route['production/crop%20production-details/(:any)'] = 'Production/Crop/cropProduction/details';
 $route['production/crop%20production-details/edit/(:any)'] = 'Production/Crop/cropProduction/edit';
 $route['production/crop%20production-info/generate-pdf/(:any)'] = 'Production/Crop/cropProduction/generate_detailed_pdf';
 
 $route['production/fish%20farming'] = 'Production/FishFarming/fishFarming';
+$route['production/fish%20farming/filter'] = 'Production/FishFarming/fishFarming/filter_data';
 $route['production/fish%20farming-details/(:any)'] = 'Production/FishFarming/fishFarming/details';
 $route['production/fish%20farming-details/edit/(:any)'] = 'Production/FishFarming/fishFarming/edit';
 $route['production/fish%20farming-info/generate-pdf/(:any)'] = 'Production/FishFarming/fishFarming/generate_detailed_pdf';
 
 $route['production/misean%20cara%20baseline%20surveys'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey';
+$route['production/misean%20cara%20baseline%20surveys/filter'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/filter_data';
 #$route['production/misean%20cara%20baseline%20surveys%20for%20group/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome/';
 $route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create';
 $route['production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security%20for%20group%20/(:any)/(:any)/(:any)/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/create_group_support_outcome';
@@ -154,27 +165,32 @@ $route['production/misean%20cara%20baseline%20survey-details/edit/(:any)'] = 'Pr
 $route['production/misean%20cara%20baseline%20survey-info/generate-pdf/(:any)'] = 'Production/BaselineSurveys/miseanCaraBaselineSurvey/generate_pdf_document';
 
 $route['production/adoption%20to%20technology'] = 'Production/TechnologyAdoption/adoptionToTechnology';
+$route['production/adoption%20to%20technology/filter'] = 'Production/TechnologyAdoption/adoptionToTechnology/filter_data';
 $route['production/adoption%20to%20technology-details/(:any)'] = 'Production/TechnologyAdoption/adoptionToTechnology/details';
 $route['production/adoption%20to%20technology-details/edit/(:any)'] = 'Production/TechnologyAdoption/adoptionToTechnology/edit';
 $route['production/adoption%20to%20technology-info/generate-pdf/(:any)'] = 'Production/TechnologyAdoption/adoptionToTechnology/generate_detailed_pdf';
 
 $route['production/challenges'] = 'Production/Challenges/challenge';
+$route['production/challenges/filter'] = 'Production/Challenges/challenge/filter_data';
 $route['production/challenge-details/(:any)'] = 'Production/Challenges/challenge/details';
 $route['production/challenge-details/edit/(:any)'] = 'Production/Challenges/challenge/edit';
 $route['production/challenge-info/generate-pdf/(:any)'] = 'Production/Challenges/challenge/generate_pdf_document';
 
 $route['production/marketing'] = 'Production/Marketing/marketing';
+$route['production/marketing/filter'] = 'Production/Marketing/marketing/filter_data';
 $route['production/marketing-details/(:any)'] = 'Production/Marketing/marketing/details';
 $route['production/marketing-details/edit/(:any)'] = 'Production/Marketing/marketing/edit';
 $route['production/marketing-info/generate-pdf/(:any)'] = 'Production/Marketing/marketing/generate_pdf_document';
 
 $route['production/increase'] = 'Production/ProductionIncrease/productionIncrease';
+$route['production/increase/filter'] = 'Production/ProductionIncrease/productionIncrease/filter_data';
 $route['production/increase/edit/(:any)'] = 'Production/ProductionIncrease/productionIncrease/edit';
 $route['production/increase-details/(:any)'] = 'Production/ProductionIncrease/productionIncrease/details';
 $route['production/increase-details/generate-pdf/(:any)'] = 'Production/ProductionIncrease/productionIncrease/generate_pdf_document';
 
 # Monitoring Urls
 $route['monitoring'] = 'Monitoring/monitoring';
+$route['monitoring/filter'] = 'Monitoring/monitoring/filter_data';
 $route['monitoring-details/(:any)'] = 'Monitoring/monitoring/details';
 $route['monitoring/new-field-support-visit'] = 'Monitoring/monitoring/create_field_support_visit';
 $route['monitoring/new-group-savings-tracking'] = 'Monitoring/monitoring/create_group_savings_tracking_record';
@@ -184,12 +200,14 @@ $route['monitoring-info/generate-pdf/(:any)'] = 'Monitoring/monitoring/generate_
 
 #Miscellaneous Urls
 $route['miscellaneous%20baseline%20surveys'] = 'Miscellaneous/BaselineSurveys/baselineSurveys';
+$route['miscellaneous%20baseline%20surveys/filter'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/filter_data';
 $route['miscellaneous%20baseline%20survey-details/(:any)'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/details';
 $route['miscellaneous%20baseline%20survey-details/edit/(:any)'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/edit';
 $route['miscellaneous%20baseline%20survey/new_assessment'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/create';
 $route['miscellaneous%20baseline%20survey-info/generate-pdf/(:any)'] = 'Miscellaneous/BaselineSurveys/baselineSurveys/generate_pdf_document/';
 
 $route['miscellaneous%20pilot%20studies'] = 'Miscellaneous/PilotStudies/pilotStudies';
+$route['miscellaneous%20pilot%20studies/filter'] = 'Miscellaneous/PilotStudies/pilotStudies/filter_data';
 $route['miscellaneous%20pilot%20study-details/(:any)'] = 'Miscellaneous/PilotStudies/pilotStudies/details';
 $route['miscellaneous%20pilot%20study-details/edit/(:any)'] = 'Miscellaneous/PilotStudies/pilotStudies/edit/';
 $route['miscellaneous%20pilot%20studies/new_record'] = 'Miscellaneous/PilotStudies/pilotStudies/create/';
@@ -197,6 +215,7 @@ $route['miscellaneous%20pilot%20study-info/generate-pdf/(:any)'] = 'Miscellaneou
 $route['miscellaneous%20pilot%20studies'] = 'Miscellaneous/PilotStudies/pilotStudies';
 
 $route['miscellaneous%20hygiene%20and%20nutrition'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition';
+$route['miscellaneous%20hygiene%20and%20nutrition/filter'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition/filter_data';
 $route['miscellaneous%20hygiene%20and%20nutrition/new-recording'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition/create';
 $route['miscellaneous%20hygiene%20and%20nutrition-details/(:any)'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition/details';
 $route['miscellaneous%20hygiene%20and%20nutrition-details/edit/(:any)'] = 'Miscellaneous/HygieneAndNutrition/hygieneAndNutrition/edit/';

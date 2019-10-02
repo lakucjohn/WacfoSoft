@@ -17,7 +17,7 @@
     </div>
     <div class="float-content-right">
         <a class="btn btn-primary btn-md space-sm-right" href="<?php echo site_url('courses%20and%20topics/new-course'); ?>"><i class="fa fa-plus-circle"></i> New Course</a>
-        <a class="btn btn-success btn-md space-sm-right" href="#"><i class="fa fa-filter"></i> Filter</a>
+        <a class="btn btn-success btn-md space-sm-right" href="<?php echo site_url('courses%20and%20topics/filter'); ?>"><i class="fa fa-filter"></i> Filter</a>
         <a class="btn btn-danger btn-md space-sm-right" href="#"><i class="fa fa-file-pdf-o"></i> Generate Pdf</a>
     </div>
 </div>

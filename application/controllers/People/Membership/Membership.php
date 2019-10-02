@@ -291,5 +291,10 @@ class Membership extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'People/Livelihood/Membership/Data/filter-data', $data);
+    }
+
 }
 ?>

@@ -20,7 +20,7 @@
     <div class="float-content-right" style="width: 90%;">
         <div class="float-content-right">
             <a class="btn btn-primary btn-md space-sm-right" href="<?php echo site_url('production/misean%20cara%20baseline%20surveys/new%20misean%20cara%20baseline%20survey%20economic%20%20security'); ?>"><i class="fa fa-plus-circle"></i> New Misean Cara Baseline Survey Economic Security</a>
-            <a class="btn btn-success btn-md space-sm-right" href="#"><i class="fa fa-filter"></i> Filter</a>
+            <a class="btn btn-success btn-md space-sm-right" href="<?php echo site_url('production/misean%20cara%20baseline%20surveys/filter'); ?>"><i class="fa fa-filter"></i> Filter</a>
             <a class="btn btn-danger btn-md space-sm-right" href="#"><i class="fa fa-file-pdf-o"></i> Generate Pdf</a>
         </div>
     </div>

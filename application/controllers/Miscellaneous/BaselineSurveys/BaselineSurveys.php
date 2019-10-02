@@ -447,5 +447,11 @@ class BaselineSurveys extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'Miscellaneous/Surveys/Data/filter-data', $data);
+    }
+
+
 }
 ?>

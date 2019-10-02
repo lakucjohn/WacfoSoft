@@ -686,5 +686,11 @@ class PilotStudies extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'Miscellaneous/PilotStudies/Data/filter-data', $data);
+    }
+
+
 }
 ?>

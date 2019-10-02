@@ -268,5 +268,10 @@ class Courses extends AuthContentController {
         $this->pdf->stream("" . $row_id . ".pdf", array("Attachment" => 0));
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'Training/Courses_And_Topics/Data/filter-data', $data);
+    }
+
 }
 ?>

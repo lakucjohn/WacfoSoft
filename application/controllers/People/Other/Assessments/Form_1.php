@@ -299,5 +299,10 @@ class Form_1 extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'People/Other/Assessments/Data/filter-data-1', $data);
+    }
+
 }
 ?>

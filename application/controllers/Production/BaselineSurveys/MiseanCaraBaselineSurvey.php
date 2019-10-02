@@ -1310,5 +1310,10 @@ class MiseanCaraBaselineSurvey extends AuthContentController
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'Production/Survey/Data/filter-data', $data);
+    }
+
 
 }

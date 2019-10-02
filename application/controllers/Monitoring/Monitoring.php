@@ -513,5 +513,11 @@ class Monitoring extends AuthContentController {
 
     }
 
+    public function filter_data(){
+        $data['title'] = 'Filter Data in this table';
+        $this->template->load('default', 'Monitoring/Data/filter-data', $data);
+    }
+
+
 }
 ?>
